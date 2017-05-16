@@ -1,14 +1,14 @@
-jQuery(document).ready(function() {
+jQuery(document).ready(function () {
   "use strict";
   //alert("HEY: " + document.documentURI);
 
-  var that = this;
+  const that = this;
 
   if (!document.defaultView) {
     return;
   }
 
-  var url = document.documentURI;
+  const url = document.documentURI;
   if (url && url.match(/^chrome:/)) {
     return;
     // ignore pages representing FF's internal layout
@@ -24,7 +24,7 @@ jQuery(document).ready(function() {
   //  });
   //}
 
-  var previouslyProcessed = jQuery(document).data("sw_processed");
+  const previouslyProcessed = jQuery(document).data("sw_processed");
   //that.log({prevcheck: true, prev: !!previouslyProcessed, url: doc.documentURI});
 
   if (previouslyProcessed) {
@@ -42,22 +42,22 @@ jQuery(document).ready(function() {
 
   this.docs.push(document);
 
-  jQuery(document).bind("mouseover", function(event) {
-    var tgt = event.target;
+  jQuery(document).bind("mouseover", function (event) {
+    const tgt = event.target;
 
     if (that.decommissioned) {
       return;
     }
 
     if (that.scrapeTarget) {
-      var mousedDoc = tgt.ownerDocument;
-      var mouseurl = mousedDoc.defaultView.location.href;
+      const mousedDoc = tgt.ownerDocument;
+      const mouseurl = mousedDoc.defaultView.location.href;
       if (mouseurl === that.scrapeTarget.url) {
         //that.log({
         //  BIB: [mouseurl, '===', that.scrapeTarget.url]
         //});
 
-        var evt = document.createEvent("Events");
+        const evt = document.createEvent("Events");
         evt.initEvent("sw_inbounds", true, false);
         document.dispatchEvent(evt);
       } else {
@@ -65,34 +65,34 @@ jQuery(document).ready(function() {
         //  OOB: [mouseurl, '!==', that.scrapeTarget.url]
         //});
 
-        var detail = {};
+        const detail = {};
         detail.cause = [mouseurl, '!==', that.scrapeTarget.url];
         detail.observer = that.swid;
 
         that.emit(jQuery(document), "sw_outofbounds", detail);
         /*
-        	    var evt = document.createEvent("CustomEvent");
-        	    evt.initCustomEvent("sw_outofbounds", true, false, detail);
-        	    doc.dispatchEvent(evt);
-        */
+         var evt = document.createEvent("CustomEvent");
+         evt.initCustomEvent("sw_outofbounds", true, false, detail);
+         doc.dispatchEvent(evt);
+         */
         //return;
       }
     }
   });
 
-  jQuery(document).bind("sw_dragstart", function(event) {
+  jQuery(document).bind("sw_dragstart", function (event) {
     //alert("DRAGGY");
     document.getSelection().removeAllRanges();
   });
 
   if (that.scrapeTarget) {
-    var processurl = document.defaultView.location.href;
+    const processurl = document.defaultView.location.href;
     if (processurl != that.scrapeTarget.url) {
       return;
     }
   }
 
-  var boxer = function(dragIndicator) {
+  const boxer = function (dragIndicator) {
     if (dragIndicator === "BLUEBOX") {
       return Object.create(ProcessDOM.Interaction.BoxIndicator).init({
         doc: document,
@@ -108,7 +108,7 @@ jQuery(document).ready(function() {
     //that.log({boxing: doc.documentURI});
   }
 
-  var selector = function(dragSelector) {
+  const selector = function (dragSelector) {
     if (dragSelector === "CLICK") {
       return Object.create(ProcessDOM.Interaction.ClickSelector).init({
         doc: document,
@@ -140,16 +140,16 @@ jQuery(document).ready(function() {
 
   //that.log({SELECTOR: that.getSetting("dragSelector")});
 
-  jQuery(document).bind("click", function(event) {
-    var tgt = event.target;
+  jQuery(document).bind("click", function (event) {
+    const tgt = event.target;
     if (jQuery(tgt).parents().is("a")) {
       //alert("CLICKY");
     }
   });
 
-  jQuery(document).bind("click dragstart mousedown mouseup", function(event) {
-    var tgt = event.target;
-    var type = event.type;
+  jQuery(document).bind("click dragstart mousedown mouseup", function (event) {
+    const tgt = event.target;
+    const type = event.type;
 
     if (document !== tgt.ownerDocument) {
       //alert("SKIP!!");
@@ -171,38 +171,38 @@ jQuery(document).ready(function() {
   }
 
   //TODO: Here, "that" should probably refer to ProcessDOM.  Depends on if we want ProcessDOM to call Docmarker or Smartwrap to call Docmarker
-  var markParams = {
+  const markParams = {
     smartwrap: that,
     chunkSize: 25,
     chunkDelay: 20
   };
   /*
 
-    Marking the document is done in chunks of nodes.  There is a
-    tradeoff between marking speed and browser responsiveness;
-    bigger chunks make marking complete faster but a large chunk
-    hogs the browser update thread so that nothing else can happen
-    while the chunk is being processed.  By processing small chunks
-    and leaving a small gap between them we allow other events to
-    sneak between the chunks, giving the user a responsive
-    experience.
+   Marking the document is done in chunks of nodes.  There is a
+   tradeoff between marking speed and browser responsiveness;
+   bigger chunks make marking complete faster but a large chunk
+   hogs the browser update thread so that nothing else can happen
+   while the chunk is being processed.  By processing small chunks
+   and leaving a small gap between them we allow other events to
+   sneak between the chunks, giving the user a responsive
+   experience.
 
    */
   //var marker = Object.create(that.DocumentMarker);
   //marker.init(doc, markParams);
 
-  var marker = new that.DocumentMarker({
+  const marker = new that.DocumentMarker({
     doc: document,
     params: markParams
   });
-  window.setTimeout(function() {
+  window.setTimeout(function () {
     marker.mark();
   }, 10);
   //marker.mark();
 
   if (false) {
-    jQuery(document).bind("dragstart", function(event) {
-      var tgt = event.target;
+    jQuery(document).bind("dragstart", function (event) {
+      const tgt = event.target;
 
       if (true) {
         return;
@@ -210,9 +210,9 @@ jQuery(document).ready(function() {
 
       if (event && event.originalEvent) {
 
-        var detail = {};
+        const detail = {};
         detail.metadata = {}; // TODO: recreate getDragData();
-        var text = Smartwrap.getVisibleText(tgt);
+        const text = Smartwrap.getVisibleText(tgt);
 
         if (text.match(/\S/)) {
           event.originalEvent.dataTransfer.setData("text/plain", text);
@@ -233,7 +233,7 @@ jQuery(document).ready(function() {
         detail.metadata.style = jQuery(event.target).data("style") || marker.getPresentedStyle(event.target);
         detail.metadata.absoluteLocationXPath = Smartwrap.getAbsoluteLocationXPath(event.target, false);
 
-        var evt = document.createEvent("CustomEvent");
+        const evt = document.createEvent("CustomEvent");
         evt.initCustomEvent("sw_dragstart", true, true, detail);
         document.dispatchEvent(evt);
       }

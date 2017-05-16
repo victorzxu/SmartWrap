@@ -7,10 +7,18 @@ Smartwrap Extension for Firefox
 ### Installation
 
 	$ npm install
+	
+	Or, if you have `yarn`
+	
+	$ yarn
 
 ### Usage
 
-Run `$ gulp --watch` and load the `dist`-directory into chrome.
+Run `$ gulp --watch` and load the `dist`-directory into browsers.
+
+### When developing
+
+Run `$ npm run dev:curr` and load the `dist`-directory into browsers.
 
 ### Entryfiles (bundles)
 

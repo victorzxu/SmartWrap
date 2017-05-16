@@ -1,2 +1,2 @@
-var smartwrapNamespace = "http://smartwrap.cmu.edu"
-var swarmatureNamespace = "http://swarmature.cmu.edu";
+const smartwrapNamespace = "http://smartwrap.cmu.edu";
+const swarmatureNamespace = "http://swarmature.cmu.edu";

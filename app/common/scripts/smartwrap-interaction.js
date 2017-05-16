@@ -1,28 +1,28 @@
 //TODO: Fix references to smartwrap and logger, try to pass as little info as possible
-var ProcessDOM;
+let ProcessDOM;
 
 if (!ProcessDOM) {
   ProcessDOM = {};
 }
 
-ProcessDOM.Interaction = (function() {
+ProcessDOM.Interaction = (function () {
   "use strict";
 
   ProcessDOM.Interaction = {};
-  ProcessDOM.Interaction.enableDragging = function(elt) {
+  ProcessDOM.Interaction.enableDragging = function (elt) {
     jQuery(elt).data("cached_draggable", elt.draggable);
     elt.draggable = true;
   };
-  ProcessDOM.Interaction.disableDragging = function(elt) {
+  ProcessDOM.Interaction.disableDragging = function (elt) {
     elt.draggable = jQuery(elt).data("cached_draggable");
   };
 
   ProcessDOM.Interaction.BoxIndicator = {
     boxTemplName: "sw_selbox",
-    init: function(params) {
+    init: function (params) {
       this.doc = params.doc;
 
-      var rectboxes = jQuery(this.doc).find(".sw_selbox");
+      const rectboxes = jQuery(this.doc).find(".sw_selbox");
       if (rectboxes.length) {
         // the rectbox was previously added
         //that.log({box: "use", url: doc.documentURI});
@@ -38,7 +38,7 @@ ProcessDOM.Interaction = (function() {
 
       this.selbox = this.rectbox;
 
-      var colors = {
+      const colors = {
         color: "blue"
       };
       jQuery(this.rectbox).find(".sw_selinner").css({
@@ -50,21 +50,21 @@ ProcessDOM.Interaction = (function() {
 
       this.rectstyle = this.doc.defaultView.getComputedStyle(jQuery(this.rectbox).get(0), ":active");
 
-      var that = this;
+      const that = this;
 
-      var selboxmodel = {
+      const selboxmodel = {
         opad: {},
         ibord: {},
         owhy: {}
       };
-      ["bottom", "right", "top", "left"].forEach(function(key) {
+      ["bottom", "right", "top", "left"].forEach(function (key) {
         if (!that.rectstyle) {
           return;
         }
         selboxmodel.opad[key] = parseFloat(that.rectstyle.getPropertyValue("padding-" + key).slice(0, -2));
         selboxmodel.ibord[key] = parseFloat(jQuery(that.rectbox).find(".sw_selinner").css("border-" + key + "-width").slice(0, -2));
 
-        var url = that.rectstyle.getPropertyCSSValue("padding-" + key);
+        const url = that.rectstyle.getPropertyCSSValue("padding-" + key);
 
         selboxmodel.owhy[key] = url.getFloatValue(url.CSS_PX);
       });
@@ -79,15 +79,15 @@ ProcessDOM.Interaction = (function() {
 
       return this;
     },
-    handleMouseover: function(event) {
-      var tgt = event.target;
+    handleMouseover: function (event) {
+      const tgt = event.target;
 
       if (this.doc !== tgt.ownerDocument) {
         // can ignore mouse/over from other documents
         return;
       }
 
-      var marked = jQuery(tgt).data("marked");
+      let marked = jQuery(tgt).data("marked");
       if (!marked) {
         return;
       }
@@ -97,19 +97,19 @@ ProcessDOM.Interaction = (function() {
         this.framedElt = null;
       }
 
-      var that = this;
+      const that = this;
 
       jQuery(this.rectbox).show();
       jQuery(tgt).addClass("sw_mouseframed");
 
       this.framedElt = tgt;
 
-      var rect = tgt.getBoundingClientRect();
+      const rect = tgt.getBoundingClientRect();
       if ((Math.min(rect.height, rect.width)) < 5) {
         return;
       }
 
-      var bounds = {
+      const bounds = {
         left: rect.left,
         right: rect.right,
         top: rect.top,
@@ -124,8 +124,8 @@ ProcessDOM.Interaction = (function() {
       bounds.left += this.doc.defaultView.scrollX;
       bounds.right += this.doc.defaultView.scrollX;
 
-      var ibounds = Object.create(bounds);
-      var obounds = Object.create(bounds);
+      const ibounds = Object.create(bounds);
+      const obounds = Object.create(bounds);
 
       ibounds.top = this.selboxmodel.opad.top;
       ibounds.left = this.selboxmodel.opad.left;
@@ -154,7 +154,7 @@ ProcessDOM.Interaction = (function() {
         duration: this.settings.animateSelector ? 150 : 0,
         queue: false,
         easing: 'swing',
-        complete: function() {
+        complete: function () {
           jQuery(that.rectbox).find('.sw_selinner').css({
             top: ibounds.top + "px",
             left: ibounds.left + "px",
@@ -168,17 +168,17 @@ ProcessDOM.Interaction = (function() {
       //that.log({bounds: bounds, obounds: obounds, ibounds: ibounds});
 
       /*
-        jQuery(this.rectbox).find(".sw_box_top, .sw_box_left, .sw_box_right").css('top', bounds.top + "px");
-        jQuery(this.rectbox).find(".sw_box_top, .sw_box_left, .sw_box_bottom").css('left', bounds.left + "px");
-        jQuery(this.rectbox).find(".sw_box_bottom").css('top', bounds.bottom + "px");
-        jQuery(this.rectbox).find(".sw_box_right").css('left', bounds.right + "px");
+       jQuery(this.rectbox).find(".sw_box_top, .sw_box_left, .sw_box_right").css('top', bounds.top + "px");
+       jQuery(this.rectbox).find(".sw_box_top, .sw_box_left, .sw_box_bottom").css('left', bounds.left + "px");
+       jQuery(this.rectbox).find(".sw_box_bottom").css('top', bounds.bottom + "px");
+       jQuery(this.rectbox).find(".sw_box_right").css('left', bounds.right + "px");
 
-        jQuery(this.rectbox).find(".horizontal").css('width', bounds.width + "px");
-        jQuery(this.rectbox).find(".vertical").css('height', bounds.height + "px");
-      */
+       jQuery(this.rectbox).find(".horizontal").css('width', bounds.width + "px");
+       jQuery(this.rectbox).find(".vertical").css('height', bounds.height + "px");
+       */
     },
-    handleMouseout: function(event) {
-      var tgt = event.target;
+    handleMouseout: function (event) {
+      const tgt = event.target;
 
       if (this.doc !== tgt.ownerDocument) {
         // can ignore mouse/over from other documents
@@ -192,27 +192,27 @@ ProcessDOM.Interaction = (function() {
         jQuery(this.rectbox).hide();
       }
     },
-    registerListeners: function() {
-      var that = this;
-      jQuery(this.doc).bind("mouseover", function(event) {
+    registerListeners: function () {
+      const that = this;
+      jQuery(this.doc).bind("mouseover", function (event) {
         that.handleMouseover(event);
       });
-      jQuery(this.doc).bind("mouseout", function(event) {
+      jQuery(this.doc).bind("mouseout", function (event) {
         that.handleMouseout(event);
       });
     }
   };
 
   ProcessDOM.Interaction.SelectTextSelector = {
-    init: function(params) {
+    init: function (params) {
       this.doc = params.doc;
       //this.logger = params.logger;
       //this.smartwrap = params.smartwrap;
 
       return this;
     },
-    handleDragend: function(event) {
-      var tgt = event.target;
+    handleDragend: function (event) {
+      const tgt = event.target;
 
       if (this.doc !== tgt.ownerDocument) {
         // can ignore mouse/over from other documents
@@ -223,10 +223,10 @@ ProcessDOM.Interaction = (function() {
       //  ProcessDOM.log("...DRRAG");
       //}
     },
-    handleDragstart: function(event) {
-      var tgt = event.target;
-      var i = 0;
-      var df, dump;
+    handleDragstart: function (event) {
+      const tgt = event.target;
+      const i = 0;
+      let df, dump;
 
       if (this.doc !== tgt.ownerDocument) {
         // can ignore mouse/over from other documents
@@ -248,7 +248,7 @@ ProcessDOM.Interaction = (function() {
       }
       event.originalEvent.stopPropagation();
 
-      var detail = {};
+      const detail = {};
 
       if (this.selectedRange) {
         detail.draggedRange = this.selectedRange;
@@ -260,36 +260,36 @@ ProcessDOM.Interaction = (function() {
 
       //tgt.ownerDocument.defaultView.alert("DRRAG:" + tgt.ownerDocument.defaultView.location.href);
 
-      var evt = document.createEvent("CustomEvent");
+      const evt = document.createEvent("CustomEvent");
       evt.initCustomEvent("sw_dragstart", true, true, detail);
       this.doc.dispatchEvent(evt);
 
       //tgt.ownerDocument.defaultView.alert("DRRAG:" + JSON.stringify(Object.keys(detail)));
     },
-    registerListeners: function() {
-      var that = this;
-      jQuery(this.doc).bind("dragstart", function(event) {
+    registerListeners: function () {
+      const that = this;
+      jQuery(this.doc).bind("dragstart", function (event) {
         that.handleDragstart(event);
       });
-      jQuery(this.doc).bind("dragend", function(event) {
+      jQuery(this.doc).bind("dragend", function (event) {
         that.handleDragend(event);
       });
     }
   };
 
   ProcessDOM.Interaction.ClickSelector = Object.create(ProcessDOM.Interaction.SelectTextSelector);
-  ProcessDOM.Interaction.ClickSelector.init = function(params) {
+  ProcessDOM.Interaction.ClickSelector.init = function (params) {
     ProcessDOM.Interaction.SelectTextSelector.init.call(this, params);
 
     return this;
   };
   /*
-    Smartwrap.Interaction.ClickSelector.handleDblclick = function (event) {
-    event.target.ownerDocument.defaultView.alert("DBLCLICK!!");
-    };
-  */
-  ProcessDOM.Interaction.ClickSelector.handleClick = function(event) {
-    var tgt = event.target;
+   Smartwrap.Interaction.ClickSelector.handleDblclick = function (event) {
+   event.target.ownerDocument.defaultView.alert("DBLCLICK!!");
+   };
+   */
+  ProcessDOM.Interaction.ClickSelector.handleClick = function (event) {
+    const tgt = event.target;
 
     if (this.doc !== tgt.ownerDocument) {
       // can ignore mouse/over from other documents
@@ -308,12 +308,12 @@ ProcessDOM.Interaction = (function() {
       this.selectedRange = null;
     }
 
-    var seln = tgt.ownerDocument.getSelection();
-    var i = 0;
+    const seln = tgt.ownerDocument.getSelection();
+    let i = 0;
     for (i = 0; i < seln.rangeCount; i += 1) {
-      var selrng = seln.getRangeAt(i);
+      const selrng = seln.getRangeAt(i);
 
-      var context = tgt.ownerDocument.createRange();
+      const context = tgt.ownerDocument.createRange();
       context.selectNodeContents(selrng.startContainer);
 
       // if (this.logger) {
@@ -337,38 +337,38 @@ ProcessDOM.Interaction = (function() {
     //this.selectedElt.draggable = true;
     //tgt.ownerDocument.defaultView.alert("CLICKED!!");
   };
-  ProcessDOM.Interaction.ClickSelector.registerListeners = function() {
-    var that = this;
+  ProcessDOM.Interaction.ClickSelector.registerListeners = function () {
+    const that = this;
     ProcessDOM.Interaction.SelectTextSelector.registerListeners.call(this);
-    jQuery(this.doc).bind("dblclick", function(event) {
+    jQuery(this.doc).bind("dblclick", function (event) {
       that.handleDblclick(event);
     });
-    jQuery(this.doc).bind("click", function(event) {
+    jQuery(this.doc).bind("click", function (event) {
       that.handleClick(event);
     });
   };
 
   ProcessDOM.Interaction.HoverSelector = Object.create(ProcessDOM.Interaction.SelectTextSelector);
-  ProcessDOM.Interaction.HoverSelector.init = function(params) {
+  ProcessDOM.Interaction.HoverSelector.init = function (params) {
     ProcessDOM.Interaction.SelectTextSelector.init.call(this, params);
 
     return this;
   };
-  ProcessDOM.Interaction.HoverSelector.handleMouseover = function(event) {
+  ProcessDOM.Interaction.HoverSelector.handleMouseover = function (event) {
     //event.target.draggable = true;
     ProcessDOM.Interaction.enableDragging(event.target);
   };
-  ProcessDOM.Interaction.HoverSelector.handleMouseout = function(event) {
+  ProcessDOM.Interaction.HoverSelector.handleMouseout = function (event) {
     //event.target.draggable = false;
     ProcessDOM.Interaction.disableDragging(event.target);
   };
-  ProcessDOM.Interaction.HoverSelector.registerListeners = function() {
-    var that = this;
+  ProcessDOM.Interaction.HoverSelector.registerListeners = function () {
+    const that = this;
     ProcessDOM.Interaction.SelectTextSelector.registerListeners.call(this);
-    jQuery(this.doc).bind("mouseover", function(event) {
+    jQuery(this.doc).bind("mouseover", function (event) {
       that.handleMouseover(event);
     });
-    jQuery(this.doc).bind("mouseout", function(event) {
+    jQuery(this.doc).bind("mouseout", function (event) {
       that.handleMouseout(event);
     });
   };

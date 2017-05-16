@@ -1,20 +1,20 @@
-var Smartwrap;
+let Smartwrap;
 
 if (!Smartwrap) {
   Smartwrap = {};
 }
 
-Smartwrap.overlay = (function() {
+Smartwrap.overlay = (function () {
   "use strict";
   //alert('define');
 
 
-  var swo = {
-    showhide: function(widget, selector) {
-      return function(event) {
-        var tgt = gContextMenu.target;
+  const swo = {
+    showhide: function (widget, selector) {
+      return function (event) {
+        const tgt = gContextMenu.target;
 
-        var show = false;
+        let show = false;
 
         if (selector) {
           show = show || !!(jQuery(tgt).parents().andSelf().filter(selector).length);
@@ -30,14 +30,14 @@ Smartwrap.overlay = (function() {
         }
       };
     },
-    openurl: function(detail) {
-      var url = detail.url || detail.redirect;
+    openurl: function (detail) {
+      const url = detail.url || detail.redirect;
       window.open(url);
     },
-    log: function(detail) {
+    log: function (detail) {
       if (this.devMode) {
         try {
-          var domain = detail.domain || "";
+          const domain = detail.domain || "";
           if ((this.alertDomains === null) || (this.alertDomains.indexOf(domain) > 0)) {
             alert("LOG: " + JSON.stringify(detail));
           }

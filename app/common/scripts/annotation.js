@@ -1,16 +1,18 @@
-var program = JSON.parse(jQuery("meta#sw_program").get(0).content);
+import {$ as jQuery} from "jquery";
+
+const program = JSON.parse(jQuery("meta#sw_program").get(0).content);
 //alert('hum: ' + JSON.stringify(program));
 
-var interp = Object.create(Smartwrap.Interpreter);
+const interp = Object.create(Smartwrap.Interpreter);
 interp.setContext(document);
 
-var palette = Palette.mainPalette;
+const palette = Palette.mainPalette;
 
-interp.addEventListener("makeCell", function(params) {
+interp.addEventListener("makeCell", function (params) {
   //alert("CELL: " + JSON.stringify(params));
   if (params.range && params.colid) {
-    var color = palette.getColor(params.colid);
-    var node = params.range.endContainer;
+    const color = palette.getColor(params.colid);
+    const node = params.range.endContainer;
     jQuery(node).addClass("sw_injected_cell");
     jQuery(node).addClass(params.colid);
   }
@@ -19,10 +21,10 @@ interp.addEventListener("makeCell", function(params) {
 interp.interpret(program);
 //alert("interped");
 
-var css = palette.getCSS();
+const css = palette.getCSS();
 //alert("CSS: " + css);
 
-var style = document.createElement("style");
+const style = document.createElement("style");
 style.appendChild(document.createTextNode(css));
 
 document.head.appendChild(style);

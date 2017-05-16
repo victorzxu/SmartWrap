@@ -1,21 +1,21 @@
-jQuery(document).on('ready', function() {
-  jQuery(".decryptHere").each(function(ix, elt) {
-    var index = jQuery(elt).attr("decryptIndex");
-    var decrypted_string = decrypt_string(index, 0, 0, true);
+jQuery(document).on('ready', function () {
+  jQuery(".decryptHere").each(function (ix, elt) {
+    const index = jQuery(elt).attr("decryptIndex");
+    const decrypted_string = decrypt_string(index, 0, 0, true);
     jQuery(elt).text(decrypted_string);
   });
 
 
-  var spec = {};
+  const spec = {};
   spec.url = window.location.href;
   spec.urlparts = spec.url.split(/\?/);
   if (spec.urlparts.length > 1) {
     spec.querystr = spec.urlparts[1];
     spec.kv = spec.querystr.split(/\&/);
-    spec.params = spec.kv.reduce(function(accum, pair) {
-      var keyval = pair.split('=');
-      var key = keyval.shift();
-      var val = keyval.shift();
+    spec.params = spec.kv.reduce(function (accum, pair) {
+      const keyval = pair.split('=');
+      const key = keyval.shift();
+      const val = keyval.shift();
       accum[key] = val;
       return accum;
     }, {});
@@ -25,9 +25,9 @@ jQuery(document).on('ready', function() {
   spec.invalid = {};
   spec.optout = {};
   spec.widgets = {};
-  ['age', 'informed', 'willing'].forEach(function(key) {
+  ['age', 'informed', 'willing'].forEach(function (key) {
     if (spec.params && spec.params[key]) {
-      var widgetid = ['#', key, spec.params[key]].join("");
+      const widgetid = ['#', key, spec.params[key]].join("");
       spec.widgets[widgetid] = [jQuery(widgetid).length];
       jQuery(widgetid).attr('checked', true);
       if (spec.params[key] === 'No') {
@@ -62,7 +62,7 @@ jQuery(document).on('ready', function() {
   }
 
 
-  jQuery('#formSubmit').on('click', function(event) {
+  jQuery('#formSubmit').on('click', function (event) {
     //prefutil.setPrefs({consent: "false"});
 
     return true;

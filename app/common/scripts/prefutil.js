@@ -25,38 +25,38 @@
 // the extension has been run before; if it hasn't then open a tab to the
 // registration page.
 
-var prefutil = (function() {
+const prefutil = (function () {
   "use strict";
 
-  var pu = {};
-  var privy = {};
+  const pu = {};
+  const privy = {};
 
   /*pu.decode = function(pref, key) {
-    var prefType = pref.getPrefType(key);
-    if (prefType == pref.PREF_STRING) {
-      return pref.getCharPref(key);
-    }
-    if (prefType == pref.PREF_BOOL) {
-      return pref.getBoolPref(key);
-    }
-    if (prefType == pref.PREF_INT) {
-      return pref.getIntPref(key);
-    }
-  };*/
+   var prefType = pref.getPrefType(key);
+   if (prefType == pref.PREF_STRING) {
+   return pref.getCharPref(key);
+   }
+   if (prefType == pref.PREF_BOOL) {
+   return pref.getBoolPref(key);
+   }
+   if (prefType == pref.PREF_INT) {
+   return pref.getIntPref(key);
+   }
+   };*/
 
   /*pu.branch2json = function(branch) {
-    privy.prefs = {};
-    privy.prefs.foo = "bar";
+   privy.prefs = {};
+   privy.prefs.foo = "bar";
 
-    //var keys = branch.getChildList("",{})
-    branch.getChildList("", {}).forEach(function(key) {
-      privy.prefs[key] = pu.decode(branch, key);
-    });
+   //var keys = branch.getChildList("",{})
+   branch.getChildList("", {}).forEach(function(key) {
+   privy.prefs[key] = pu.decode(branch, key);
+   });
 
-    return privy.prefs;
-  };*/
+   return privy.prefs;
+   };*/
 
-  pu.firstRun = function(registeredVersion, installedVersion) {
+  pu.firstRun = function (registeredVersion, installedVersion) {
     this.log({
       first: "?",
       reg: registeredVersion,
@@ -83,114 +83,115 @@ var prefutil = (function() {
     return false;
   };
 
-  pu.setPrefs = function(spec) {
+  pu.setPrefs = function (spec) {
     this.log({
       spec1: spec
     });
     /*if (!privy.prefManager) {
-      privy.prefManager = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
-    }*/
+     privy.prefManager = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
+     }*/
     if (!privy.prefClear) {
       privy.prefClear = {
-        observe: function() {
+        observe: function () {
           privy.prefObject = null;
         }
       };
     }
     /*if (!privy.prefBranch) {
-      privy.prefBranch = privy.prefManager.getBranch(spec.prefix || pu.prefix || "extensions.smartwrapper.");
-      privy.prefBranch.addObserver("", privy.prefClear, false);
-      // simply invalidate cached version whenever something changes.
-    }*/
-    Object.keys(spec).forEach(function(key) {
+     privy.prefBranch = privy.prefManager.getBranch(spec.prefix || pu.prefix || "extensions.smartwrapper.");
+     privy.prefBranch.addObserver("", privy.prefClear, false);
+     // simply invalidate cached version whenever something changes.
+     }*/
+    Object.keys(spec).forEach(function (key) {
       browser.storage.local.set({key: spec[key].toString()});
     });
 
   };
 
-  pu.getPref = function(spec) {
+  pu.getPref = function (spec) {
     if (typeof spec === "string") {
       spec = {
         key: spec
       };
     }
     /*this.log({
-      spec1: spec
-    });*/
+     spec1: spec
+     });*/
     /*if (!privy.prefManager) {
-      privy.prefManager = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
-    }*/
+     privy.prefManager = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
+     }*/
     if (!privy.prefClear) {
       privy.prefClear = {
-        observe: function() {
+        observe: function () {
           privy.prefObject = null;
         }
       };
     }
     /*if (!privy.prefBranch) {
-      privy.prefBranch = privy.prefManager.getBranch(spec.prefix || pu.prefix || "extensions.smartwrapper.");
-      privy.prefBranch.addObserver("", privy.prefClear, false);
-      // simply invalidate cached version whenever something changes.
-    }*/
+     privy.prefBranch = privy.prefManager.getBranch(spec.prefix || pu.prefix || "extensions.smartwrapper.");
+     privy.prefBranch.addObserver("", privy.prefClear, false);
+     // simply invalidate cached version whenever something changes.
+     }*/
     /*if (!privy.prefObject) {
-      privy.prefObject = this.branch2json(privy.prefBranch);
-      this.log({
-        prefs: privy.prefObject
-      });
-      //dump(JSON.stringify({regened: privy.prefObject},null,2) + "\n\n");
-    }*/
+     privy.prefObject = this.branch2json(privy.prefBranch);
+     this.log({
+     prefs: privy.prefObject
+     });
+     //dump(JSON.stringify({regened: privy.prefObject},null,2) + "\n\n");
+     }*/
     spec.out = browser.storage.local.get(spec.key);
     //this.log(spec);
     return spec.out;
   };
 
-  pu.observeSetting = function(key, callback, prefix) {
-      var value = this.getPref({
-        key: key,
-        prefix: prefix
-      });
-      callback({
-        key: key,
-        value: value
-      });
-      var self = this;
-      var observer = {
-        /* weird overly-general API courtesy of
-           https://developer.mozilla.org/en-US/docs/Code_snippets/Preferences
-        */
-        observe: function(aSubject, aTopic, aData) {
-          //dump(JSON.stringify({observing: key, saw: {subj:aSubject,top:aTopic,data:aData}}, null, 2) + "\n\n");
-          if (aData === key) {
-            setTimeout(function() {
-              callback({
+  pu.observeSetting = function (key, callback, prefix) {
+    const value = this.getPref({
+      key: key,
+      prefix: prefix
+    });
+    callback({
+      key: key,
+      value: value
+    });
+    const self = this;
+    const observer = {
+      /* weird overly-general API courtesy of
+       https://developer.mozilla.org/en-US/docs/Code_snippets/Preferences
+       */
+      observe: function (aSubject, aTopic, aData) {
+        //dump(JSON.stringify({observing: key, saw: {subj:aSubject,top:aTopic,data:aData}}, null, 2) + "\n\n");
+        if (aData
+          === key) {
+          setTimeout(function () {
+            callback({
+              key: key,
+              value: self.getPref({
                 key: key,
-                value: self.getPref({
-                  key: key,
-                  prefix: prefix
-                })
-              });
-            }, 25);
-            // kludge: use timeout to make sure the prefClear listener runs before this one.
-          }
+                prefix: prefix
+              })
+            });
+          }, 25);
+// kludge: use timeout to make sure the prefClear listener runs before this one.
         }
-      };
-      //privy.prefBranch.addObserver("", observer, false);
-    },
+      }
+    };
+    //privy.prefBranch.addObserver("", observer, false);
+  },
 
-    pu.registerVersion = function(ver) {
+    pu.registerVersion = function (ver) {
       pu.installed = ver.version;
       pu.via = ver.via;
-      var store = browser.storage.local;
+      const store = browser.storage.local;
 
       if (pu.firstRun(store.get("registeredVersion"), pu.installed)) {
-        var greeturl = store.get("authbase") + store.get("greeturl");
-        var greetquery = store.get("greetquery");
+        let greeturl = store.get("authbase") + store.get("greeturl");
+        const greetquery = store.get("greetquery");
         if (greetquery) {
           greeturl = [greeturl, greetquery].join("?");
         }
         /*this.log({
-          greeturl: greeturl
-        });*/
+         greeturl: greeturl
+         });*/
 
         //jQuery(pu.widget).attr("checked", "true");
         if (pu.widget) {
@@ -200,13 +201,13 @@ var prefutil = (function() {
         //pu.window = Services.wm.getMostRecentWindow("navigator:browser");
         //pu.window.gBrowser.selectedTab = pu.window.gBrowser.addTab(greeturl);
         /*Services.console.logStringMessage(JSON.stringify({
-          greeted: "true",
-          greeturl: greeturl
-        }));*/
+         greeted: "true",
+         greeturl: greeturl
+         }));*/
       }
     };
 
-  pu.owl = function(winn, prefix) {
+  pu.owl = function (winn, prefix) {
     //alert('ppp');
 
     pu.window = winn;
@@ -220,8 +221,8 @@ var prefutil = (function() {
 
     //pu.getVersion("smartwrap@cmu.edu", pu.registerVersion);
     //pu.getVersion("swath@cmu.edu", pu.registerVersion);
-    ["smartwrap@cmu.edu", "swath@cmu.edu"].forEach(function(addonid) {
-      AddonManager.getAddonByID(addonid, function(addon) {
+    ["smartwrap@cmu.edu", "swath@cmu.edu"].forEach(function (addonid) {
+      AddonManager.getAddonByID(addonid, function (addon) {
         if (!addon) {
           return;
         }
@@ -233,9 +234,9 @@ var prefutil = (function() {
   };
 
   /*pu.log = function(obj) {
-    Services.console.logStringMessage(JSON.stringify(obj));
-    //alert(JSON.stringify(obj, null, 2));
-  }*/
+   Services.console.logStringMessage(JSON.stringify(obj));
+   //alert(JSON.stringify(obj, null, 2));
+   }*/
 
   return pu;
 }());

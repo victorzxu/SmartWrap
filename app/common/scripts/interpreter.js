@@ -1,12 +1,12 @@
 Pallette = {
   _colors: ["red", "green", "blue"],
   _index: 0,
-  getNewColor: function() {
-    var color = this._colors[this._index];
+  getNewColor: function () {
+    const color = this._colors[this._index];
     this._index++;
     return color;
   }
-}
+};
 
 SmartwrapInterpreter0 = {
   doc: null,
@@ -17,19 +17,20 @@ SmartwrapInterpreter0 = {
   currentCell: null,
   rownum: -1,
   _env: {},
-  _noop: function() {},
+  _noop: function () {
+  },
   _functions: {
-    "begin": function(steps) {
-      var that = this;
-      steps.forEach(function(step) {
+    "begin": function (steps) {
+      const that = this;
+      steps.forEach(function (step) {
         that.interpret(step);
       });
 
       if (false) {
-        var Ci = Components.interfaces;
+        const Ci = Components.interfaces;
 
         /* Took this code from Migemo, would have never found it without */
-        var selCon = window
+        const selCon = window
           .QueryInterface(Ci.nsIInterfaceRequestor)
           .getInterface(Ci.nsIWebNavigation)
           .QueryInterface(Ci.nsIDocShell)
@@ -41,7 +42,7 @@ SmartwrapInterpreter0 = {
         selCon.repaintSelection(selCon.SELECTION_NORMAL);
       }
     },
-    "startTable": function() {
+    "startTable": function () {
       this.table = ["table"];
 
       this.colwise = {
@@ -52,30 +53,30 @@ SmartwrapInterpreter0 = {
 
       this.explicitProgram.push(["startTable"]);
     },
-    "endTable": function() {
+    "endTable": function () {
       this.explicitProgram.push(["endTable"]);
     },
-    "startRow": function() {
+    "startRow": function () {
       this.currentRow = ["row"];
       this.table.push(this.currentRow);
       this.explicitProgram.push(["startRow"]);
 
       this.rownum++;
     },
-    "endRow": function() {
+    "endRow": function () {
       this.currentRow = null;
       this.explicitProgram.push(["endRow"]);
     },
-    "makeCell": function(args) {
+    "makeCell": function (args) {
       this.currentCell = {};
 
-      var range0 = this.interpret(args[0]);
-      var meta = args[1];
+      const range0 = this.interpret(args[0]);
+      let meta = args[1];
       if (args.length > 1) {
         meta = this.interpret(args[1]);
       }
 
-      var cell = ["cell"];
+      const cell = ["cell"];
       if (range0) {
         cell.push(range0.toString());
       }
@@ -83,35 +84,35 @@ SmartwrapInterpreter0 = {
 
       if (meta) {
         var colid = meta.colid;
-        var colnum = 0;
+        const colnum = 0;
 
-        var coldata = this.colwise.columns;
-        var column = coldata[colnum];
-        var nodes = column["nodes"];
+        const coldata = this.colwise.columns;
+        const column = coldata[colnum];
+        const nodes = column["nodes"];
 
         nodes[this.rownum] = this.currentCell;
       }
 
       this.cells.push(this.currentCell);
 
-      var makeStep = ["makeCell", "select etc"];
+      const makeStep = ["makeCell", "select etc"];
       if (meta) {
         makeStep.push(meta);
       }
       this.explicitProgram.push(makeStep);
 
-      var styled = false;
+      let styled = false;
 
       if (meta && meta.colid) {
         //alert("META: " + JSON.stringify(meta));
         //alert("ENV: " + JSON.stringify(this._env));
         var colid = meta.colid;
-        var colObj = this._env.columns[colid];
+        const colObj = this._env.columns[colid];
         //alert('COL: ' + JSON.stringify(colObj));
 
         if (colObj.color) {
           //alert("COLOR: " + colObj.color + ":: " + seln.toString());
-          var node = range0.endContainer;
+          const node = range0.endContainer;
           jQuery(node).css({
             "color": colObj.color
           });
@@ -121,16 +122,16 @@ SmartwrapInterpreter0 = {
 
       if (!styled) {
         if (range0) {
-          var seln = window.getSelection();
+          const seln = window.getSelection();
           //seln.removeAllRanges();
           seln.addRange(range0);
           //alert("SELTED: " + seln.toString());
         }
       }
     },
-    "selectNodeContents": function(args) {
-      var range = this.interpret(args[0]);
-      var node1 = this.interpret(args[1]);
+    "selectNodeContents": function (args) {
+      const range = this.interpret(args[0]);
+      const node1 = this.interpret(args[1]);
 
       //jQuery(node1).css({"color": "green"});
 
@@ -140,14 +141,14 @@ SmartwrapInterpreter0 = {
 
       return range;
     },
-    "createRange": function() {
+    "createRange": function () {
       if (this.doc) {
         return this.doc.createRange();
       }
       return null;
     },
-    "jquery": function(args) {
-      var selector = this.interpret(args[0]);
+    "jquery": function (args) {
+      const selector = this.interpret(args[0]);
 
       this.currentCell.xpath = selector;
 
@@ -157,8 +158,8 @@ SmartwrapInterpreter0 = {
       //selector = selector.toLowerCase();
       //alert("SELECT1: " + selector);
       if (this.doc) {
-        var resolver = this.doc.createNSResolver(this.doc);
-        var result = this.doc.evaluate(selector, this.doc, resolver, XPathResult.ANY_UNORDERED_NODE_TYPE, null).singleNodeValue;
+        const resolver = this.doc.createNSResolver(this.doc);
+        let result = this.doc.evaluate(selector, this.doc, resolver, XPathResult.ANY_UNORDERED_NODE_TYPE, null).singleNodeValue;
         //alert("REZ: " + result);
         //alert("REZ: " + new XMLSerializer().serializeToString(result));
 
@@ -170,8 +171,8 @@ SmartwrapInterpreter0 = {
       }
       return null;
     },
-    "defineColumn": function(args) {
-      var colObj = this.interpret(args[0]);
+    "defineColumn": function (args) {
+      const colObj = this.interpret(args[0]);
       if (!this._env.columns) {
         this._env.columns = {};
       }
@@ -181,28 +182,28 @@ SmartwrapInterpreter0 = {
           colObj.color = Pallette.getNewColor();
         }
       }
-      var colno = this._env.columns.length;
+      const colno = this._env.columns.length;
       colObj.index = colno;
       this._env.columns[colObj.colid] = colObj;
 
-      var colsdata = this.colwise.columns;
-      var coldata = {};
+      const colsdata = this.colwise.columns;
+      const coldata = {};
       coldata.label = colObj.label;
       coldata.colid = colObj.colid;
       coldata.nodes = [];
       colsdata.push(coldata);
 
-      var defStep = ["defineColumn", colObj];
+      const defStep = ["defineColumn", colObj];
       this.explicitProgram.push(defStep);
 
       //alert("COLUMNS: " + JSON.stringify(this._env.columns));
     },
   },
-  getColumnObject: function(colid) {
+  getColumnObject: function (colid) {
     return this._env.columns[colid];
   },
-  interpret: function(program) {
-    var that = this;
+  interpret: function (program) {
+    const that = this;
 
     if (!this.explicitProgram) {
       this.explicitProgram = ["begin"];
@@ -217,10 +218,10 @@ SmartwrapInterpreter0 = {
     if (jQuery.isArray(program)) {
       //alert("ARRAY!");
 
-      var funname = program[0];
-      var args = program.slice(1);
+      const funname = program[0];
+      const args = program.slice(1);
 
-      var fun = this._functions[funname];
+      let fun = this._functions[funname];
       if (!fun) {
         alert("unimplemented function: " + funname);
         return;

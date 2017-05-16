@@ -1,5 +1,5 @@
-var Smartwrap;
-var jQuery;
+let Smartwrap;
+let jQuery;
 //var Components;
 
 if (!Smartwrap) {
@@ -7,15 +7,15 @@ if (!Smartwrap) {
 }
 
 
-Smartwrap.Palette = (function() {
+Smartwrap.Palette = (function () {
   "use strict";
   return {
-    init: function(params) {
+    init: function (params) {
       if (!params) {
         params = {};
       }
 
-      var that = this;
+      const that = this;
 
       this.colors = [];
       this.baseColors = [];
@@ -24,7 +24,7 @@ Smartwrap.Palette = (function() {
       };
 
       if (params.settings) {
-        Object.keys(params.settings).forEach(function(key) {
+        Object.keys(params.settings).forEach(function (key) {
           that.settings[key] = params.settings[key];
         });
       }
@@ -40,17 +40,17 @@ Smartwrap.Palette = (function() {
         }
       }
       if (this.baseColor) {
-        jQuery.xcolor.tetrad(this.baseColor).forEach(function(newColor) {
+        jQuery.xcolor.tetrad(this.baseColor).forEach(function (newColor) {
           that.baseColors.push(newColor);
         });
       }
       if (this.baseColors.length) {
-        var lol = [];
-        this.baseColors.forEach(function(color) {
+        const lol = [];
+        this.baseColors.forEach(function (color) {
           lol.push(jQuery.xcolor.analogous(color));
         });
         while (lol.length) {
-          var list1 = lol.shift();
+          const list1 = lol.shift();
           this.colors.push(list1.shift());
           if (list1.length) {
             lol.push(list1);
@@ -58,11 +58,11 @@ Smartwrap.Palette = (function() {
         }
       }
       /*
-      this.colors.forEach(function(color) {
-          color.foo = "bar";
-	  color.css = color.getCSS();
-      });
-      */
+       this.colors.forEach(function(color) {
+       color.foo = "bar";
+       color.css = color.getCSS();
+       });
+       */
       this.colorMap = {};
       this.counter = 0;
       //alert("OFFSET: " + JSON.stringify(this.settings));
@@ -71,16 +71,16 @@ Smartwrap.Palette = (function() {
       }
       this.classes = {};
 
-      var className;
-      var oldPalette = params.oldPalette;
+      let className;
+      const oldPalette = params.oldPalette;
       if (oldPalette) {
-        Object.keys(oldPalette.colorMap).forEach(function(className) {
+        Object.keys(oldPalette.colorMap).forEach(function (className) {
           that.getColor(className);
         });
         this.uri = oldPalette.uri;
       }
     },
-    getColor: function(alias) {
+    getColor: function (alias) {
       if (!this.colorMap[alias]) {
         this.colorMap[alias] = this.colors[this.counter];
         this.counter += 1;
@@ -96,15 +96,15 @@ Smartwrap.Palette = (function() {
       //alert(jQuery.format("{alias} -> {color}", {alias:alias, color:this.colorMap[alias]}));
       return this.colorMap[alias];
     },
-    getCSS: function() {
+    getCSS: function () {
       //alert("COLORS: " + JSON.stringify(this.colors));
       //alert("MAP: " + JSON.stringify(this.colorMap));
 
-      var that = this;
+      const that = this;
 
-      var lines = [];
-      Object.keys(this.colorMap).forEach(function(className) {
-        var color = that.colorMap[className];
+      const lines = [];
+      Object.keys(this.colorMap).forEach(function (className) {
+        const color = that.colorMap[className];
         lines.push(jQuery.format(".{className} {open} background-color: {colorCss} !important {close}", {
           className: className,
           colorCss: color.getCSS(),
@@ -115,53 +115,53 @@ Smartwrap.Palette = (function() {
       //alert("LINES: " + JSON.stringify(lines));
       return lines.join(" ");
     },
-    getURI: function() {
+    getURI: function () {
       return jQuery.format("data:text/css,{css}", {
         css: this.getCSS()
       });
     },
     /*unregisterStylesheet: function() {
-      this.registerStylesheet({
-        unregister: true
-      });
-    },
-    registerStylesheet: function(params) {
-      if (!params) {
-        params = {};
-      }
-      if (!this.services.sss) {
-        this.services.sss = Components.classes["@mozilla.org/content/style-sheet-service;1"]
-          .getService(Components.interfaces.nsIStyleSheetService);
-      }
-      if (!this.services.ios) {
-        this.services.ios = Components.classes["@mozilla.org/network/io-service;1"]
-          .getService(Components.interfaces.nsIIOService);
-      }
-      var sss = this.services.sss;
-      var ios = this.services.ios;
-      if (this.uri) {
-        if (!params.unregister) {
-          if (this.uri.spec === this.getURI()) {
-            return false;
-          }
-        }
-        //this.log.push("HAD");
-        if (sss.sheetRegistered(this.uri, sss.AGENT_SHEET)) {
-          //this.log.push("UNREG");
-          sss.unregisterSheet(this.uri, sss.AGENT_SHEET);
-        }
-      }
-      if (params.unregister) {
-        return;
-      }
-      this.uri = ios.newURI(this.getURI(), null, null);
-      if (!sss.sheetRegistered(this.uri, sss.AGENT_SHEET)) {
-        //this.log.push("REG");
-        sss.loadAndRegisterSheet(this.uri, sss.AGENT_SHEET);
-      }
-      return true;
-    },*/
-    getClassNames: function() {
+     this.registerStylesheet({
+     unregister: true
+     });
+     },
+     registerStylesheet: function(params) {
+     if (!params) {
+     params = {};
+     }
+     if (!this.services.sss) {
+     this.services.sss = Components.classes["@mozilla.org/content/style-sheet-service;1"]
+     .getService(Components.interfaces.nsIStyleSheetService);
+     }
+     if (!this.services.ios) {
+     this.services.ios = Components.classes["@mozilla.org/network/io-service;1"]
+     .getService(Components.interfaces.nsIIOService);
+     }
+     var sss = this.services.sss;
+     var ios = this.services.ios;
+     if (this.uri) {
+     if (!params.unregister) {
+     if (this.uri.spec === this.getURI()) {
+     return false;
+     }
+     }
+     //this.log.push("HAD");
+     if (sss.sheetRegistered(this.uri, sss.AGENT_SHEET)) {
+     //this.log.push("UNREG");
+     sss.unregisterSheet(this.uri, sss.AGENT_SHEET);
+     }
+     }
+     if (params.unregister) {
+     return;
+     }
+     this.uri = ios.newURI(this.getURI(), null, null);
+     if (!sss.sheetRegistered(this.uri, sss.AGENT_SHEET)) {
+     //this.log.push("REG");
+     sss.loadAndRegisterSheet(this.uri, sss.AGENT_SHEET);
+     }
+     return true;
+     },*/
+    getClassNames: function () {
       return Object.keys(this.colorMap);
     },
     log: [],

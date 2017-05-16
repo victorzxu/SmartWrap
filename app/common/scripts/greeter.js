@@ -25,13 +25,13 @@ Components.utils.import("resource://gre/modules/AddonManager.jsm");
 // the extension has been run before; if it hasn't then open a tab to the
 // registration page.
 
-var greeter = (function() {
+const greeter = (function () {
   "use strict";
 
-  var swg = {};
+  const swg = {};
 
-  var decode = function(pref, key) {
-    var prefType = pref.getPrefType(key);
+  const decode = function (pref, key) {
+    const prefType = pref.getPrefType(key);
     if (prefType == pref.PREF_STRING) {
       return pref.getCharPref(key);
     }
@@ -43,19 +43,19 @@ var greeter = (function() {
     }
   };
 
-  swg.branch2json = function(branch) {
-    var prefs = {};
+  swg.branch2json = function (branch) {
+    const prefs = {};
     prefs.foo = "bar";
 
     //var keys = branch.getChildList("",{})
-    branch.getChildList("", {}).forEach(function(key) {
+    branch.getChildList("", {}).forEach(function (key) {
       prefs[key] = decode(branch, key);
     });
 
     return prefs;
   };
 
-  swg.firstRun = function(registeredVersion, installedVersion) {
+  swg.firstRun = function (registeredVersion, installedVersion) {
     Services.console.logStringMessage(JSON.stringify({
       first: "?",
       reg: registeredVersion,
@@ -82,13 +82,13 @@ var greeter = (function() {
     return false;
   };
 
-  swg.registerVersion = function(ver) {
+  swg.registerVersion = function (ver) {
     swg.installed = ver.version;
     swg.prefs.via = ver.via;
 
     if (swg.firstRun(swg.prefs.registeredVersion, swg.installed)) {
-      var greeturl = swg.prefs["authbase"] + swg.prefs["greeturl"];
-      var greetquery = swg.prefs["greetquery"];
+      let greeturl = swg.prefs["authbase"] + swg.prefs["greeturl"];
+      const greetquery = swg.prefs["greetquery"];
       if (greetquery) {
         greeturl = [greeturl, greetquery].join("?");
       }
@@ -110,12 +110,12 @@ var greeter = (function() {
     }
   };
 
-  swg.owl = function(winn) {
+  swg.owl = function (winn) {
     //alert('ppp');
 
     swg.window = winn;
 
-    var prefManager = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
+    const prefManager = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
     swg.prefBranch = prefManager.getBranch("extensions.smartwrapper.");
     swg.prefs = swg.branch2json(swg.prefBranch);
     Services.console.logStringMessage(JSON.stringify({
@@ -124,8 +124,8 @@ var greeter = (function() {
 
     //swg.getVersion("smartwrap@cmu.edu", swg.registerVersion);
     //swg.getVersion("swath@cmu.edu", swg.registerVersion);
-    ["smartwrap@cmu.edu", "swath@cmu.edu"].forEach(function(addonid) {
-      AddonManager.getAddonByID(addonid, function(addon) {
+    ["smartwrap@cmu.edu", "swath@cmu.edu"].forEach(function (addonid) {
+      AddonManager.getAddonByID(addonid, function (addon) {
         if (!addon) {
           return;
         }
@@ -134,12 +134,12 @@ var greeter = (function() {
         });
       });
     });
-  }
+  };
 
   try {
     if (window) {
       swg.widget = document.getElementById("sw-show-status");
-      window.addEventListener("load", function() {
+      window.addEventListener("load", function () {
         swg.owl(window);
       }, false);
 

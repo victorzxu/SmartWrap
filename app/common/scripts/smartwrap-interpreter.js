@@ -1,24 +1,24 @@
-var Smartwrap;
+let Smartwrap;
 
 if (!Smartwrap) {
   Smartwrap = {};
 }
 
-Smartwrap.Interpreter = (function() {
+Smartwrap.Interpreter = (function () {
   "use strict";
   return {
     functions: {
-      "begin": function(steps) {
-        var that = this;
-        var result = null;
-        steps.forEach(function(step) {
+      "begin": function (steps) {
+        const that = this;
+        let result = null;
+        steps.forEach(function (step) {
           result = that.interpret(step);
         });
         return result;
       },
-      "startTable": function(args) {
-        var tabObj = this.interpret(args[0]);
-        var params = {};
+      "startTable": function (args) {
+        const tabObj = this.interpret(args[0]);
+        const params = {};
         if (tabObj.tableid) {
           params.tableid = tabObj.tableid;
         }
@@ -26,29 +26,29 @@ Smartwrap.Interpreter = (function() {
         params.hidden = tabObj.hidden;
         this.fireEvent("startTable", params);
       },
-      "endTable": function() {
+      "endTable": function () {
         this.fireEvent("endTable");
       },
-      "startRow": function() {
+      "startRow": function () {
         this.fireEvent("startRow");
       },
-      "endRow": function() {
+      "endRow": function () {
         this.fireEvent("endRow");
       },
-      "defineColumn": function(args) {
-        var colObj = this.interpret(args[0]);
+      "defineColumn": function (args) {
+        const colObj = this.interpret(args[0]);
         this.fireEvent("defineColumn", {
           definition: colObj
         });
       },
-      "makeCell": function(args) {
-        var range0 = this.interpret(args[0]);
-        var meta = {};
+      "makeCell": function (args) {
+        const range0 = this.interpret(args[0]);
+        let meta = {};
         if (args.length > 1) {
           meta = this.interpret(args[1]);
         }
 
-        var params = {};
+        const params = {};
         if (meta && meta.colid) {
           params.colid = meta.colid;
         }
@@ -59,9 +59,9 @@ Smartwrap.Interpreter = (function() {
 
         this.fireEvent("makeCell", params);
       },
-      "selectNodeContents": function(args) {
-        var range = this.interpret(args[0]);
-        var node1 = this.interpret(args[1]);
+      "selectNodeContents": function (args) {
+        const range = this.interpret(args[0]);
+        const node1 = this.interpret(args[1]);
 
         if (node1) {
           range.selectNodeContents(node1);
@@ -69,40 +69,41 @@ Smartwrap.Interpreter = (function() {
             range: range
           });
           range.selector = node1.selector;
-        } else {}
+        } else {
+        }
 
 
         return range;
       },
-      "createRange": function() {
+      "createRange": function () {
         if (this.doc) {
           return this.doc.createRange();
         }
         return null;
       },
-      "query": function(args) {
-        var selector = this.interpret(args[0]);
+      "query": function (args) {
+        const selector = this.interpret(args[0]);
 
-        var params = {
+        const params = {
           xpath: selector
         };
 
         if (this.doc) {
-          var resolver = this.doc.createNSResolver(this.doc);
-          var result = this.doc.evaluate(selector, this.doc, resolver, XPathResult.ANY_UNORDERED_NODE_TYPE, null).singleNodeValue;
+          const resolver = this.doc.createNSResolver(this.doc);
+          const result = this.doc.evaluate(selector, this.doc, resolver, XPathResult.ANY_UNORDERED_NODE_TYPE, null).singleNodeValue;
 
           if (result) {
             result.selector = selector;
             params.result = result;
           } else {
-            var partials = {};
+            const partials = {};
             partials.sels = [];
-            var parts = selector.split("/");
-            for (var ii = 2; ii <= parts.length; ii++) {
-              var sel2 = parts.slice(0, ii).join('/');
+            const parts = selector.split("/");
+            for (let ii = 2; ii <= parts.length; ii++) {
+              const sel2 = parts.slice(0, ii).join('/');
               partials.sels.push(sel2);
               try {
-                var rel2 = this.doc.evaluate(sel2, this.doc, resolver, XPathResult.ANY_UNORDERED_NODE_TYPE, null).singleNodeValue;
+                let rel2 = this.doc.evaluate(sel2, this.doc, resolver, XPathResult.ANY_UNORDERED_NODE_TYPE, null).singleNodeValue;
                 partials[sel2] = !!rel2;
               } catch (ee) {
                 partials[sel2] = {
@@ -125,8 +126,8 @@ Smartwrap.Interpreter = (function() {
         }
         return null;
       },
-      "nextPage": function(args) {
-        var node = this.interpret(args[0]);
+      "nextPage": function (args) {
+        const node = this.interpret(args[0]);
         if (node) {
           this.fireEvent("nextPage", {
             node: node
@@ -134,7 +135,7 @@ Smartwrap.Interpreter = (function() {
         }
       }
     },
-    addEventListener: function(eventName, listener) {
+    addEventListener: function (eventName, listener) {
       if (!this.listeners) {
         this.listeners = {};
       }
@@ -144,21 +145,21 @@ Smartwrap.Interpreter = (function() {
 
       this.listeners[eventName].push(listener);
     },
-    fireEvent: function(eventName, params) {
+    fireEvent: function (eventName, params) {
       if (!this.listeners) {
         return;
       }
-      var that = this;
+      const that = this;
       if (this.listeners[eventName]) {
-        this.listeners[eventName].forEach(function(listener) {
+        this.listeners[eventName].forEach(function (listener) {
           listener.call(that, params);
         });
       }
     },
-    setContext: function(doc) {
+    setContext: function (doc) {
       this.doc = doc;
     },
-    interpret: function(program) {
+    interpret: function (program) {
       //alert("interp: " + JSON.stringify(program));
       if (Smartwrap.log) {
         Smartwrap.log({
@@ -166,13 +167,13 @@ Smartwrap.Interpreter = (function() {
         });
       }
 
-      var that = this;
+      const that = this;
 
       if (jQuery.isArray(program)) {
-        var funname = program[0];
-        var args = program.slice(1);
+        const funname = program[0];
+        const args = program.slice(1);
 
-        var fun = this.functions[funname];
+        let fun = this.functions[funname];
         if (!fun) {
           if (Smartwrap.log) {
             Smartwrap.log({
@@ -189,11 +190,11 @@ Smartwrap.Interpreter = (function() {
   };
 }());
 
-Smartwrap.LoadInterpreter = (function() {
+Smartwrap.LoadInterpreter = (function () {
   "use strict";
-  var interp = Object.create(Smartwrap.Interpreter);
+  const interp = Object.create(Smartwrap.Interpreter);
 
-  interp.addEventListener("startTable", function(params) {
+  interp.addEventListener("startTable", function (params) {
     if (this.logger) {
       this.logger.log({
         "BEGTAB!!": ""
@@ -203,26 +204,26 @@ Smartwrap.LoadInterpreter = (function() {
     this.tablecontents = [];
   });
 
-  interp.addEventListener("query", function(params) {
+  interp.addEventListener("query", function (params) {
     this.querynode = params && params.result;
   });
 
-  interp.addEventListener("startRow", function(params) {
+  interp.addEventListener("startRow", function (params) {
     this.currentRow = [];
   });
-  interp.addEventListener("endRow", function(params) {
+  interp.addEventListener("endRow", function (params) {
     this.tablecontents.push(this.currentRow);
   });
 
-  interp.addEventListener("makeCell", function(params) {
-    var cell = {};
+  interp.addEventListener("makeCell", function (params) {
+    const cell = {};
     cell.colid = params && params.colid;
-    var contents = [];
-    var images = jQuery();
-    var links = jQuery();
+    const contents = [];
+    let images = jQuery();
+    let links = jQuery();
 
-    var range = params.range;
-    var kid = range.startContainer;
+    const range = params.range;
+    let kid = range.startContainer;
 
     while (kid !== range.endContainer) {
       contents.push(this.smartwrap.getVisibleText(kid));
@@ -246,11 +247,11 @@ Smartwrap.LoadInterpreter = (function() {
 
     cell.contents = contents.join("");
 
-    images.first().each(function(index, img) {
+    images.first().each(function (index, img) {
       cell.imageSource = img.src;
       cell.imageAltText = img.alt;
     });
-    links.first().each(function(index, link) {
+    links.first().each(function (index, link) {
       cell.linkTarget = link.href;
     });
 
@@ -269,20 +270,20 @@ Smartwrap.LoadInterpreter = (function() {
     }
   });
 
-  interp.addEventListener("endTable", function(params) {
+  interp.addEventListener("endTable", function (params) {
     if (this.logger) {
       this.logger.log({
         "ENDTAB!!": ""
       });
     }
-    var tableid = this.tableid;
-    var smarttable = this.smartwrap.getTable(tableid);
+    const tableid = this.tableid;
+    let smarttable = this.smartwrap.getTable(tableid);
     if (!smarttable) {
       throw ("MISSING TABLE: " + tableid);
     }
 
     try {
-      var loaddata = smarttable.loadContents(this.tablecontents);
+      const loaddata = smarttable.loadContents(this.tablecontents);
       this.inferredCount += loaddata.inferredCount;
     } catch (eef) {
       if (this.logger) {
@@ -297,9 +298,9 @@ Smartwrap.LoadInterpreter = (function() {
   return interp;
 }());
 
-Smartwrap.ReportInterpreter = (function() {
+Smartwrap.ReportInterpreter = (function () {
   "use strict";
-  var interp = Object.create(Smartwrap.Interpreter);
+  const interp = Object.create(Smartwrap.Interpreter);
 
   interp.tables = {};
   interp.json = {};
@@ -310,7 +311,7 @@ Smartwrap.ReportInterpreter = (function() {
 
   interp.colids = [];
 
-  interp.setTarget = function(target) {
+  interp.setTarget = function (target) {
     this.target = target;
     this.targetDoc = target.ownerDocument;
 
@@ -319,19 +320,19 @@ Smartwrap.ReportInterpreter = (function() {
     this.insertStack.unshift(target);
   };
 
-  interp.addEventListener("startTable", function(params) {
+  interp.addEventListener("startTable", function (params) {
     if (this.logger) {
       this.logger.log({
         "BEGTAB!!": params
       });
     }
 
-    var tableid = params.tableid;
+    const tableid = params.tableid;
     /*
-        if (! tableid) {
-          return;
-        }
-    */
+     if (! tableid) {
+     return;
+     }
+     */
 
     if (tableid) {
       this.tableid = tableid;
@@ -342,9 +343,9 @@ Smartwrap.ReportInterpreter = (function() {
     //alert("TABREP: " + JSON.stringify(params));
     //alert("BEGTAB: " + new XMLSerializer().serializeToString(this.doc));
 
-    var insertPoint = this.insertStack[0];
+    const insertPoint = this.insertStack[0];
 
-    var tableElt = this.targetDoc.createElement("table");
+    const tableElt = this.targetDoc.createElement("table");
     jQuery(tableElt).addClass("swTable");
     if (params.hidden) {
       jQuery(tableElt).addClass("hidden");
@@ -364,27 +365,27 @@ Smartwrap.ReportInterpreter = (function() {
     }
 
     if (params.label) {
-      var caption = this.targetDoc.createElement("caption");
+      const caption = this.targetDoc.createElement("caption");
       caption.appendChild(this.targetDoc.createTextNode(params.label));
       tableElt.appendChild(caption);
     }
 
-    var headerRow = this.targetDoc.createElement("tr");
+    const headerRow = this.targetDoc.createElement("tr");
     tableElt.appendChild(headerRow);
     jQuery(headerRow).hide();
 
-    var tabWidget = this.targetDoc.createElement("tbody");
+    const tabWidget = this.targetDoc.createElement("tbody");
     tableElt.appendChild(tabWidget);
   });
-  interp.addEventListener("endTable", function(params) {
+  interp.addEventListener("endTable", function (params) {
     if (this.logger) {
       this.logger.log({
         "ENDTAB!!": params
       });
     }
 
-    var tableElt = jQuery(this.tableStack[0]);
-    tableElt.data('json', tableElt.find("tr").map(function(ix, elt) {
+    const tableElt = jQuery(this.tableStack[0]);
+    tableElt.data('json', tableElt.find("tr").map(function (ix, elt) {
       return [jQuery(elt).data('json')];
     }).get());
 
@@ -402,21 +403,21 @@ Smartwrap.ReportInterpreter = (function() {
 
     this.tableStack.shift();
   });
-  interp.addEventListener("defineColumn", function(params) {
+  interp.addEventListener("defineColumn", function (params) {
     if (this.logger) {
       this.logger.log({
         "COLDEF!!": params
       });
     }
 
-    var tableElt = this.tableStack[0];
-    var headerRow = jQuery(tableElt).find("tr");
+    const tableElt = this.tableStack[0];
+    const headerRow = jQuery(tableElt).find("tr");
     headerRow.show();
 
-    var headerCell = this.targetDoc.createElement("th");
+    const headerCell = this.targetDoc.createElement("th");
     headerRow.get(0).appendChild(headerCell);
 
-    var headerText = (params.definition && params.definition.label);
+    const headerText = (params.definition && params.definition.label);
 
     headerCell.appendChild(this.targetDoc.createTextNode(headerText || " "));
     if (headerText) {
@@ -424,7 +425,7 @@ Smartwrap.ReportInterpreter = (function() {
       //table.appendChild(this.headerRow);
       headerRow.show();
     }
-    var colid = params.definition && params.definition.colid;
+    const colid = params.definition && params.definition.colid;
     this.colids.push(colid);
     if (this.logger) {
       this.logger.log({
@@ -433,17 +434,17 @@ Smartwrap.ReportInterpreter = (function() {
     }
   });
 
-  interp.addEventListener("startRow", function(params) {
+  interp.addEventListener("startRow", function (params) {
     if (this.logger) {
       this.logger.log({
         "BEGROW!!": ""
       });
     }
 
-    var tableElt = this.tableStack[0];
-    var tabWidget = jQuery(tableElt).find("tbody");
+    const tableElt = this.tableStack[0];
+    const tabWidget = jQuery(tableElt).find("tbody");
 
-    var rowWidget = this.targetDoc.createElement("tr");
+    const rowWidget = this.targetDoc.createElement("tr");
     jQuery(rowWidget).addClass("swRow");
     tabWidget.get(0).appendChild(rowWidget);
 
@@ -453,9 +454,9 @@ Smartwrap.ReportInterpreter = (function() {
 
     jQuery(rowWidget).data('cells', {});
 
-    var that = this;
-    this.colids.forEach(function(colid) {
-      var cellWidget = that.targetDoc.createElement("td");
+    const that = this;
+    this.colids.forEach(function (colid) {
+      const cellWidget = that.targetDoc.createElement("td");
       jQuery(cellWidget).addClass("swCell");
       jQuery(cellWidget).addClass(colid);
       jQuery(cellWidget).addClass("leer");
@@ -467,7 +468,7 @@ Smartwrap.ReportInterpreter = (function() {
       jQuery(rowWidget).find(".swCell").first().text(JSON.stringify(that.colids));
     }
   });
-  interp.addEventListener("endRow", function(params) {
+  interp.addEventListener("endRow", function (params) {
     if (this.logger) {
       this.logger.log({
         "ENDROW!!": ""
@@ -476,23 +477,23 @@ Smartwrap.ReportInterpreter = (function() {
 
     this.insertStack.shift();
 
-    var tableElt = this.tableStack[0];
-    var rowWidget = jQuery(tableElt).find("tr").last();
-    var prevRow = jQuery(tableElt).find("tr").eq(-2);
+    const tableElt = this.tableStack[0];
+    const rowWidget = jQuery(tableElt).find("tr").last();
+    const prevRow = jQuery(tableElt).find("tr").eq(-2);
 
     if (prevRow.size()) {
-      var that = this;
-      rowWidget.find(".swCell.leer").each(function(ix, elt) {
-        var elt1 = jQuery(elt);
-        var colid = elt1.data("colid");
+      const that = this;
+      rowWidget.find(".swCell.leer").each(function (ix, elt) {
+        const elt1 = jQuery(elt);
+        const colid = elt1.data("colid");
         elt1.detach();
-        var elt0 = jQuery(tableElt).find(["td", ".", colid].join("")).last();
+        const elt0 = jQuery(tableElt).find(["td", ".", colid].join("")).last();
         elt0.attr("rowspan", 1 + 1 * (elt0.attr("rowspan") || 1));
         //elt0.text(JSON.stringify({rowspan:elt0.attr("rowspan"),colid:colid,elt0:elt0.size()}));
       });
     }
 
-    rowWidget.data('json', rowWidget.find("td").map(function(ix, elt) {
+    rowWidget.data('json', rowWidget.find("td").map(function (ix, elt) {
       return jQuery(elt).data('json');
     }).get());
     if (this.logger) {
@@ -501,13 +502,13 @@ Smartwrap.ReportInterpreter = (function() {
       });
     }
   });
-  interp.addEventListener("makeCell", function(params) {
+  interp.addEventListener("makeCell", function (params) {
     if (this.querynode) {
       params.style = jQuery(this.querynode).data("style");
     }
 
-    var tableElt = this.tableStack[0];
-    var rowWidget = jQuery(tableElt).find("tr").last();
+    const tableElt = this.tableStack[0];
+    const rowWidget = jQuery(tableElt).find("tr").last();
 
     if (this.logger) {
       this.logger.log({
@@ -538,7 +539,7 @@ Smartwrap.ReportInterpreter = (function() {
     // this.cellWidget.appendChild(this.targetDoc.createTextNode("P:"+Math.random()));
   });
 
-  interp.addEventListener("query", function(params) {
+  interp.addEventListener("query", function (params) {
     this.querynode = params && params.result;
     if (this.logger) {
       this.logger.log({
@@ -548,15 +549,15 @@ Smartwrap.ReportInterpreter = (function() {
     }
   });
 
-  interp.addEventListener("makeCell", function(params) {
-    var colid = params && params.colid;
-    var contents = [];
-    var images = jQuery();
-    var links = jQuery();
-    var linkContents = [];
+  interp.addEventListener("makeCell", function (params) {
+    const colid = params && params.colid;
+    const contents = [];
+    let images = jQuery();
+    let links = jQuery();
+    const linkContents = [];
 
-    var range = params.range;
-    var kid = range.startContainer;
+    const range = params.range;
+    let kid = range.startContainer;
 
     while (kid !== range.endContainer) {
       contents.push(this.smartwrap.getVisibleText(kid));
@@ -588,22 +589,22 @@ Smartwrap.ReportInterpreter = (function() {
     }
 
 
-    var cellText = contents.join("");
+    const cellText = contents.join("");
     /*
-    images.first().each(function (index, img) {
-      cell.imageSource = img.src;
-      cell.imageAltText = img.alt;
-    });
-    links.first().each(function (index, link) {
-      cell.linkTarget = link.href;
-    });
+     images.first().each(function (index, img) {
+     cell.imageSource = img.src;
+     cell.imageAltText = img.alt;
+     });
+     links.first().each(function (index, link) {
+     cell.linkTarget = link.href;
+     });
 
-    if (this.querynode) {
-      cell.style = jQuery(this.querynode).data("style");
-    }
+     if (this.querynode) {
+     cell.style = jQuery(this.querynode).data("style");
+     }
 
-    cell.xpath = range.selector;
-    */
+     cell.xpath = range.selector;
+     */
 
     if ((images.length == 0)) { // && (links.length == 0)) {
       this.cellWidget.appendChild(this.targetDoc.createTextNode(cellText));
@@ -613,11 +614,11 @@ Smartwrap.ReportInterpreter = (function() {
       return;
     }
 
-    var that = this;
+    const that = this;
 
     if (images.length > 0) {
-      images.first().each(function(index, img) {
-        var cellImage = that.targetDoc.createElement("img");
+      images.first().each(function (index, img) {
+        const cellImage = that.targetDoc.createElement("img");
         cellImage.src = img.src;
         cellImage.alt = img.alt;
 

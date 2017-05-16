@@ -1,5 +1,5 @@
 //TODO:  What functions in here need to be moved to a sidebar script, or a content script?
-jQuery(document).ready(function() {
+jQuery(document).ready(function () {
   "use strict";
 
   console.log("We're in!");
@@ -14,8 +14,8 @@ jQuery(document).ready(function() {
     animate: true,
     grid: [50, 5],
     handles: "s",
-    stop: function() {
-      setTimeout(function() {
+    stop: function () {
+      setTimeout(function () {
         jQuery("#smarttables").animate({
           width: "100%"
         });
@@ -23,27 +23,27 @@ jQuery(document).ready(function() {
     },
   });
 
-  var sw = Object.create(Smartwrap);
+  const sw = Object.create(Smartwrap);
 
   sw.contextmenu = jQuery("ul#smartwrap_contextmenu");
   sw.contextmenu.menu({
-    select: function(event, ui) {
+    select: function (event, ui) {
       event.stopPropagation();
       event.preventDefault();
 
       sw.contextmenu.hide();
       jQuery(".contextualized").removeClass("contextualized");
-      setTimeout(function() {
-        var item = jQuery(ui.item).find(".sw_menuitem").get(0);
-        var eventType = item.getAttributeNS(smartwrapNamespace, "eventType") || item.getAttribute("sw:eventType");
+      setTimeout(function () {
+        const item = jQuery(ui.item).find(".sw_menuitem").get(0);
+        const eventType = item.getAttributeNS(smartwrapNamespace, "eventType") || item.getAttribute("sw:eventType");
 
-        var context = jQuery(sw.contextmenu.data("context"));
+        const context = jQuery(sw.contextmenu.data("context"));
 
-        var detail = {};
+        const detail = {};
 
         //alert(JSON.stringify({SELECT: Object.keys(event), UI: Object.keys(ui), ITEM: new XMLSerializer().serializeToString(item), CTXT: new XMLSerializer().serializeToString(context.get(0)), EVENT: eventType}, null, 2));
 
-        var evt = document.createEvent("CustomEvent");
+        const evt = document.createEvent("CustomEvent");
         evt.initCustomEvent(eventType, true, false, detail);
         //evt.ui = ui;
         //evt.detail = detail;
@@ -51,23 +51,23 @@ jQuery(document).ready(function() {
 
       }, 10);
     },
-    blur2: function() {
-      setTimeout(function() {
+    blur2: function () {
+      setTimeout(function () {
         sw.contextmenu.hide();
       }, 1200);
     },
   });
-  jQuery("#templates .template").each(function(index, elt) {
+  jQuery("#templates .template").each(function (index, elt) {
     //alert("TEMPLATE: " + new XMLSerializer().serializeToString(elt));
     Smartwrap.setTemplate(elt.id, elt);
     Smartwrap.SmartTable.setTemplate(elt.id, elt);
   });
 
-  var st0 = jQuery("#smarttable0");
-  var st0copy = jQuery("#smarttable0").clone();
+  const st0 = jQuery("#smarttable0");
+  const st0copy = jQuery("#smarttable0").clone();
 
-  jQuery("#smarttables").on("add_table", function(event) {
-    var spec = (event && event.originalEvent && event.originalEvent.detail) || {};
+  jQuery("#smarttables").on("add_table", function (event) {
+    const spec = (event && event.originalEvent && event.originalEvent.detail) || {};
     event.spec2 = Object.create(spec);
     if (!event.spec2.tabno) {
       event.spec2.tabno = sw.uidgen();
@@ -75,20 +75,20 @@ jQuery(document).ready(function() {
     if (!event.spec2.index) {
       //event.spec2.index = -1 + swTabs.tabs("length");
     }
-    var iii = 0;
-    var jjj = 1200;
+    const iii = 0;
+    const jjj = 1200;
 
     event.spec2.tabid = jQuery.format("smarttable{tabno}", event.spec2);
-    var href = jQuery.format("#{tabid}", event.spec2);
-    var label = event.spec2.labelText = jQuery.format("Table {tabno}", event.spec2);
+    const href = jQuery.format("#{tabid}", event.spec2);
+    const label = event.spec2.labelText = jQuery.format("Table {tabno}", event.spec2);
 
-    var pTempl = swTabs.tabs('widget').data('panelTemplate');
+    const pTempl = swTabs.tabs('widget').data('panelTemplate');
     event.spec2.panel = jQuery(pTempl).clone().appendTo(swTabs.tabs('widget'));
     event.spec2.panel.attr('id', event.spec2.tabid);
 
-    var tTempl = swTabs.tabs('widget').data('tabTemplate');
+    const tTempl = swTabs.tabs('widget').data('tabTemplate');
     //var tabElt = jQuery(tTempl).clone().appendTo(swTabs.tabs('widget').find("ul"));
-    var tabElt = event.spec2.tab = jQuery(tTempl).clone().insertBefore(swTabs.tabs('widget').find("ul li").last());
+    const tabElt = event.spec2.tab = jQuery(tTempl).clone().insertBefore(swTabs.tabs('widget').find("ul li").last());
     tabElt.find("a").first().attr("href", href);
     tabElt.find("a .label").first().text(label);
 
@@ -102,8 +102,8 @@ jQuery(document).ready(function() {
       STADDTAB: event.spec2
     });
   });
-  jQuery(document).on("bind_table", function(event) {
-    var spec = (event && event.originalEvent && event.originalEvent.detail) || {};
+  jQuery(document).on("bind_table", function (event) {
+    const spec = (event && event.originalEvent && event.originalEvent.detail) || {};
     event.spec2 = Object.create(spec);
     sw.log({
       STBINDTAB: spec
@@ -115,7 +115,7 @@ jQuery(document).ready(function() {
     }
 
     event.spec2.containers = {};
-    event.spec2.table.viewNames.forEach(function(key) {
+    event.spec2.table.viewNames.forEach(function (key) {
       event.spec2.containers[key] = jQuery(event.spec2.panel).find("." + key).get(0);
     });
     event.spec2.table.setContainers(event.spec2.containers);
@@ -123,7 +123,7 @@ jQuery(document).ready(function() {
     //event.spec2.panel.find(".tablename").val(event.spec2.labelText);
     event.spec2.panel.find(".tablename").val(event.spec2.labelText);
 
-    event.spec2.panel.on("rename_table", function(delta) {
+    event.spec2.panel.on("rename_table", function (delta) {
       //setTimeout(function() { alert('RDELTA'); }, 1200);
       event.spec2.tab.find("a .label").first().text(event.spec2.panel.find(".tablename").val().slice(0, 20));
     });
@@ -132,16 +132,16 @@ jQuery(document).ready(function() {
       STBINDTAB: Object.keys(event.spec2)
     });
   });
-  jQuery(document).on("rename_table", function(event) {
-    var spec = (event && event.originalEvent && event.originalEvent.detail) || {};
+  jQuery(document).on("rename_table", function (event) {
+    const spec = (event && event.originalEvent && event.originalEvent.detail) || {};
     sw.log({
       RENAME_TABLE: event,
       SPEC: spec
     });
   });
 
-  jQuery(document).on("consent", function(event) {
-    setTimeout(function() {
+  jQuery(document).on("consent", function (event) {
+    setTimeout(function () {
       //alert("HIHITELLUSER");
       //sw.tellUser({msgid: "msg_consent"});
       window.open('chrome://smartwrap/content/consent.html');
@@ -149,8 +149,8 @@ jQuery(document).ready(function() {
     }, 100);
   });
 
-  var sink = jQuery(".sink");
-  var getKeyString = function(charCode) {
+  const sink = jQuery(".sink");
+  const getKeyString = function (charCode) {
     if (charCode === 46) {
       return "del";
     }
@@ -159,8 +159,8 @@ jQuery(document).ready(function() {
     }
     return String.fromCharCode(charCode);
   };
-  jQuery(".sink").on("keypress", function(event) {
-    var key = [
+  jQuery(".sink").on("keypress", function (event) {
+    const key = [
       event.shiftKey ? "shift-" : "",
       event.ctrlKey ? "ctrl-" : "",
       event.metaKey ? "meta-" : "",
@@ -177,7 +177,7 @@ jQuery(document).ready(function() {
     }));
     //sink.select();
 
-    var callback = sw.shortcuts[key];
+    const callback = sw.shortcuts[key];
 
     if (callback) {
       callback.call();
@@ -187,38 +187,38 @@ jQuery(document).ready(function() {
 
   var swTabs = jQuery("#smarttables").tabs({ //collapsible: true,
     active: false,
-    activate: function(event, ui) {
+    activate: function (event, ui) {
       //alert("NOW: " + new XMLSerializer().serializeToString(ui.tab.parentNode));
-      var newtab = (ui.tab && (ui.tab.id === 'newtab'));
+      let newtab = (ui.tab && (ui.tab.id === 'newtab'));
       if (ui.newTab && (jQuery(ui.newTab).find("a#newtab").length > 0)) {
         newtab = true;
       }
       if (newtab) {
 
-        var spec = {};
-        spec.callback = function(newid) {
+        const spec = {};
+        spec.callback = function (newid) {
           swTabs.tabs('activate', '#' + newid);
         };
         sw.emit(jQuery("#smarttables"), "add_table", spec);
 
         /*
-        var next = uidgen();
-        var href = jQuery.format("#smarttable{tabno}", {tabno: next});
-        var label = jQuery.format("Table {tableno}", {tableno: next});
-        event.preventDefault();
-        swTabs.tabs('add',href,label,ui.index);
-        */
+         var next = uidgen();
+         var href = jQuery.format("#smarttable{tabno}", {tabno: next});
+         var label = jQuery.format("Table {tableno}", {tableno: next});
+         event.preventDefault();
+         swTabs.tabs('add',href,label,ui.index);
+         */
 
         event.preventDefault();
         return false;
       }
       // alert("NOW: " + ui.panel.id);
     },
-    add: function(event, ui) {
-      var newtab = ui.tab;
-      var label = jQuery(newtab).find(".label").get(0);
+    add: function (event, ui) {
+      const newtab = ui.tab;
+      const label = jQuery(newtab).find(".label").get(0);
 
-      var labelText = jQuery(label).text(); // label.inner//HTML;
+      const labelText = jQuery(label).text(); // label.inner//HTML;
 
       //jQuery(newtab).find("input").bind("change", labelSync(label));
       //swTabs.tabs('select', "#"+ui.panel.id);
@@ -226,7 +226,7 @@ jQuery(document).ready(function() {
       swTabs.tabs('widget').data('panelTemplate', st0copy.clone().get(0));
 
       jQuery(ui.panel).find(".tablename").val(labelText);
-      jQuery(ui.panel).find(".tablename").bind("change", function(event) {
+      jQuery(ui.panel).find(".tablename").bind("change", function (event) {
         //alert("CHANGED0");
         //label.innerHTML = jQuery(event.target).val();
         //alert("CHANGED");
@@ -236,13 +236,13 @@ jQuery(document).ready(function() {
         });
       });
 
-      jQuery(ui.panel).on("rename_table", function(event) {
+      jQuery(ui.panel).on("rename_table", function (event) {
         //alert(JSON.stringify({RENAME:2,html:label.innerHTML, text: jQuery(label).text()}));
 
         jQuery(label).text(jQuery(ui.panel).find(".tablename").val());
       });
 
-      var spec = swTabs.tabs('option', 'spec') || {};
+      const spec = swTabs.tabs('option', 'spec') || {};
       spec.id = ui.panel.id;
       spec.panel = ui.panel;
       spec.labelText = labelText;
@@ -254,9 +254,9 @@ jQuery(document).ready(function() {
           spec.callback.call(null, spec.id);
         }
       } else {
-        var stN = sw.newTable(ui.panel.id);
+        const stN = sw.newTable(ui.panel.id);
         ui.containers = {};
-        stN.viewNames.forEach(function(key) {
+        stN.viewNames.forEach(function (key) {
           ui.containers[key] = jQuery(ui.panel).find("." + key).get(0);
         });
         //alert("PANEL N: " + new XMLSerializer().serializeToString(ui.panel));
@@ -287,11 +287,11 @@ jQuery(document).ready(function() {
   swTabs.tabs('option', 'tabTemplate', '<li><a refid="#{href}" href="#{href}"><!--<input value="#{label}"/>--><span class="label">#{label}</span></a><span class="ui-icon ui-icon-close">X</span></li>');
   swTabs.tabs('widget').data('tabTemplate', jQuery("#smarttables ul li").first().clone());
 
-  jQuery(document).bind("sw_addtable", function(event) {
-    var detail = event.originalEvent && event.originalEvent.detail;
+  jQuery(document).bind("sw_addtable", function (event) {
+    const detail = event.originalEvent && event.originalEvent.detail;
 
     try {
-      var curr = swTabs.tabs("option", "selected");
+      const curr = swTabs.tabs("option", "selected");
       detail.curr = curr;
       //alert("ADDTABLE: " + JSON.stringify(detail));
 
@@ -307,18 +307,18 @@ jQuery(document).ready(function() {
     }
   });
 
-  var label0 = jQuery("#tab0").find(".label").get(0);
+  const label0 = jQuery("#tab0").find(".label").get(0);
 
-  jQuery("#smarttable0").on("rename_table", function(event) {
+  jQuery("#smarttable0").on("rename_table", function (event) {
     //alert(JSON.stringify({RENAME: 1, html: label0.innerHTML, text: jQuery(label0).text()}));
 
     jQuery(label0).text(jQuery("#smarttable0").find(".tablename").val().slice(0, 20));
   });
 
-  jQuery("#smarttables").on("click", ".ui-icon-close", function(event) {
-    var target = event.target;
-    var tab = target.parentNode;
-    var href = jQuery(tab).find("a").get(0).getAttribute("refid");
+  jQuery("#smarttables").on("click", ".ui-icon-close", function (event) {
+    const target = event.target;
+    const tab = target.parentNode;
+    const href = jQuery(tab).find("a").get(0).getAttribute("refid");
     //alert("HI: " + new XMLSerializer().serializeToString(tab) + ":: " + href);
     swTabs.tabs("remove", href);
   });
@@ -329,7 +329,7 @@ jQuery(document).ready(function() {
   sw.setPalette("columnPalette", Smartwrap.monoPalette);
   sw.setPalette("tablePalette", Smartwrap.mainPalette);
   sw.containers = {};
-  sw.tables[st0.get(0).id].viewNames.forEach(function(key) {
+  sw.tables[st0.get(0).id].viewNames.forEach(function (key) {
     sw.containers[key] = st0.find("." + key).get(0);
   });
   sw.tables[st0.get(0).id].model.setTableField("label", "Table 1");
@@ -354,14 +354,14 @@ jQuery(document).ready(function() {
   document.dispatchEvent(evt);
 
 
-  var activate = function(widget) {
+  const activate = function (widget) {
     if (widget.disabled) {
       return;
     }
 
     //alert("BUTTON: " + new XMLSerializer().serializeToString(widget));
 
-    var eventType = widget.getAttributeNS(smartwrapNamespace, "eventType") || widget.getAttribute("sw:eventType");
+    let eventType = widget.getAttributeNS(smartwrapNamespace, "eventType") || widget.getAttribute("sw:eventType");
     if (!eventType) {
       return;
     }
@@ -374,22 +374,22 @@ jQuery(document).ready(function() {
     widget.detail.target = jQuery(widget).parents("html").find(".sw_selected").get(0);
     //alert('selection: ' + JSON.stringify(detail))
 
-    var evt = document.createEvent("CustomEvent");
+    const evt = document.createEvent("CustomEvent");
     evt.initCustomEvent(eventType, true, false, widget.detail);
     document.dispatchEvent(evt);
   };
-  jQuery(".sw_button").click(function(event) {
-    var widget = event.target;
+  jQuery(".sw_button").click(function (event) {
+    const widget = event.target;
     activate(widget);
     //sw.getHandler(eventType).call(sw, evt);
   });
   sw.shortcuts = {};
-  jQuery(".sw_button, .sw_menuitem").each(function(ix, elt) {
-    var button = jQuery(elt);
-    var shortcut = elt.getAttributeNS(smartwrapNamespace, "shortcut") || elt.getAttribute("sw:shortcut");
+  jQuery(".sw_button, .sw_menuitem").each(function (ix, elt) {
+    const button = jQuery(elt);
+    const shortcut = elt.getAttributeNS(smartwrapNamespace, "shortcut") || elt.getAttribute("sw:shortcut");
     if (shortcut) {
-      shortcut.split(/\s+/).forEach(function(key) {
-        sw.shortcuts[key] = function() {
+      shortcut.split(/\s+/).forEach(function (key) {
+        sw.shortcuts[key] = function () {
           //alert('click: ' + button.is(":disabled"));
           if (!button.is(":disabled")) {
             activate(button.get(0));
@@ -405,7 +405,7 @@ jQuery(document).ready(function() {
 
   jQuery(document).bind("sw_removecell", sw.getHandler("sw_removecell"));
 
-  jQuery(document).bind("hideSidebar", function(event) {
+  jQuery(document).bind("hideSidebar", function (event) {
     alert("HIDEY!");
     sw.setContainer(null);
 
@@ -422,23 +422,23 @@ jQuery(document).ready(function() {
 
     jQuery("#smartwrap").removeClass("disabled");
 
-    var evt = document.createEvent("CustomEvent");
+    const evt = document.createEvent("CustomEvent");
     evt.initCustomEvent("sw_status", true, true, {
       smartwrap: sw
     });
     document.dispatchEvent(evt);
   });
 
-  jQuery(document).bind("sw_targetdocument", function(event) {
-    var detail = event.originalEvent && event.originalEvent.detail;
+  jQuery(document).bind("sw_targetdocument", function (event) {
+    const detail = event.originalEvent && event.originalEvent.detail;
 
     if (detail && detail.document) {
       sw.processDOM(detail.document, detail.target);
     }
   });
 
-  jQuery(document).bind("sw_outofbounds", function(event) {
-    var detail = event.originalEvent && event.originalEvent.detail;
+  jQuery(document).bind("sw_outofbounds", function (event) {
+    const detail = event.originalEvent && event.originalEvent.detail;
     sw.log({
       OOB: "received",
       detail: detail
@@ -447,13 +447,13 @@ jQuery(document).ready(function() {
     jQuery("#smartwrap").addClass("disabled");
   });
 
-  jQuery(document).bind("sw_inbounds", function(event) {
+  jQuery(document).bind("sw_inbounds", function (event) {
     jQuery("#smartwrap").removeClass("disabled");
   });
 
-  jQuery(document).bind("sw_configure", function(event) {
+  jQuery(document).bind("sw_configure", function (event) {
     //alert("SWCONFIG!");
-    var detail = event.originalEvent && event.originalEvent.detail;
+    const detail = event.originalEvent && event.originalEvent.detail;
     if (detail.config.developermode) {
       jQuery(".sw_mode").removeClass("nonDeveloper");
     } else {
@@ -465,12 +465,12 @@ jQuery(document).ready(function() {
       sw.configure(event.originalEvent.detail);
     }
   });
-  jQuery(document).bind("sw_autodrop", function(event) {
+  jQuery(document).bind("sw_autodrop", function (event) {
     alert("HTMLAUTODROP!");
   });
 
-  jQuery(document).bind("sw_dom", function(event) {
-    var detail = event.originalEvent && event.originalEvent.detail;
+  jQuery(document).bind("sw_dom", function (event) {
+    const detail = event.originalEvent && event.originalEvent.detail;
     //sw.log({"SWDOM": Object.keys(detail)});
     if (detail.bwdominfo) {
       sw.bwdominfo = detail.bwdominfo;
@@ -483,21 +483,21 @@ jQuery(document).ready(function() {
     }
   });
 
-  var annLink = jQuery(document).find("#handyLink a");
-  jQuery(document).bind("sw_annotatedfile", function(event) {
-    var detail = event.originalEvent && event.originalEvent.detail;
+  const annLink = jQuery(document).find("#handyLink a");
+  jQuery(document).bind("sw_annotatedfile", function (event) {
+    const detail = event.originalEvent && event.originalEvent.detail;
     sw.log({
       "ANNOTATED": detail
     });
 
-    var dependencies = detail.dependencies;
+    const dependencies = detail.dependencies;
 
-    dependencies.forEach(function(depDetail) {
+    dependencies.forEach(function (depDetail) {
       depDetail.filedir = detail.filename;
 
       //alert("DEPDETAIL: " + JSON.stringify(depDetail));
 
-      var evt = document.createEvent("CustomEvent");
+      const evt = document.createEvent("CustomEvent");
       evt.initCustomEvent("sw_urltofile", true, false, depDetail);
       document.dispatchEvent(evt);
     });
@@ -510,43 +510,43 @@ jQuery(document).ready(function() {
     //alert("ANNLINK: " + new XMLSerializer().serializeToString(annLink.get(0)));
   });
 
-  jQuery(document).bind("swAnnotate", function(event) {
-    var detail = event.originalEvent && event.originalEvent.detail;
+  jQuery(document).bind("swAnnotate", function (event) {
+    const detail = event.originalEvent && event.originalEvent.detail;
     sw.annotate(detail);
   });
-  jQuery(document).bind("sw_dragstart", function(event) {
+  jQuery(document).bind("sw_dragstart", function (event) {
     //sw.log("HTMLDRAGSTART!");
-    var detail = event.originalEvent && event.originalEvent.detail;
+    const detail = event.originalEvent && event.originalEvent.detail;
     sw.dragDetail = detail;
   });
 
-  var body
+  let body;
   /*prefutil.observeSetting("buttonstyle", function(spec) {
-    //alert("BUTT!");
-    jQuery("#smartwrap").removeClass("sw_icononly sw_noicon");
+   //alert("BUTT!");
+   jQuery("#smartwrap").removeClass("sw_icononly sw_noicon");
 
-    if (spec.value === 'iconsonly') {
-      jQuery("#smartwrap").addClass("sw_icononly");
-    }
-    if (spec.value === 'noicons') {
-      jQuery("#smartwrap").addClass("sw_noicon");
-    }
-  });*/
+   if (spec.value === 'iconsonly') {
+   jQuery("#smartwrap").addClass("sw_icononly");
+   }
+   if (spec.value === 'noicons') {
+   jQuery("#smartwrap").addClass("sw_noicon");
+   }
+   });*/
 
-  jQuery(document).bind("swWrapperResponse swServerError swServerTimeout swServerCancel", function(event) {
+  jQuery(document).bind("swWrapperResponse swServerError swServerTimeout swServerCancel", function (event) {
     //var detail = {};
     //detail.smartwrap = sw;
 
     sw.status.fresh = false;
 
-    var evt = document.createEvent("CustomEvent");
+    const evt = document.createEvent("CustomEvent");
     evt.initCustomEvent("sw_status", true, true, {
       smartwrap: sw
     });
     document.dispatchEvent(evt);
   });
-  jQuery(document).bind("swWrapperResponse", function(event) {
-    var detail = event.originalEvent.detail;
+  jQuery(document).bind("swWrapperResponse", function (event) {
+    const detail = event.originalEvent.detail;
 
     if (detail && detail.responseText && (!detail.response)) {
       try {
@@ -574,11 +574,11 @@ jQuery(document).ready(function() {
       throw "MISSING ACTIONABLE CONTENTS IN WRAPPER RESPONSE";
     }
 
-    var contents = detail.response.contents;
+    const contents = detail.response.contents;
 
     //alert("CONTENTS: " + JSON.stringify(contents));
 
-    var program = detail.response.explicitProgram;
+    const program = detail.response.explicitProgram;
     //alert("PROGRAM: " + JSON.stringify(program));
 
     sw.download_urls = detail.response.download_urls;
@@ -586,12 +586,12 @@ jQuery(document).ready(function() {
 
     if (sw.getSetting("reportMode") === "MERGE") {
       var wrapper = detail.response.wrapper;
-      var callback = function(msg) {
+      const callback = function (msg) {
         switch (msg) {
           case "success":
             sw.wrapper = wrapper;
 
-            var evt = document.createEvent("CustomEvent");
+            const evt = document.createEvent("CustomEvent");
             evt.initCustomEvent("swWrapperReady", true, true, {
               wrapper: wrapper
             });
@@ -603,7 +603,7 @@ jQuery(document).ready(function() {
             });
             break;
         }
-      }
+      };
 
       sw.setProgram(program, {
         callback: callback
@@ -615,11 +615,11 @@ jQuery(document).ready(function() {
       sw.wrapper = wrapper;
       sw.explicitProgram = program;
 
-      var tabs = browser.tabs;
-      sw.wrapDoc = (function() {
-        for (var tabno = 0; tabno < tabs.length; tabno++) {
-          var browser = tabs[tabno].linkedBrowser;
-          var taburl = browser.contentDocument.defaultView.location.href;
+      const tabs = browser.tabs;
+      sw.wrapDoc = (function () {
+        for (let tabno = 0; tabno < tabs.length; tabno++) {
+          const browser = tabs[tabno].linkedBrowser;
+          const taburl = browser.contentDocument.defaultView.location.href;
           if (taburl === detail.response.scrapedURL) {
             return browser.contentDocument;
           }
@@ -631,15 +631,15 @@ jQuery(document).ready(function() {
     }
 
     /*
-sw.status.fresh = false;
+     sw.status.fresh = false;
 
-var evt = document.createEvent("CustomEvent");
-evt.initCustomEvent("sw_status", true, true, detail);
-document.dispatchEvent(evt);
-      */
+     var evt = document.createEvent("CustomEvent");
+     evt.initCustomEvent("sw_status", true, true, detail);
+     document.dispatchEvent(evt);
+     */
 
   });
-  jQuery(document).bind("sw_status", function(event) {
+  jQuery(document).bind("sw_status", function (event) {
     jQuery(".swUndo").attr('disabled', !sw.getStatus("undo_ready"));
     jQuery("#smarttables").toggleClass("undo_ready", !!sw.getStatus("undo_ready"));
 
@@ -651,11 +651,11 @@ document.dispatchEvent(evt);
     jQuery(".swDiscardWrapper").attr('disabled', !sw.getStatus("discard_ready"));
   });
 
-  jQuery(document).bind("swWrapperReady", function(event) {
-    var detail = event.originalEvent.detail;
+  jQuery(document).bind("swWrapperReady", function (event) {
+    const detail = event.originalEvent.detail;
 
 
-    var wrapper = detail.wrapper;
+    const wrapper = detail.wrapper;
     sw.wrapper = wrapper;
 
     sw.log({
@@ -665,13 +665,13 @@ document.dispatchEvent(evt);
 
     sw.status.fresh = false;
 
-    var evt = document.createEvent("CustomEvent");
+    const evt = document.createEvent("CustomEvent");
     evt.initCustomEvent("sw_status", true, true, detail);
     document.dispatchEvent(evt);
   });
 
-  jQuery("document").bind("swServerReady swServerError swBadResponse", function(event) {
-    var detail = event.originalEvent.detail;
+  jQuery("document").bind("swServerReady swServerError swBadResponse", function (event) {
+    const detail = event.originalEvent.detail;
     //alert("SERVER: " + event.type + ":: " + JSON.stringify(detail));
 
     if ((detail.status >= 400) && (detail.status < 600)) {
@@ -686,8 +686,8 @@ document.dispatchEvent(evt);
     });
   });
 
-  jQuery(document).bind("swBadResponse", function(event) {
-    var detail = event.originalEvent.detail;
+  jQuery(document).bind("swBadResponse", function (event) {
+    const detail = event.originalEvent.detail;
     //alert("SERVER: " + event.type + ":: " + JSON.stringify(detail));
 
     if (true) {
@@ -702,8 +702,8 @@ document.dispatchEvent(evt);
     });
   });
 
-  jQuery(document).bind("swServerTimeout", function(event) {
-    var detail = event.originalEvent.detail;
+  jQuery(document).bind("swServerTimeout", function (event) {
+    const detail = event.originalEvent.detail;
     //alert("SERVER: " + event.type + ":: " + JSON.stringify(detail));
 
     if (true) {
@@ -718,22 +718,22 @@ document.dispatchEvent(evt);
     });
   });
 
-  jQuery(document).bind("swBadRequest", function(event) {
-    var detail = event.originalEvent.detail;
+  jQuery(document).bind("swBadRequest", function (event) {
+    let detail = event.originalEvent.detail;
     if (!detail) {
       return;
     }
     alert("MALFORMED HTTP REQUEST: " + JSON.stringify(detail));
   });
-  jQuery(document).bind("swUnexpectedResponse", function(event) {
-    var detail = event.originalEvent.detail;
+  jQuery(document).bind("swUnexpectedResponse", function (event) {
+    let detail = event.originalEvent.detail;
     if (!detail) {
       return;
     }
     alert("UNEXPECTED HTTP RESPONSE: " + JSON.stringify(detail));
   });
-  jQuery(document).bind("swServerError", function(event) {
-    var detail = event.originalEvent.detail;
+  jQuery(document).bind("swServerError", function (event) {
+    let detail = event.originalEvent.detail;
     if (!detail) {
       return;
     }
@@ -745,19 +745,19 @@ document.dispatchEvent(evt);
 
     //alert(JSON.stringify({status: detail.status}));
 
-    var msgid = function(status) {
+    const msgid = function (status) {
       if (status == 404) {
         return "msg_serverNotResponding";
       }
       return "msg_serverError";
     }(detail.status);
 
-    var tellDetail = {
+    const tellDetail = {
       msgid: msgid,
       serverurl: detail.url
     };
 
-    tellDetail.serverMessage = function(text) {
+    tellDetail.serverMessage = function (text) {
       if (text === '') {
         return null;
       }
@@ -779,19 +779,19 @@ document.dispatchEvent(evt);
     sw.tellUser(tellDetail);
   });
 
-  jQuery(document).bind("dblclick", function(event) {
+  jQuery(document).bind("dblclick", function (event) {
     //sw.tellUser({msgid: "msg_dislike", name: "billy"});
   });
 
-  jQuery(document).bind("sw_dialogs", function(event) {
-    var detail = event.originalEvent.detail;
+  jQuery(document).bind("sw_dialogs", function (event) {
+    let detail = event.originalEvent.detail;
     if (!detail) {
       return;
     }
 
     //alert("DIALOGS: " + JSON.stringify(detail));
 
-    jQuery(detail.dialogs).each(function(index, elt) {
+    jQuery(detail.dialogs).each(function (index, elt) {
       //alert("DIALOG: " + new XMLSerializer().serializeToString(elt));
       sw.setDialog(elt.id, elt);
     });
@@ -799,13 +799,13 @@ document.dispatchEvent(evt);
     //sw.setDialog();
   });
 
-  jQuery(document).bind("swWrapperRequest", function(event) {
+  jQuery(document).bind("swWrapperRequest", function (event) {
     //alert(JSON.stringify({req:'wrapper'}));
-    var detail = Object.create(event.originalEvent.detail);
+    const detail = Object.create(event.originalEvent.detail);
 
     try {
       detail.subs = {};
-      detail.url = sw.rformat("{serverprepath}{serverpath}{serverquery}", detail.subs, function(key) {
+      detail.url = sw.rformat("{serverprepath}{serverpath}{serverquery}", detail.subs, function (key) {
         return sw.getSetting(key);
       });
       detail.params = {};
@@ -821,40 +821,40 @@ document.dispatchEvent(evt);
       //alert(JSON.stringify({req:'wrapper', url: detail.url}));
 
       detail.callbacks = {};
-      detail.callbacks.success = function(data, textStatus, jqXHR) {
+      detail.callbacks.success = function (data, textStatus, jqXHR) {
         //alert(JSON.stringify({resp:'wrapper'}));
 
-        var detail2 = Object.create(detail);
+        const detail2 = Object.create(detail);
         detail2.response = data;
 
-        var evt = document.createEvent("CustomEvent");
+        const evt = document.createEvent("CustomEvent");
         evt.initCustomEvent("swWrapperResponse", true, true, detail2);
         document.dispatchEvent(evt);
 
       };
-      detail.callbacks.error = function(jqHXR, textStatus, errorThrown) {
+      detail.callbacks.error = function (jqHXR, textStatus, errorThrown) {
         //alert(JSON.stringify({error:'wrapper',stat: textStatus, thrown: errorThrown}));
 
-        var detail2 = Object.create(detail);
+        const detail2 = Object.create(detail);
         //detail2.status = textStatus;
         detail2.thrown = errorThrown;
         //detail2.status2 = jqHXR.status;
         detail2.status = jqHXR.statusCode().status;
         detail2.statusText = jqHXR.statusCode().statusText;
 
-        detail2.eventName = (function(status) {
+        detail2.eventName = (function (status) {
           if (status === "timeout") {
             return "swServerTimeout";
           }
           return "swServerError";
         }(textStatus));
 
-        var evt = document.createEvent("CustomEvent");
+        const evt = document.createEvent("CustomEvent");
         evt.initCustomEvent(detail2.eventName, true, true, detail2);
         document.dispatchEvent(evt);
       };
       sw.pendingRequests[detail.url] = true;
-      detail.callbacks.complete = function() {
+      detail.callbacks.complete = function () {
         delete sw.pendingRequests[detail.url];
       };
 
@@ -869,7 +869,7 @@ document.dispatchEvent(evt);
         dataType: "json"
       });
       jQuery(document).unbind("swCancelRequest"); // unbind previous listeners, if any
-      jQuery(document).bind("swCancelRequest", function(event) {
+      jQuery(document).bind("swCancelRequest", function (event) {
         if (detail.jqXHR.cancelled) {
           return; // a cancelled request need not be aborted again
         }
@@ -879,10 +879,10 @@ document.dispatchEvent(evt);
       });
 
       if (!detail.params.dominfo) {
-        var metaurl = sw.rformat("{serverprepath}/smartwrap/Meta", detail.subs, function(key) {
+        const metaurl = sw.rformat("{serverprepath}/smartwrap/Meta", detail.subs, function (key) {
           return sw.getSetting(key);
         });
-        var metaload = jQuery.ajax({
+        const metaload = jQuery.ajax({
           url: metaurl,
           type: 'POST',
           data: {
@@ -905,21 +905,21 @@ document.dispatchEvent(evt);
 
   });
 
-  var pendingRequests = {};
+  const pendingRequests = {};
 
-  var badRequest = function(detail) {
-    var evt = document.createEvent("CustomEvent");
+  const badRequest = function (detail) {
+    const evt = document.createEvent("CustomEvent");
     evt.initCustomEvent("swBadRequest", true, true, detail);
     document.dispatchEvent(evt);
   };
-  var badResponse = function(detail) {
-    var evt = document.createEvent("CustomEvent");
+  const badResponse = function (detail) {
+    const evt = document.createEvent("CustomEvent");
     evt.initCustomEvent("swUnexpectedResponse", true, true, detail);
     document.dispatchEvent(evt);
   };
-  jQuery(document).bind("swHttpRequest", function(event) {
+  jQuery(document).bind("swHttpRequest", function (event) {
     try {
-      var detail = event.originalEvent && event.originalEvent.detail;
+      const detail = event.originalEvent && event.originalEvent.detail;
 
       sw.log({
         domain: "httpRequest",
@@ -937,12 +937,12 @@ document.dispatchEvent(evt);
       }
       if (!detail.paramString) {
         if (detail.params) {
-          var paramStrings = [];
+          const paramStrings = [];
           for (var key in detail.params) {
             if (detail.params.hasOwnProperty(key)) {
-              var val = detail.params[key];
-              var pkey = key;
-              var pval = escape(val);
+              const val = detail.params[key];
+              const pkey = key;
+              const pval = escape(val);
               paramStrings.push([pkey, pval].join('='));
             }
           }
@@ -962,15 +962,15 @@ document.dispatchEvent(evt);
         url: detail.url
       };
       detail.output.continuation = detail.continuation;
-      var http = new XMLHttpRequest();
-      http.addEventListener("error", function() {
+      const http = new XMLHttpRequest();
+      http.addEventListener("error", function () {
         //alert("ERROR!");
         detail.output.readyState = http.readyState;
         detail.output.status = http.status;
         detail.output.statusText = http.statusText;
         detail.output.source = "http error listener";
 
-        var evt = document.createEvent("CustomEvent");
+        const evt = document.createEvent("CustomEvent");
         evt.initCustomEvent("swServerError", true, true, detail.output);
         document.dispatchEvent(evt);
 
@@ -979,16 +979,16 @@ document.dispatchEvent(evt);
       if (true) {
         http.timeout = detail.timeout;
       } else {
-        var timer = window.setTimeout(function() {
+        const timer = window.setTimeout(function () {
           alert("TIMEOUT!");
           http.abort();
-          var evt = document.createEvent("CustomEvent");
+          const evt = document.createEvent("CustomEvent");
           evt.initCustomEvent("swServerTimeout", true, true, detail.output);
           document.dispatchEvent(evt);
         }, detail.timeout);
       }
 
-      http.addEventListener("load", function() {
+      http.addEventListener("load", function () {
 
         detail.output.readyState = http.readyState;
         detail.output.status = http.status;
@@ -1010,10 +1010,10 @@ document.dispatchEvent(evt);
         //window.clearTimeout(time);
         //alert("TIMEIN!");
 
-        var contentType = http.getResponseHeader("Content-Type");
+        const contentType = http.getResponseHeader("Content-Type");
 
         detail.output.responseType = contentType;
-        ["Content-Disposition"].forEach(function(key) {
+        ["Content-Disposition"].forEach(function (key) {
           detail.output[key] = http.getResponseHeader(key);
         });
         if (http.responseType) {
@@ -1059,15 +1059,15 @@ document.dispatchEvent(evt);
     }
 
   });
-  jQuery(document).bind("swExportRequest", function(event) {
-    var detail = event.originalEvent && event.originalEvent.detail;
+  jQuery(document).bind("swExportRequest", function (event) {
+    const detail = event.originalEvent && event.originalEvent.detail;
 
-    var settings = {}; // sw.settings;
+    const settings = {}; // sw.settings;
 
-    var subs = {};
-    var httpDetail = {};
+    const subs = {};
+    const httpDetail = {};
     httpDetail.eventName = "swExportResponse";
-    httpDetail.url = sw.rformat("{serverprepath}/Export", subs, function(key) {
+    httpDetail.url = sw.rformat("{serverprepath}/Export", subs, function (key) {
       return sw.getSetting(key);
     });
     httpDetail.timeout = sw.getSetting("serverTimeout");
@@ -1093,25 +1093,25 @@ document.dispatchEvent(evt);
       httpDetail.responseType = "arraybuffer";
     }
 
-    var evt = document.createEvent("CustomEvent");
+    const evt = document.createEvent("CustomEvent");
     evt.initCustomEvent("swHttpRequest", true, true, httpDetail);
     document.dispatchEvent(evt);
   });
 
-  jQuery(document).bind("swExportResponse", function(event) {
+  jQuery(document).bind("swExportResponse", function (event) {
     //alert("IMPORT: " + JSON.stringify(event.originalEvent.detail,null,2));
 
-    var detail = event.originalEvent && event.originalEvent.detail;
+    const detail = event.originalEvent && event.originalEvent.detail;
 
     detail.fileDetail = {};
 
-    var response = detail.response;
-    var responseType = detail.responseType;
+    let response = detail.response;
+    const responseType = detail.responseType;
     if (detail["Content-Disposition"]) {
-      var arrayBuffer = detail.rawResponse
+      const arrayBuffer = detail.rawResponse;
       if (arrayBuffer) {
-        var byteArray = new Uint8Array(arrayBuffer);
-        var i = 0;
+        const byteArray = new Uint8Array(arrayBuffer);
+        const i = 0;
 
         detail.fileDetail.bytes = byteArray;
 
@@ -1149,12 +1149,12 @@ document.dispatchEvent(evt);
 
   });
 
-  jQuery(document).bind("swPing", function(event) {
+  jQuery(document).bind("swPing", function (event) {
     alert("SWECHO: " + JSON.stringify(event.originalEvent.detail));
   });
 
-  jQuery(document).bind("swSaveResponse", function(event) {
-    var detail = event.originalEvent && event.originalEvent.detail;
+  jQuery(document).bind("swSaveResponse", function (event) {
+    const detail = event.originalEvent && event.originalEvent.detail;
     //alert("SAVED: " + detail.continuation);
     sw.log({
       SAVED: detail
@@ -1164,15 +1164,15 @@ document.dispatchEvent(evt);
     }
   });
 
-  jQuery(document).bind("swRunWrapper swUndo sw_reportSlot", function(event) {
-    var eventType = event.type;
+  jQuery(document).bind("swRunWrapper swUndo sw_reportSlot", function (event) {
+    const eventType = event.type;
     if (false) {
-      var obj = {
+      const obj = {
         "PROXY": eventType,
         keys: JSON.stringify(Object.keys(event)),
         via: event.originalEvent.detail.via
       };
-      setTimeout(function() {
+      setTimeout(function () {
         alert(JSON.stringify(obj));
       }, 800);
     }
@@ -1183,7 +1183,7 @@ document.dispatchEvent(evt);
     event.preventDefault();
 
     sw.status.fresh = false;
-    var evt = document.createEvent("CustomEvent");
+    const evt = document.createEvent("CustomEvent");
     evt.initCustomEvent("sw_status", true, true, {
       smartwrap: sw
     });
@@ -1191,23 +1191,23 @@ document.dispatchEvent(evt);
   });
 
   /*
-  jQuery(document).bind("swRunWrapper", function(event) {
-var detail = event.originalEvent.detail;
+   jQuery(document).bind("swRunWrapper", function(event) {
+   var detail = event.originalEvent.detail;
 
-detail["examples"] = sw.getProgram();
-detail["bwdominfo"] = sw.bwdominfo;
-detail["domxml"] = sw.domxml;
-//alert("RUN: " + JSON.stringify(Object.keys(detail)));
+   detail["examples"] = sw.getProgram();
+   detail["bwdominfo"] = sw.bwdominfo;
+   detail["domxml"] = sw.domxml;
+   //alert("RUN: " + JSON.stringify(Object.keys(detail)));
 
-var evt = document.createEvent("CustomEvent");
-evt.initCustomEvent("swWrapperRequest", true, true, detail);
-document.dispatchEvent(evt);
-});
-  */
+   var evt = document.createEvent("CustomEvent");
+   evt.initCustomEvent("swWrapperRequest", true, true, detail);
+   document.dispatchEvent(evt);
+   });
+   */
 
-  jQuery(document).bind("swSaveWrapper", function(event) {
+  jQuery(document).bind("swSaveWrapper", function (event) {
     try {
-      var detail = event.originalEvent && event.originalEvent.detail;
+      const detail = event.originalEvent && event.originalEvent.detail;
 
       sw.log({
         domain: "saveWrapper",
@@ -1215,19 +1215,19 @@ document.dispatchEvent(evt);
         continuation: detail.continuation
       });
 
-      var settings = {}; // sw.settings;
-      var subs = {};
-      var httpDetail = {};
+      const settings = {}; // sw.settings;
+      const subs = {};
+      const httpDetail = {};
       httpDetail.eventName = "swSaveResponse";
-      httpDetail.url = sw.rformat("{serverprepath}/Persist", subs, function(key) {
+      httpDetail.url = sw.rformat("{serverprepath}/Persist", subs, function (key) {
         return sw.getSetting(key);
       });
       httpDetail.timeout = sw.getSetting("serverTimeout");
       httpDetail.params = {};
       httpDetail.params.wrapper = JSON.stringify(sw.wrapper);
-      httpDetail.continuation = detail.continuation || function() {
-        alert("The wrapper was saved");
-      };
+      httpDetail.continuation = detail.continuation || function () {
+          alert("The wrapper was saved");
+        };
 
       sw.log({
         domain: "saveWrapper",
@@ -1242,7 +1242,7 @@ document.dispatchEvent(evt);
       }
 
       if (true) {
-        var evt = document.createEvent("CustomEvent");
+        const evt = document.createEvent("CustomEvent");
         evt.initCustomEvent("swHttpRequest", true, true, httpDetail);
         document.dispatchEvent(evt);
       } else {
@@ -1266,14 +1266,14 @@ document.dispatchEvent(evt);
     }
   });
 
-  jQuery(document).bind("swSaveCloseWrapper", function(event) {
-    var detail = event.originalEvent && event.originalEvent.detail;
+  jQuery(document).bind("swSaveCloseWrapper", function (event) {
+    const detail = event.originalEvent && event.originalEvent.detail;
 
-    var saveDetail = {
+    const saveDetail = {
       source: "smartwrap"
     };
-    saveDetail.continuation = function() {
-      var evt = document.createEvent("CustomEvent");
+    saveDetail.continuation = function () {
+      const evt = document.createEvent("CustomEvent");
       evt.initCustomEvent("swDiscardWrapper", true, true, {
         noRestart: true
       });
@@ -1285,11 +1285,11 @@ document.dispatchEvent(evt);
     document.dispatchEvent(evt);
   });
 
-  jQuery(document).bind("swDiscardWrapper", function(event) {
+  jQuery(document).bind("swDiscardWrapper", function (event) {
     //alert("DISCARD: " + JSON.stringify(Object.keys(pendingRequests)));
 
-    Object.keys(pendingRequests).forEach(function(url) {
-      var reqObj = pendingRequests[url];
+    Object.keys(pendingRequests).forEach(function (url) {
+      const reqObj = pendingRequests[url];
       //alert("URL: " + url);
       try {
         if (reqObj !== null) {
@@ -1305,7 +1305,7 @@ document.dispatchEvent(evt);
     sw.clearTables();
 
     sw.status.fresh = false;
-    var evt = document.createEvent("CustomEvent");
+    const evt = document.createEvent("CustomEvent");
     evt.initCustomEvent("sw_status", true, true, {
       smartwrap: sw
     });
@@ -1319,28 +1319,27 @@ document.dispatchEvent(evt);
   });
 
 
-
-  var exportForm = jQuery("#exportForm");
+  const exportForm = jQuery("#exportForm");
   var exportButton = jQuery("#exporter");
-  var exportFormatField = exportForm.find("#format");
-  exportForm.find('[name="format"]').change(function(event) {
-    var target = event.target;
+  const exportFormatField = exportForm.find("#format");
+  exportForm.find('[name="format"]').change(function (event) {
+    const target = event.target;
     //alert("DELTA: " + target.value + ":: " + target.checked);
     if (target.checked) {
       exportFormatField.get(0).value = target.value;
     }
   });
-  jQuery("#exporter").click(function(event) {
+  jQuery("#exporter").click(function (event) {
     //alert("FORM: " + new XMLSerializer().serializeToString(exportForm.get(0)));
-    var exportDetail = {};
+    const exportDetail = {};
     exportDetail.format = exportFormatField.get(0).value;
     exportDetail.relations = sw.getRelations();
 
-    var evt = document.createEvent("CustomEvent");
+    const evt = document.createEvent("CustomEvent");
     evt.initCustomEvent("swExportRequest", true, true, exportDetail);
     exportButton.get(0).dispatchEvent(evt);
   });
-  jQuery("#exportJSON").click(function(event) {
+  jQuery("#exportJSON").click(function (event) {
     exportForm.find("#format_json").click();
     exportButton.click();
   });
@@ -1350,22 +1349,22 @@ document.dispatchEvent(evt);
     disabled: true
   });
   /*
-  jQuery("#exportPicker").button({
-icons: {
-            secondary: "ui-icon-triangle-1-s"
-    }
-});
-*/
-  var formatPicker = jQuery("#exportPicker");
+   jQuery("#exportPicker").button({
+   icons: {
+   secondary: "ui-icon-triangle-1-s"
+   }
+   });
+   */
+  const formatPicker = jQuery("#exportPicker");
   jQuery("#exportExecute").parent().buttonset();
-  jQuery("#exportExecute").click(function(event) {
+  jQuery("#exportExecute").click(function (event) {
     //alert("EXPORT: " + new XMLSerializer().serializeToString(formatPicker.get(0)));
 
-    var chosenOption = formatPicker.find("option").filter(":selected");
+    const chosenOption = formatPicker.find("option").filter(":selected");
     //alert("CHOICE: " + new XMLSerializer().serializeToString(chosenOption.get(0)));
-    var format = chosenOption.get(0).value;
+    const format = chosenOption.get(0).value;
 
-    var exportDetail = {};
+    const exportDetail = {};
     exportDetail.format = format;
 
     alert("FORMAT: " + format);
@@ -1387,7 +1386,7 @@ icons: {
     evt.initCustomEvent("swExportRequest", true, true, exportDetail);
     exportButton.get(0).dispatchEvent(evt);
   });
-  jQuery(document).bind("sw_datacell", function(event) {
+  jQuery(document).bind("sw_datacell", function (event) {
     exportButton.button("option", "disabled", false);
   });
 });
