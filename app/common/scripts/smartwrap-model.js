@@ -1,0 +1,1012 @@
+var Smartwrap;
+var jQuery;
+var module;
+if (!Smartwrap) {
+  Smartwrap = {};
+}
+
+if (!jQuery) {
+  if (module) {
+    jQuery = module.require('jquery');
+    if (!jQuery.format) {
+      jQuery.format = module.require("strformat");
+    }
+  }
+}
+
+Smartwrap.getUID = function(uidprefix, uidwidth) {
+  if (!this.getUID.seq) {
+    this.getUID.seq = 0;
+  }
+  this.getUID.seq += 1;
+  var sliceAmt = uidwidth || 8;
+  var uidsubs = {};
+  uidsubs.prefix = uidprefix || "UID";
+  uidsubs.seq = ("00000000" + (this.getUID.seq)).slice(-sliceAmt);
+  return jQuery.format("{prefix}{seq}", uidsubs);
+};
+
+Smartwrap.newTableModel = function(spec) {
+  "use strict";
+
+  if (!spec) {
+    spec = {};
+  }
+
+  var tabledata = spec.tabledata || {};
+  var columns = spec.columns || {};
+  var colids = spec.colids || [];
+  var rows = spec.rows || {};
+  var rowids = spec.rowids || [];
+
+  var privy = {};
+  var defaultSettings = {
+    minrows: 1,
+    maxrows: Infinity,
+    minfringerows: 1,
+    minfringecols: 1
+  };
+
+  /* PRIVATE FUNCTIONS */
+  var createColumn = function(colid) {
+    return {
+      colid: colid,
+      fringe: true
+    };
+  };
+  var createRow = function(rowid) {
+    return {
+      metadata: {
+        rowid: rowid,
+        fringe: true
+      }
+    };
+  };
+  var createCell = function(cellid) {
+    return {
+      cellid: cellid,
+      metadata: {
+        fringe: true
+      }
+    };
+  };
+
+  var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  var basealpha = function(n) {
+    if (n < alphabet.length) {
+      return alphabet.slice(n, n + 1);
+    }
+    var dividend = Math.floor(n / (alphabet.length));
+    var remainder = n % (alphabet.length);
+
+    return [basealpha(dividend - 1), basealpha(remainder)].join("");
+  };
+
+
+  var newCannotOverwriteError = function(message) {
+    var exc = new Error(message);
+    exc.name = "CannotOverwriteCell";
+    return exc;
+  };
+
+  var getCellSchematic = function(self, rowid, colid, extra) {
+    if (!extra) {
+      extra = {};
+    }
+
+    var logger = extra.logger;
+    delete extra.logger;
+    //if (logger) { logger.log({CELLSCHEM: extra}); }
+
+    var ret;
+    var emptyrow = (!rows[rowid]);
+
+    if (extra && extra.rowno && (extra.rowno > 0)) {
+      ret = Object.create(self.dittoToken);
+      ret.comments = ["DITTO"];
+      return ret;
+    }
+
+    if (extra && extra.fringecol) {
+      ret = Object.create(self.fringeToken);
+      ret.comments = ["FRINGECOL"];
+      if (emptyrow) {
+        ret.lowerright = true;
+        ret.comments.push("LOWERRIGHT");
+      }
+      return ret;
+    }
+    if (emptyrow) {
+      ret = Object.create(self.fringeToken);
+      ret.comments = ["EMPTYROW"];
+      return ret;
+    }
+    if (rows[rowid][colid]) {
+      ret = {
+        type: "CELL"
+      };
+      ret.rowid = rowid;
+      ret.colid = colid;
+      ret.cellSource = self.getCellField(rowid, colid, "cellSource");
+      ret.facsimile = self.getCellField(rowid, colid, "facsimile");
+      return ret;
+    }
+    ret = Object.create(self.nullToken);
+    ret.comments = ["NULL"];
+    return ret;
+  };
+
+
+  var model = {
+    getUID: function(uidprefix, uidwidth) {
+      return Smartwrap.getUID(uidprefix, uidwidth);
+    },
+    dump: function() {
+      return {
+        columns: columns,
+        colids: colids,
+        rows: rows,
+        rowids: rowids,
+        tabledata: Object.keys(tabledata),
+        kid: tabledata.childTable && tabledata.childTable.dump(),
+        fringe: tabledata.fringerowmap
+      };
+    },
+    init: function(settingFun) {
+      privy.settings = {};
+      if (this.logger) {
+        this.logger.log({
+          INITSET0: privy.settings
+        });
+      }
+      jQuery.extend(privy.settings, defaultSettings);
+      if (this.logger) {
+        this.logger.log({
+          INITSET1: privy.settings
+        });
+      }
+      //jQuery.extend(privy.settings, settings || {});
+
+      Object.keys(privy.settings).forEach(function(key) {
+        privy.settings[key] = settingFun(key) || privy.settings[key];
+      });
+
+      this.uidwidth = privy.settings.uidwidth || 8;
+
+      if (this.logger) {
+        this.logger.log({
+          INITSET: privy.settings
+        });
+      }
+
+      /*
+      var colid0 = this.getUID("COL", this.uidwidth);
+      colids.push(colid0);
+      columns[colid0] = createColumn.call(this, colid0);
+
+      var rowid0 = this.getUID("ROW", this.uidwidth);
+      rowids.push(rowid0);
+      rows[rowid0] = createRow.call(this, rowid0);
+
+      var cellid00 = this.getUID("CELL", this.uidwidth);
+      rows[rowid0][colid0] = createCell.call(this, cellid00);
+        */
+
+      if (!rowids.length) {
+        var rowid0 = this.getUID("ROW", this.uidwidth);
+        rowids.push(rowid0);
+        rows[rowid0] = {};
+      }
+
+      if (!tabledata.fringeColid) {
+        tabledata.fringeColid = this.getUID("COL", this.uidwidth);
+      }
+      //tabledata.fringeRowids = [];
+      if (!tabledata.fringerowmap) {
+        tabledata.fringerowmap = {};
+      }
+      this.checkConstraints();
+    },
+    checkConstraints: function() {
+      /*
+      while (rowids.length < privy.settings.minrows) {
+        var rowid = this.getUID("ROW", this.uidwidth);
+        rowids.push(rowid);
+        rows[rowid] = {};
+      }
+        */
+
+      /*
+      while (tabledata.fringeRowids.length < Math.max(privy.settings.minrows, privy.settings.minfringerows)) {
+        tabledata.fringeRowids.push(this.getUID("ROW", this.uidwidth));
+      }
+        */
+    },
+    getXPaths: function() {
+      var xpaths = [];
+      var row = {};
+      var extractFromField = function(colid) {
+        xpaths.push(row[colid].absoluteLocationXPath);
+      };
+      rowids.forEach(function(rowid) {
+        row = rows[rowid];
+        colids.forEach(extractFromField);
+      });
+      return xpaths;
+    },
+    clearTuples: function() {
+      while (rowids.length) {
+        var rowid = rowids.pop();
+        rows[rowid] = undefined;
+      }
+    },
+    getTableField: function(key) {
+      return tabledata[key];
+    },
+    setTableField: function(key, value) {
+      tabledata[key] = value;
+    },
+    getNextPageElement: function() {
+      return null;
+    },
+    fringeToken: {
+      specialToken: true,
+      isFringeToken: true,
+    },
+    nullToken: {
+      specialToken: true,
+      isNullToken: true,
+    },
+    dittoToken: {
+      specialToken: true,
+      isDittoToken: true,
+    },
+    getDisplayView: function(query, callback, extras) {
+      var logger = extras.logger || this.logger;
+      var self = this;
+      if (logger) {
+        logger.log({
+          QRY: query,
+          DUMP: this.dump()
+        });
+      }
+
+      var view = {
+        rows: {},
+        columns: {},
+        rowids: [],
+        colids: []
+      };
+
+      //view.tableid = this.id;
+
+      var kidview = {
+        rows: {},
+        columns: {},
+        rowids: [],
+        colids: []
+      };
+
+      if (tabledata.childTable) {
+        var kext = Object.create(extras);
+        kext.subview = true;
+        kidview = tabledata.childTable.getDisplayView(rowids[0], null, kext);
+      }
+
+      if (logger) {
+        logger.log({
+          EMPTY: view,
+          nrows: this.nrows(),
+          ncols: this.ncols()
+        });
+      }
+
+      var vrowcount = {};
+
+      var i, j = 0;
+      var colid;
+      for (j = 0; j < this.ncols(); j += 1) {
+        colid = this.getColId(j);
+        view.colids[j] = view.colids[j] || colid;
+        view.columns[colid] = view.columns[colid] || {};
+      }
+
+      view.colids.push(tabledata.fringeColid);
+
+      view.colids = view.colids.concat(kidview.colids);
+      kidview.colids.forEach(function(colid) {
+        view.columns[colid] = kidview.columns[colid];
+      });
+
+      var invmap = Object.keys(tabledata.fringerowmap).reduce(function(accum, key) {
+        var value = tabledata.fringerowmap[key];
+        accum[value] = key;
+        return accum;
+      }, {});
+
+      //tabledata.fringerowmap = {};
+
+      var mainrowids = rowids.slice(0);
+      if (query) {
+        mainrowids = mainrowids.reduce(function(accum, rowid) {
+          if (rows[rowid].foreignKey === query) {
+            return accum.concat([rowid]);
+          }
+          return accum;
+        }, []);
+      } else {
+        mainrowids = mainrowids.slice(0, Math.min(rowids.length, privy.settings.maxrows));
+      }
+      if (logger) {
+        logger.log({
+          MIDS: mainrowids
+        });
+      }
+
+      var outrows = {};
+
+      mainrowids.forEach(function(rowid) {
+        //view.rows[rowid] = {};
+
+        if (tabledata.childTable) {
+          var kidview1 = tabledata.childTable.getDisplayView(rowid, null, kext);
+          view.rowids = view.rowids.concat(kidview1.rowids);
+
+          if (logger) {
+            logger.log({
+              RECURSE: rowid,
+              kidview: kidview1
+            });
+          }
+
+          var rowno = 0;
+          var rowcount = kidview1.rowids.length;
+          var rowspan = 0;
+          kidview1.rowids.forEach(function(kidrowid) {
+            outrows[kidrowid] = {};
+            var kidspan = 1;
+            kidview1.colids.forEach(function(kidcolid) {
+              outrows[kidrowid][kidcolid] = kidview1.rows[kidrowid][kidcolid];
+              outrows[kidrowid].foreignKey = rowid;
+              kidspan = Math.max(kidspan, ((outrows[kidrowid] && outrows[kidrowid][kidcolid] && outrows[kidrowid][kidcolid].rowspan) || 1));
+            });
+            colids.forEach(function(maincolid) {
+              outrows[kidrowid][maincolid] = getCellSchematic(self, rowid, maincolid, {
+                rowno: rowno,
+                rowcount: rowcount,
+                logger: logger
+              });
+            });
+            outrows[kidrowid][tabledata.fringeColid] = getCellSchematic(self, rowid, tabledata.fringeColid, {
+              rowno: rowno,
+              rowcount: rowcount,
+              fringecol: true,
+              logger: logger
+            });
+
+            rowspan += kidspan;
+            rowno++;
+          });
+
+          colids.concat([tabledata.fringeColid]).forEach(function(maincolid) {
+            outrows[kidview1.rowids[0]][maincolid].rowspan = rowspan;
+          });
+        } else {
+          view.rowids.push(rowid);
+          outrows[rowid] = {};
+          view.colids.forEach(function(colid) {
+            if (logger) {
+              logger.log({
+                LOADCELL: {
+                  rowid: rowid,
+                  colid: colid
+                }
+              });
+            }
+
+            outrows[rowid][colid] = getCellSchematic(self, rowid, colid);
+          });
+          outrows[rowid][tabledata.fringeColid] = getCellSchematic(self, rowid, tabledata.fringeColid, {
+            fringecol: true
+          });
+        }
+      });
+
+      if (logger) {
+        logger.log({
+          MAIN: view,
+          OUTROWS: outrows,
+          nrows: this.nrows(),
+          ncols: this.ncols(),
+          INVMAP: invmap
+        });
+      }
+
+      var frowcount = function() {
+        //privy.settings.minfringerows;
+        if (query) {
+          return 1;
+        }
+        return Math.max(privy.settings.minfringerows, (privy.settings.minrows - view.rowids.length));
+      }();
+
+      while (frowcount > 0) {
+        var refid = query || view.rowids.slice(-1)[0];
+        var frowid = invmap[refid] || this.getUID("VROW", this.uidwidth);
+        tabledata.fringerowmap[frowid] = refid;
+        if (logger) {
+          logger.log({
+            NEWFIE: frowid,
+            MAP: tabledata.fringerowmap,
+            REF: refid
+          });
+        }
+        view.rowids.push(frowid);
+        outrows[frowid] = {};
+
+        frowcount--;
+      }
+
+      view.rows = outrows;
+
+      /*
+      view.rowids.forEach(function(rowid) {
+        view.rows[rowid] = view.rows[rowid] || {};
+
+        var emptyrow = (! rows[rowid]);
+
+        view.colids.forEach(function(colid) {
+          if (logger) { logger.log({LOADCELL: {rowid:rowid, colid:colid}}); }
+
+          view.rows[rowid][colid] = getCellSchematic(self, rowid, colid);
+        });
+        view.rows[rowid][tabledata.fringeColid] = getCellSchematic(self, rowid, tabledata.fringeColid, {fringecol: true});
+      });
+      */
+
+      if (logger) {
+        logger.log({
+          DATAONLY: view,
+          settings: privy.settings
+        });
+      }
+
+      /*
+      view.rowids.push(tabledata.fringeRowid);
+      view.rows[tabledata.fringeRowid] = {};
+      view.colids.push(tabledata.fringeColid);
+      for (j = 0; j < this.ncols(); j += 1) {
+        colid = this.getColId(j);
+        view.rows[tabledata.fringeRowid][colid] = Object.create(this.fringeToken);
+        view.rows[tabledata.fringeRowid][colid].comment = "FRINGEROW";
+      }
+      view.rows[tabledata.fringeRowid][tabledata.fringeColid] = Object.create(this.fringeToken);
+      view.rows[tabledata.fringeRowid][tabledata.fringeColid].lowerright = true;
+      */
+
+
+      if (logger) {
+        logger.log({
+          VIEW: view
+        });
+      }
+
+      if (callback) {
+        callback(view);
+      }
+      return view;
+    },
+    nrows: function() {
+      return rowids.length;
+    },
+    ncols: function() {
+      return colids.length;
+    },
+    getRowId: function(rowno) {
+      if (rowno < 0) {
+        return tabledata.fringeRowid;
+      }
+      return rowids[rowno];
+    },
+    getColId: function(colno) {
+      if (colno >= colids.length) {
+        return tabledata.fringeColid;
+      }
+      return colids[colno];
+    },
+    getColumnId: function(colno) {
+      if (this.logger) {
+        this.logger.log({
+          "DEPRECATED": "getColumnId"
+        });
+      }
+      return this.getColId(colno);
+    },
+    getColumnLetter: function(colno) {
+      var colid = this.getColId(colno);
+      if (colid) {
+        var colLetter = this.getColumnField(colid, "columnLetter");
+        if (colLetter) {
+          return colLetter;
+        }
+      }
+      if (colno > 25) {
+        throw "too many columns";
+      }
+      return basealpha(colno);
+    },
+    getColumnLabel: function(colno) {
+      var colid = this.getColId(colno);
+      if (colid) {
+        var label = this.getColumnField(colid, "label");
+        if (label) {
+          return label;
+        }
+      }
+      return jQuery.format("COLUMN {let}", {
+        let: this.getColumnLetter(colno)
+      });
+    },
+    setColumnField: function(colid, key, value, params) {
+      params = params || {};
+      var logger = this.logger && params.logger;
+      params.logger = undefined;
+      var colinfo = columns[colid];
+      if (!colinfo) {
+        if (logger) {
+          logger.log({
+            "SCF": params
+          });
+        }
+        if (params.forceInsert) {
+          if (colid === tabledata.fringeColid) {
+            colids.push(colid);
+            tabledata.fringeColid = this.getUID("COL", this.uidwidth);
+            colinfo = {};
+            columns[colid] = colinfo;
+          } //else {
+          //alert(JSON.stringify([colid, '!==', tabledata.fringeColid]));
+          //}
+        } else {
+          if (params.tolerateNoop) {
+            colinfo = {};
+          } else {
+            throw "setting field of nonextant column: " + colid;
+          }
+        }
+      }
+      colinfo[key] = value;
+    },
+    getColumnField: function(colid, fieldName) {
+      var colinfo = columns[colid] || {};
+      return colinfo[fieldName];
+    },
+    getColumnFields: function(colid, keys) {
+      var colinfo = columns[colid] || {};
+      var out = {};
+      keys.forEach(function(key) {
+        out[key] = colinfo[key];
+      });
+      return out;
+    },
+    setCellField: function(rowid, colid, key, value, params) {
+      var cellObj = rows[rowid][colid];
+      if (!cellObj) {
+        cellObj = {
+          cellid: this.getUID("CELL", this.uidwidth)
+        };
+        rows[rowid][colid] = cellObj;
+      }
+      cellObj[key] = value;
+    },
+    getCellField: function(rowid, colid, key) {
+      if (!rows[rowid]) {
+        return undefined;
+      }
+      var cellObj = rows[rowid][colid];
+      if (!cellObj) {
+        return undefined;
+      }
+      return cellObj[key];
+    },
+    getCellFields: function(rowid, colid, keys) {
+      if (!rows[rowid]) {
+        return undefined;
+      }
+      var cellObj = rows[rowid][colid];
+      if (!cellObj) {
+        return {};
+      }
+      var out = {};
+      keys.forEach(function(key) {
+        out[key] = cellObj[key];
+      });
+      return out;
+    },
+    clearCell: function(rowid, colid) {
+      if (this.logger) {
+        this.logger.log({
+          PRECLEAR: rows,
+          rowid: rowid,
+          colid: colid
+        });
+      }
+
+      var row = rows[rowid];
+      if (!row) {
+        return;
+      }
+      var cellObj = rows[rowid][colid];
+      if (!cellObj) {
+        return;
+      }
+
+      delete rows[rowid][colid];
+      this.removeRow(rowid, {
+        forceRemoveNonEmpty: false
+      });
+      this.removeColumn(colid, {
+        forceRemoveNonEmpty: false
+      });
+
+      this.checkConstraints();
+
+      if (this.logger) {
+        this.logger.log({
+          POSTCLEAR: rows
+        });
+      }
+    },
+    removeRow: function(rowid, params) {
+      var force = params && params.forceRemoveNonEmpty;
+
+      var row = rows[rowid];
+      if (!row) {
+        return;
+      }
+      if (Object.keys(row).length) {
+        if (!force) {
+          // the row is nonempty so we bail out
+          return;
+        }
+      }
+
+      delete rows[rowid];
+      rowids = rowids.filter(function(listing) {
+        return (listing !== rowid);
+      });
+    },
+    removeColumn: function(colid, params) {
+      var force = params && params.forceRemoveNonEmpty;
+
+      var empty = true;
+      rowids.forEach(function(rowid) {
+        if (rows[rowid][colid]) {
+          empty = false;
+        }
+      });
+
+      if (!empty) {
+        if (!force) {
+          // the column is nonempty so we bail out
+          return;
+        }
+      }
+
+      colids = colids.filter(function(listing) {
+        return (listing !== colid);
+      });
+    },
+    cloneTable: function() {
+      var newrows = {};
+      rowids.forEach(function(rowid) {
+        newrows[rowid] = {}; // Object.create(rows[rowid]);
+        Object.keys(rows[rowid]).forEach(function(key) {
+          //if (logger) { logger.log({EXTENDKEY: key, VALUE: rows[rowid][key]}); }
+          if (rows[rowid][key]) {
+            newrows[rowid][key] = Object.create(rows[rowid][key]);
+          }
+        });
+      });
+      var spec = {
+        tabledata: Object.create(tabledata),
+        columns: Object.create(columns),
+        colids: Object.create(colids),
+        rows: newrows,
+        rowids: Object.create(rowids)
+      };
+      var newmodel = Smartwrap.newTableModel(spec);
+      newmodel.logger = this.logger;
+      newmodel.init(function(key) {
+        return privy.settings[key];
+      });
+      return newmodel;
+    },
+    extend: function(rowid, colid, tuple, extra) {
+      var logger = this.logger;
+      if (this.logger) {
+        this.logger.log({
+          "EXTEND": {
+            rowid: rowid,
+            colid: colid,
+            tuple: tuple,
+            rowids: rowids,
+            dump: this.dump(),
+            fringex: tabledata.fringeRowids,
+            fringey: tabledata.fringeColid
+          }
+        });
+      }
+      var newmodel = this.cloneTable();
+      newmodel.updateCell(rowid, colid, tuple, extra);
+      return newmodel;
+    },
+    updateCell: function(rowid, colid, tuple, extra) {
+      var self = this;
+      if (this.logger) {
+        this.logger.log({
+          "UPDATE": {
+            rowid: rowid,
+            colid: colid,
+            tuple: tuple,
+            rowids: rowids,
+            dump: this.dump(),
+            hasrow: rows[rowid],
+            fringex: tabledata.fringeRowids,
+            fringey: tabledata.fringeColid
+          }
+        });
+      }
+
+      /*
+      var fno = tabledata.fringeRowids.indexOf(rowid);
+      if (this.logger) { this.logger.log({fno:fno}); }
+      if (fno >= 0) {
+        rowids.push(rowid);
+        tabledata.fringeRowids.splice(fno, 1, this.getUID("ROW", this.uidwidth));
+        rows[rowid] = {};
+      }
+      */
+      // TODO: redo this!
+
+      if (!rows[rowid]) {
+        var baseid = tabledata.fringerowmap[rowid];
+        if (!baseid) {
+          if (tabledata.childTable) {
+            tabledata.childTable.setTableField("nonempty", true);
+            return tabledata.childTable.updateCell(rowid, colid, tuple);
+          }
+
+          if (this.logger) {
+            this.logger.log({
+              UNREC: rowid,
+              IN: tabledata.fringerowmap
+            });
+          }
+          throw "unrecognized fringe row " + rowid;
+        }
+
+        var baseix = rowids.indexOf(baseid);
+
+        rowid = this.getUID("ROW", this.uidwidth);
+        //rowids.push(rowid); // if rows are ordered, we should insert rowid after baseid
+        if (baseix > 0) {
+          if (this.logger) {
+            this.logger.log({
+              INSERTROWID: rowid,
+              AT: baseix
+            });
+          }
+          rowids.splice(1 + baseix, 0, rowid);
+        } else {
+          rowids.push(rowid);
+        }
+        rows[rowid] = {};
+      }
+
+      if (this.logger) {
+        this.logger.log({
+          COLID: colid,
+          EQ: (colid === tabledata.fringeColid ? "===" : "!=="),
+          FRINGECOLL: tabledata.fringeColid
+        });
+      }
+
+      if (colid === tabledata.fringeColid) {
+        colids.push(colid);
+        tabledata.fringeColid = this.getUID("COL", this.uidwidth);
+        columns[colid] = {};
+      }
+
+      if (!columns[colid]) {
+        if (this.logger) {
+          this.logger.log({
+            NONLOCALCOL: colid,
+            columns: columns
+          });
+        }
+        // pass to subtable, if there is one
+      }
+
+      rows[rowid].foreignKey = tuple.map.foreignKey;
+
+      var currObj = rows[rowid][colid];
+      if (false && currObj) { // HACK-ish change to dropover as OVERWRITE
+        if (this.logger) {
+          this.logger.log({
+            OVERWRITE: {
+              rowid: rowid,
+              colid: colid,
+              currObj: currObj,
+              rowids: rowids,
+              colids: colids
+            }
+          });
+        }
+
+
+        if (colids.length === 1) {
+          if (this.logger) {
+
+            var rowid0 = this.getUID("ROW", this.uidwidth);
+            rows[rowid0] = {};
+            rowids.push(rowid0);
+
+            this.logger.log({
+              ONLY: {
+                rowid: rowid,
+                colid: colid,
+                currObj: currObj,
+                rowids: rowids,
+                colids: colids
+              }
+            });
+
+            return this.updateCell(rowid0, colid, tuple);
+          }
+
+        }
+
+        if (tabledata.childTable) {
+          var exception = new Error("multibranch nesting not supported");
+          exception.name = "OperationUnsupported";
+          throw exception;
+        }
+
+        var coldata = columns[colid];
+        var kidrowids = [];
+        var kidrows = {};
+        var rowid0 = rowid;
+        var kidrowid0;
+        rowids.forEach(function(rowid) {
+          if (rows[rowid] && rows[rowid][colid]) {
+            var kidrowid = self.getUID("ROW", privy.settings.uidwidth);
+            kidrowids.push(kidrowid);
+            kidrows[kidrowid] = {};
+            kidrows[kidrowid][colid] = rows[rowid][colid];
+            kidrows[kidrowid].foreignKey = rowid;
+          }
+
+          if (rowid === rowid0) {
+            kidrowid0 = self.getUID("ROW", privy.settings.uidwidth);
+            kidrowids.push(kidrowid0);
+            kidrows[kidrowid0] = {};
+            kidrows[kidrowid0].foreignKey = rowid;
+          }
+        });
+        var kidcols = {};
+        kidcols[colid] = coldata;
+        tabledata.childTable = Smartwrap.newTableModel({
+          tabledata: {
+            parentTable: self
+          },
+          rows: kidrows,
+          rowids: kidrowids,
+          columns: kidcols,
+          colids: [colid]
+        });
+        tabledata.childTable.init();
+        tabledata.childTable.setTableField("nonempty", true);
+        tabledata.childTable.setTableField("parentTable", self);
+        tabledata.childTable.logger = self.logger;
+        /*
+        Object.keys(coldata).forEach(function(key) {
+            tabledata.childTable.setColumnField(colid, key, coldata[key], {tolerateNoop: true});
+          self.logger.log({KEY: key, VALUE: coldata[key]});
+        });
+        */
+        if (this.logger) {
+          this.logger.log({
+            EXTRADITE: coldata,
+            //INTO: tabledata.childTable,
+            DUMP: tabledata.childTable.dump()
+          });
+        }
+
+        colids.splice(colids.indexOf(colid), 1);
+        delete columns[colid];
+
+        if (extra.newTableCallback) {
+          extra.newTableCallback.call(null, tabledata.childTable);
+        }
+
+        tuple.map.foreignKey = rowid0;
+        return tabledata.childTable.updateCell(kidrowid0, colid, tuple, {});
+
+        throw newCannotOverwriteError("cannot overwrite cell data");
+
+        /*
+        alert("EXTRADITE!!");
+
+        this.breakOutColumn(colid, tuple, rownum);
+        this.setColumnField(colid, "multiple", true, true);
+        //this.setColumnField(colid, "sourceTable", this);
+
+        return true;
+        */
+      }
+
+      this.setCellField(rowid, colid, "facsimile", tuple.facsimile);
+      this.setCellField(rowid, colid, "absoluteLocationXPath", tuple.absoluteLocationXPath);
+      this.setCellField(rowid, colid, "style", tuple.style);
+      this.setCellField(rowid, colid, "cellSource", tuple.cellSource || "swUserAction");
+      if (tuple.types.text) {
+        this.setCellField(rowid, colid, "contents", tuple.map.contents, false);
+      }
+      if (tuple.types.image) {
+        this.setCellField(rowid, colid, "imageSource", tuple.map.imageSource);
+        this.setCellField(rowid, colid, "imageAltText", tuple.map.imageAltText);
+      }
+      if (tuple.types.link) {
+        this.setCellField(rowid, colid, "linkTarget", tuple.map.linkTarget);
+      }
+
+      if (this.logger) {
+        this.logger.log({
+          "INUPDATE": this.dump()
+        });
+      }
+
+      var colStyle = this.getColumnField(colid, "style");
+      this.setColumnField(colid, "style", this.mergeStyles(colStyle, tuple.style));
+      this.setColumnField(colid, "types", tuple.types);
+
+      this.checkConstraints();
+
+      if (this.logger) {
+        this.logger.log({
+          "POSTUPDATE": {
+            rowid: rowid,
+            colid: colid,
+            tuple: tuple,
+            rowids: rowids,
+            dump: this.dump(),
+            fringex: tabledata.fringeRowids,
+            fringey: tabledata.fringeColid
+          }
+        });
+      }
+
+      return true;
+    },
+    mergeStyles: function(oldStyle, newStyle) {
+      return newStyle;
+    },
+    moveColumnAfter: function(moved, pred) {
+      var movix = colids.indexOf(moved);
+      if (movix === -1) {
+        return;
+      }
+
+      colids.splice(movix, 1);
+      var predix = (pred === null) ? -1 : colids.indexOf(pred);
+      colids.splice(1 + predix, 0, moved);
+    },
+  };
+  return model;
+};
+
+if (!module) {
+  module = {};
+}
+module.exports = Smartwrap.newTableModel;

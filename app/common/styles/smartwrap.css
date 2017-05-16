@@ -1,0 +1,362 @@
+
+.hidden {
+    visibility: none;
+}
+
+.ui-resizable-helper {
+    border: 2px dotted #00F;
+}
+
+.ui-resizable-s {
+    bottom: 2px;
+    height: 8px;
+    background: linear-gradient(to bottom right, rgba(247,184,80,0.5), rgba(245,169,43,0.2));
+}
+
+.ui-menu {
+    border: thin solid black;
+}
+
+.ui-menu-item {
+   font-size: small;
+}
+
+.ui-menu-item a.ui-state-hover {
+   background: orange;
+}
+
+#smarttables .maintable td.fringe, #smarttables .maintable tr.fringe td {
+    border-style: dashed;
+    min-height: 4em;
+    height: 4em;
+}
+
+#smarttables.undo_ready {
+}
+
+td.sw_dropsite {
+    background-image: url(chrome://smartwrap/skin/agent-2fill_cell.gif);    
+    opacity: 0.5;
+}
+
+#smartwrap0 div.maintable {
+    -padding-bottom: 5em;
+    -height: 100%;
+}
+
+#smarttables .contextualized {
+    color: red;
+}
+
+#smarttables tr.fringe > td.fringe {
+    display: none;
+}
+
+#smartwrap.sw_autohide:not(.backlit) .scrim {
+    display: none;
+}
+
+#smartwrap.disabled #smartwrap_main {
+    -opacity: 0.2;
+}
+
+#disableMessage {
+    font-size: x-large;
+    color: red;
+    border: 6pt solid red;
+    margin: 2em;
+    padding: 2em;
+    font-weight: bold;
+}
+
+#disableMessage {
+    display: none; // red box distracts participants
+}
+
+#smartwrap:not(.disabled) #disableMessage {
+    display: none;
+}
+
+#smarttables td.missing {
+    background-color: white;
+    text-align: center;
+}
+
+#smarttables td.missing:before {
+    content: "--";
+}
+
+#smarttables td.lowerright {
+    visibility: hidden;
+}
+
+
+#smarttables th.handle {
+    color: white;
+    font-size: small;
+    border-radius: 1ex;
+    background: linear-gradient(to bottom right, rgba(247,184,80,1.0), rgba(245,169,43,0.4));
+    -background: #f6a828 url(images/ui-bg_gloss-wave_35_f6a828_500x100.png) 50% 50% repeat-x !important; 
+}
+
+
+#smarttables div.colhandle {
+    width: 100%;
+}
+
+#smarttables div.colhandle span._label {
+    width: 100%;
+    color: blue;
+}
+
+#smarttables div.colhandle span.adjustor {
+    float: right;
+    padding-right: 0.1ex;
+ }
+
+#smarttables tfoot td {
+    text-align: right;
+    padding-top: 3ex;
+}
+
+.nextPage {
+    text-align: right;
+    border-style: solid;
+    border-color:#000033; 
+    border-width: medium;
+    border-top-right-radius: 3ex 2ex;
+    border-bottom-right-radius: 3ex 2ex;
+    padding-top: 1ex;
+    padding-bottom: 1ex;
+    padding-left: 3ex;
+    padding-right: 3ex;
+    -margin: 5ex;
+}
+
+.nextPage.fringe:before {
+    content: ". . .";
+}
+.nextPage.fringe {
+    border-style: dashed;
+}
+
+#smarttables .spacer {
+    min-width: 5ex;
+}
+
+#smarttables input {
+    height: 30px;
+    -background-color: #ede;
+    background: linear-gradient(to bottom right, white, rgba(255,255,255,0.5));
+    border-style:solid;
+    border-radius:1ex;
+}
+
+#smarttables input.tablename {
+    -background-color: #ede;
+    min-width: 70%;
+    max-width: 100%;
+}
+
+#smarttables input.incolumn  {
+    font-size: 14px;
+    border-style:solid;
+    border-color:#000033; 
+    padding: 0.8ex;
+    text-align: center;
+    min-width: 8em;
+    -width: 8em;
+}
+
+.ui-corner-top, .ui-corner-all {
+    border-top-left-radius: 1ex !important;
+    border-top-right-radius: 1ex !important;
+    -background: red !important;
+}
+
+#smarttables tbody td.swcell {
+    border-style:solid;
+    border-color:#000033; 
+    border-radius: 1ex;
+    border-width: medium;
+    -width: 2em;
+    -max-width: 2em;
+}
+
+#smarttables tbody td div {
+    margin: 2ex;
+}
+
+#smarttables img.sw_image {
+    max-height: 20ex;
+    -max-width: 25ex;
+    -border: 3px solid green;
+}
+
+.smartwrap.controls .saveButton {
+    background: url(chrome://smartwrap/skin/accepted48.png) no-repeat;
+    padding: 24px;
+}
+
+.smartwrap.controls .clearButton {
+    background: url(chrome://smartwrap/skin/cross48.png) no-repeat;
+    padding: 24px;
+}
+
+.smartwrap.controls .label {
+    display: none;
+}
+
+.swUserAction {
+    background: linear-gradient(to bottom, rgba(238,198,145,1.0), rgba(252,212,159,1.0));
+    -opacity: 0.7;
+    -background-image: url(chrome://smartwrap/skin/agent-2fill_cell.gif);    
+    -text-decoration: blink;    
+}
+
+.swInferred {
+    background-image: url(chrome://smartwrap/skin/agent_cell.gif);    
+    -text-decoration: blink;
+}
+
+.sw_selected {
+    background-image: url(chrome://smartwrap/skin/agent_cell.gif);    
+    -text-decoration: blink;
+}
+
+.overflow.empty { display: none }
+.overflow.hide_overflow .overflow_content { color: blue; display: none }
+.overflow.hide_overflow .overflow_control .hide { display: none }
+.overflow:not(.hide_overflow) .overflow_control .show { display: none }
+
+.overflow_control { display: block; text-align: right }
+
+.overflow:not(.has_preview) .preview_control { display: none }
+.overflow.show_preview .content { display: none }
+.overflow.show_preview .hide { display: none }
+.overflow:not(.show_preview) .preview { display: none }
+.overflow:not(.show_preview) .show { display: none }
+.preview_control { display: block; text-align: right }
+
+.cursor {
+    border-width: thick !important;
+}
+
+.LINKED:after {
+  text-decoration: underline;
+  color: blue;
+  content: "\2924";
+  padding-left: 1ex;
+}
+
+#smarttables.swReport table {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 1em;
+}
+
+#smarttables.swReport table.hidden {
+  display: none;
+}
+
+#smarttables.swReport table .swCell {
+  padding: 1em;
+}
+
+#smarttables.swReport table th {
+    height: 30px;
+    font-size: 14px;
+    -background-color: #ede;
+    border-style:solid;
+    border-radius:1ex;
+}
+
+#smarttables.swReport table caption {
+    font-size: 24px;
+    border-style:solid;
+    border-radius:1ex;
+    margin-bottom: 0.5ex;
+}
+
+.controls.ui-widget {
+    padding-left: 1.8em;
+    padding-bottom: 2em;
+}
+
+#smarttables.swReport #export {
+    background: linear-gradient(to right, rgba(238,198,145,0.9), rgba(252,212,159,0.4));
+    border: thick solid rgba(0,0,0,0.9);
+    border-radius: 1ex;
+    opacity: 0.7;
+    -background: red;
+}
+
+#smarttables.swReport #export {
+    right: 0px;
+    bottom: 0px;
+    position: fixed;
+
+    margin-bottom: 10%;
+
+    padding: 2% 0% 1% 0%;
+
+    text-align: center;
+}
+#smarttables.swReport #export {
+    margin-right: 2%;
+}
+#smarttables.swReport #export:hover {
+    opacity: 1.0;
+}
+
+#smarttables.swReport #export.dismissed {
+    right: auto;
+    left: 95%;
+    -margin-right: -25%;
+    
+}
+
+#export .dismissal {
+    padding: 0.5em;
+    margin: 0.5em;
+    -background: green;
+    -font-size: x-large;
+    -transform: scale(3,4);
+    -margin: 0% 2%;
+}
+
+#export .dismissal div {
+    transform: scale(2,8);
+}
+
+#export .undismiss, #export.dismissed .dismiss {
+    opacity: 0.0;
+}
+#export.dismissed .undismiss, #export .dismiss {
+    opacity: 0.5;
+}
+
+#export input {
+    font-size: large;
+    background: linear-gradient(to bottom left, rgba(255,255,255,0.8), rgba(255,255,255,0.5));
+    border: medium solid black;
+    padding: 1em 1pt 2em 1pt;    
+    margin: 1em;
+    opacity: 0.8;
+    width: 80%;
+    -min-width: 6em;
+}
+#export input:hover {
+    opacity: 1.0;
+    background: linear-gradient(to bottom left, rgba(255,255,255,0.9), rgba(255,255,255,0.6));
+}
+#export input:active {
+    background: linear-gradient(to bottom left, rgba(128,128,128,0.9), rgba(128,128,128,0.4));
+}
+
+.sw_button { padding-left: 1em; padding-right: 1em; }
+.sw_icononly .sw_button .text { display: none; }
+.sw_noicon .sw_button .icon { display: none; }
+
+.contextualized { 
+}

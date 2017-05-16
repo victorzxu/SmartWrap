@@ -1,0 +1,22 @@
+@namespace url('http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul');
+
+#smartwrap-toolbar-button-perm {
+        list-style-image: url('chrome://smartwrap/skin/sw24.png');
+}
+toolbar[iconsize='small'] #smartwrap-toolbar-button-perm {
+        list-style-image: url('chrome://smartwrap/skin/sw16.png');
+}
+
+#smartwrap-toolbar-button-opt {
+        list-style-image: url('chrome://smartwrap/skin/sw24.png');
+}
+toolbar[iconsize='small'] #smartwrap-toolbar-button-opt {
+        list-style-image: url('chrome://smartwrap/skin/sw16.png');
+}
+
+#viewSidebar_smartwrap {
+    color: blue;
+}
+
+.blah { color: red; }
+.blah { font-style: italic; }

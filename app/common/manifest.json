@@ -1,0 +1,32 @@
+{
+
+  "manifest_version": 2,
+  "name": "SmartWrap",
+  "description": "Smartwrap Extension for Firefox",
+  "version": "1.0",
+
+  "icons": {
+    "24": "icons/sw24.png"
+  },
+
+  "permissions": [
+    "storage"
+  ],
+
+  "sidebar_action": {
+    "default_icon": "icons/sw24.png",
+    "default_title" : "SmartWrap",
+    "default_panel": "sidebar/smartwrap.html"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["lib/jquery-2.0.3.min.js",
+        "lib/jquery-ui.min.js",
+        "lib/jquery.utils.liter.js",
+        "lib/jquery.xcolor.min.js",
+        "sidebar/smartwrap-processdom.js"]
+    }
+  ]
+}

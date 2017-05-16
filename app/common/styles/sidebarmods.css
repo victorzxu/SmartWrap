@@ -1,0 +1,31 @@
+/*
+ * Moves sidebar to the right side of the browser
+ */
+
+ /* set default namespace to XUL */
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+ /* reverse direction of browser box */
+hbox#browser {
+  direction: rtl;
+}
+
+ /* don't let the children inherit this change */
+hbox#browser > vbox {
+  direction: ltr;
+}
+
+#sidebar {
+  max-width: none !important; 
+}
+
+splitter#sidebar-splitter {
+  background: #f6a828 url(images/ui-bg_gloss-wave_35_f6a828_500x100.png) 50% 50% repeat-x !important; 
+  min-width: 1ex;
+}
+
+#sidebar-box .tabs-closebutton {
+  background: #f6a828 url(images/ui-bg_gloss-wave_35_f6a828_500x100.png) 50% 50% repeat-x !important; 
+  margin: 4px !important;
+  padding: 8px !important;
+}

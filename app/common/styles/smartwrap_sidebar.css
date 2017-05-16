@@ -1,0 +1,117 @@
+
+.colhead {
+  _background-color:#ede;
+}
+
+html .marking {
+  background-color: rgba(255,0,0,0.1);
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.sw_mouseframe {
+  position: fixed;
+  border: 1px solid blue;
+  -z-index: 99999999;
+  opacity: 0.8;
+  border-radius: 2px;
+  -moz-box-shadow: 3px 3px 3px #ccc;
+}
+
+.sw_mouseframe.vertical {
+  width: 0px;
+}
+
+.sw_mouseframe.horizontal {
+  height: 0px;
+}
+
+html .sw_mouseframed {
+  cursor: cell;
+  -background-color: #ffb7b7 !important;
+  -text-size: xx-large;
+  -text-decoration: blink;
+  -color: red;
+  -position: relative;
+}
+
+.sw_rowbox {
+    margin-top: 2em;
+    color: red;
+}
+
+.sw_box_frame {
+    background-color: blue;
+    position: absolute;
+    z-index: 1000 !important;
+    -opacity: 0.85;
+}
+
+.sw_box_frame.horizontal {
+    height: 0px;
+}
+
+.sw_box_frame.vertical {
+    width: 0px;
+}
+
+.sw_injected_row {
+    -border: 5pt solid green;
+}
+
+.sw_injected_cell {
+    background: linear-gradient(to bottom, rgba(255,159,0,0.7), rgba(255,159,0,0.3)) !important;
+    -text-decoration: blink;
+    -background-color: #ff9f00 !important;
+}
+
+.sw_nextPage {
+    background-color: orange !important;
+}
+
+
+#sw_selbox {
+    position: absolute;
+    z-index: 1000 !important;
+    pointer-events: none;
+}
+.sw_selinner {
+    position: absolute;
+    z-index: 2000 !important;
+    pointer-events: none;
+}
+
+#sw_selbox {
+    border: 0pt solid transparent;
+    border-radius: 7px;
+    -background-color: rgba(0,0,255,0.1);
+    background: radial-gradient(circle, rgba(0,0,255,0.35), rgba(0,0,128,0.1));
+    padding-top: 1mm !important;
+    padding-left: 1mm !important;
+    -padding: 1mm !important;
+}
+
+.sw_selected {
+    background-color: rgba(255,0,0,0.2);
+}
+
+.sw_selinner {
+    -border: 2pt solid blue !important;
+}
+
+.sw_selinner {
+    -background-color: rgba(0,0,255,0.2);
+    -border-radius: 7px;
+}
+
+
+div.sw_segment_inserted {
+    -background-color: red;
+}
+span.sw_segment_inserted {
+    -background-color: blue;
+}
+
+/* draw any selected text yellow on red background */
+::-moz-selection { background-color: rgba(0,0,255,0.2); }
+::selection      { background-color: rgba(0,0,255,0.2);} 

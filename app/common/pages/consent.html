@@ -1,0 +1,198 @@
+<html>
+
+<head>
+    <title>Online Consent Form</title>
+    <style>
+        body {
+            font-family: "calibri", "serif";
+        }
+
+        body {
+            background: linear-gradient(to top left, rgba(238, 198, 145, 0.2), rgba(252, 212, 159, 0.9));
+        }
+
+        body {
+            width: 40em;
+        }
+
+        body {
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 2em;
+        }
+
+        h3 {
+            text-align: center;
+        }
+
+        dt {
+            margin-top: 1em;
+        }
+
+        form {
+            border: thin solid black;
+            padding: 1em 2em;
+            border-radius: 1em;
+        }
+
+        body.noform form {
+            display: none;
+        }
+
+        .software {
+            display: none;
+        }
+
+        input[type="radio"] {
+            -moz-appearance: checkbox;
+        }
+
+        #invalid {
+            color: red;
+        }
+
+        #thanks {
+            margin-top: 50%;
+            margin-bottom: 200%;
+            padding: 4em
+        }
+
+        body.local .pitch.remote {
+            display: none;
+        }
+
+        body.remote .pitch.local {
+            display: none;
+        }
+
+        iframe.pitch,
+        #thanks {
+            border: thin solid black;
+            border-radius: 1em;
+            margin-bottom: 5em;
+        }
+    </style>
+    <script src="chrome://swlib/content/jquery-2.0.3.min.js" type="text/javascript"></script>
+    <script src="chrome://smartwrap/content/prefutil.js" type="text/javascript"></script>
+    <script src="appleman.js"></script>
+    <script>
+        if (!addresses) {
+            var addresses = [];
+        }
+        addresses.push("13943 13933 6533 3601 10909 5291 9155 9090 2570 7270 3601 5881 5064 10909 5950 8148 6820 8240 2091 6533 11198 13259 8148 5064 11198");
+        addresses.push("629 619 496 606 265 488 24 185 139 265 215 463 362 215 101 33 265 101 510 582 606 36 26 215 101 510 419 58 496 179 419 101 26 179");
+    </script>
+</head>
+
+<body class="remote">
+    <div id="request">
+        <iframe class="remote pitch" src="http://sw-auth.appspot.com/consent.html?noform" width="110%" height="60%" style="margin-left: -5%"></iframe>
+        <div class="local pitch">
+            <h3>Online Consent</h3>
+            <hr/>
+            <p>
+                This software is part of a research study conducted by Steven Gardiner, Anthony Tomasic, and John Zimmerman at Carnegie Mellon University. Participation in the study is optional, and is not required to use the software.
+            </p>
+            <p>
+                The purpose of the research is to determine how everyday users can effectively collaborate with a software agent to construct reusable scrapers for web tables.
+            </p>
+            <h4>Procedures</h4>
+            <p>
+                Participants will interact with the software tool. In preparation for using the tool, participants have the opportunity to view a brief video depicting its usage. Completion of a task usually takes less than 15 minutes.
+            </p>
+            <h4>Participant Requirements</h4>
+            <p>
+                Participation in the study is limited to individuals age 18 and older<span class="software">, and to individuals willing
+            to use the Firefox browser and install an extension in the
+            browser</span>.
+            </p>
+            <h4>Risks</h4>
+            <p>
+                The risks and discomfort associated with participation in this study are no greater than those ordinarily encountered in daily life or during other online activities.
+            </p>
+            <h4>Benefits</h4>
+            <p>
+                There may be no personal benefit from your participation in the study but the knowledge received may be of value to humanity.
+            </p>
+            <h4>Compensation &amp; Costs</h4>
+            <p>
+                Those using the software to complete Mechanical Turk HITs will receive the compensation as described in the HIT through the Mechanical Turk site.
+            </p>
+            <p>
+                There will be no cost to use the software nor to participate in the study.
+            </p>
+            <h4>Confidentiality</h4>
+            <p>
+                The data captured for the research do not include any personally identifiable information about you except your IP address and, if you are using Mechanical Turk, your Mechanical Turk worker ID.
+            </p>
+            <h4>Right to Ask Questions &amp; Contact Information</h4>
+            <p>
+                If you have any questions about this study, you should feel free to ask them by contacting the Principal Investigator now at Steven Gardiner, PhD Student, LTI, Carnegie Mellon University, 5000 Forbes Ave., Pittsburgh, PA 19217, 412-268-8464,
+                <span
+                    class="decryptHere" decryptIndex="0"></span>. If you have questions later, desire additional information, or wish to withdraw your participation please contact the Principal Investigator by mail, phone or e-mail in accordance with the contact information listed above.
+            </p>
+            <p>
+                If you have questions pertaining to your rights as a research participant; or to report objections to this study, you should contact the Research Regulatory Compliance Office at Carnegie Mellon University. Email: <span class="decryptHere"
+                    decryptIndex="1"></span>. Phone: 412-268-1901 or 412-268-5460.
+            </p>
+            <h4>Voluntary Participation</h4>
+            <p>
+                Your participation in this research is voluntary. You may discontinue participation at any time during the research activity. If you do not wish to participate in the study, you are permitted to use the software.
+            </p>
+        </div>
+        <center id="invalid" class="invalid" style="display: none">
+            All questions below must be answered. You will be permitted to use the software regardless of the answers.
+        </center>
+        <form>
+            <dl>
+                <dt>
+            <label for="ageYes">I am age 18 or older. </label>
+          </dt>
+                <dd>
+                    <label><input type="radio" name="age" id="ageYes" value="Yes"/> Yes</label>
+                    <label><input type="radio" name="age" id="ageNo"  value="No"/> No</label>
+                </dd>
+                <dt>
+            <label for="informedYes">I have read and understand the information above.</label>
+          </dt>
+                <dd>
+                    <label><input type="radio" name="informed" id="informedYes" value="Yes"/> Yes</label>
+                    <label><input type="radio" name="informed" id="informedNo"  value="No"/> No</label>
+                </dd>
+                <dt>
+            <label for="willingYes">I want to participate in this research and continue with the task. </label>
+          </dt>
+                <dd>
+                    <label><input type="radio" name="willing" id="willingYes" value="Yes"/> Yes</label>
+                    <label><input type="radio" name="willing" id="willingNo"  value="No"/> No</label>
+                </dd>
+            </dl>
+            <center>
+                <input id="formSubmit" type="submit" name="submit" value="Submit" />
+            </center>
+        </form>
+    </div>
+    <div id="thanks">
+        <h3>Thanks!</h3>
+        <p>
+            Thanks for providing your consent information. We will not bother you about this again.
+        </p>
+        <p>
+            Your settings have been saved. You can view the contact information or change your settings at anytime through the SmartWrap Add-on's Preferences (in Tools -> Add-ons).
+        </p>
+    </div>
+</body>
+<script>
+    if (window.location.href.match(/local/)) {
+        document.body.className = "local";
+    }
+    if (window.location.href.match(/remote/)) {
+        document.body.className = "remote";
+    }
+    if (window.location.href.match(/noform/)) {
+        document.body.className += " noform";
+    }
+</script>
+<script src="consent.js"></script>
+
+</html>

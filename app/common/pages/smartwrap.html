@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<title>SmartWrap Landing Page</title>
+	<meta charset="UTF-8">
+
+	<link rel="stylesheet" href="../skin/jquery-ui.css" type="text/css" media="all" />
+	<link rel="stylesheet" href="../skin/ui.theme.css" type="text/css" media="all" />
+	<!--
+    <link href="smartwrap.css" rel="stylesheet" type="text/css" media="all" />
+-->
+
+	<link href="../skin/smartwrap.css" rel="stylesheet" type="text/css" media="all" />
+
+
+	<style type="text/css">
+		.ui1-tabs-nav .ui-state-default input {
+			display: none;
+			text-align: center;
+			width: 8em;
+		}
+
+		.ui1-tabs-nav .ui-tabs-selected .llabel {
+			display: none
+		}
+
+		.ui1-tabs-nav .ui-tabs-selected input {
+			display: inline
+		}
+
+		li .ui-icon-close {
+			cursor: crosshair;
+			margin-left: 0.5em;
+			margin-right: 0em;
+			display: inline-block
+		}
+
+		li ._ui-icon-close {
+			float: left;
+			margin: 0.4em 0.2em 0 0;
+			cursor: pointer;
+			display: inline;
+		}
+
+		div.tablemeta .tablename {
+			text-align: center;
+		}
+
+		div.tablemeta {
+			text-align: center;
+		}
+
+		#templates>* {
+			display: none
+		}
+
+		#smartwrap.nonDeveloper .debug {
+			display: none
+		}
+
+		.sw_button {
+			border-radius: 0.5ex;
+		}
+
+		.support.hidden {
+			opacity: 0.0;
+		}
+	</style>
+	<!--
+  the inclusion below may be unnecessary, no longer sure why I added it.
+  it will not work with type text/javascript but per
+  https://bugzilla.mozilla.org/show_bug.cgi?id=541026
+  it works with explicitly versioned type
+-->
+	<!--<script src="chrome://browser/content/utilityOverlay.js" type="application/x-javascript;version=1.7"></script>-->
+	<!--<script src="jquery-1.7.1.min.js" type="text/javascript"></script>-->
+	<!--<script src="jquery-ui.min.js" type="text/javascript"></script>-->
+	<!--<script src="jquery.utils.lite.min.js"></script>-->
+	<!--<script src="jquery.xcolor.min.js"></script>-->
+	<!--<script src="chrome://swlib/content/jquery-1.7.1.min.js" type="text/javascript"></script>-->
+	<script src="../lib/jquery-2.0.3.min.js" type="text/javascript"></script>
+	<!--<script src="chrome://swlib/content/jquery-ui-1.8.17.min.js"></script>-->
+	<script src="../lib/jquery-ui.min.js" type="text/javascript"></script>
+	<script src="../lib/jquery.utils.liter.js"></script>
+	<script src="../lib/jquery.xcolor.min.js"></script>
+	<script src="prefutil.js"></script>
+	<!--<script src="ff-sidebar.js"></script>-->
+	<!-- required by smartwrap.js -->
+	<!--<script src="hyphenator.js"></script>-->
+	<!--<script src="swarmature-page.js"></script>-->
+	<script src="smarttable-header.js"></script>
+	<script src="smartwrap.js"></script>
+	<script src="smartwrap-model.js"></script>
+	<!--<script src="smartwrap-docmarker.js"></script>-->
+	<script src="smartwrap-smarttable.js"></script>
+	<script src="smartwrap-palette.js"></script>
+	<script src="smartwrap-interpreter.js"></script>
+	<!--<script src="smartwrap-interaction.js"></script>-->
+</head>
+
+<body id="main">
+	<div id="smartwrap" class="sw_mode nonDeveloper">
+
+		<div id="smartwrap_main" style="">
+			<!--
+	<div id="auth">LOGGED IN AS <span id="username"></span></div>
+	-->
+			<div id="handyLink" style="display: none">
+				<a href="http://www.google.com" target="_blank">ANNOTATED FILE</a>
+			</div>
+			<div class="smartwrap controls">
+			</div>
+			<div class="smartwrap debug debug_controls">
+				<button class="recolorer">Recolor</button>
+				<button id="exportJSON">Export Table as JSON</button>
+				<form id="exportForm" action="exportSettings">
+					<input type="radio" name="format" id="format_json" value="json">JSON</input>
+					<input type="radio" name="format" id="format_csv" value="csv">CSV</input>
+					<input type="radio" name="format" id="format_xls" value="xls">XLS</input>
+					<input type="radio" name="format" id="format_gdoc" value="googledoc">GDOC</input> <input type="radio" name="format" id="format_sql" value="sql">SQL</input> <input type="radio" name="format" id="format_ftab" value="fusiontables">FTAB</input>
+					<input type="hidden" name="formattext" id="format"></input>
+				</form>
+				<button id="exporter">Export Table</button>
+				<div class="exportDrop">
+					<button id="exportExecute">Export Table</button>
+					<!--<button>as <i>format</i></button>-->
+					<select id="exportPicker">
+						<option value="annotation">as HTML</option>
+						<option value="csv">as CSV</option>
+						<option value="xls">as an Excel Spreadsheet</option>
+						<option value="googledoc">to a Google Spreadsheet</option>
+						<option value="fusiontables">to Google FusionTables</option>
+						<option class="debug" value="json">as JSON</option>
+					</select>
+				</div>
+			</div>
+			<!--
+			<div id="smarttable_selector">
+				<span class="smarttable_tab" />
+			</div>
+-->
+			<div class="controls">
+			</div>
+			<div id="smarttables" style="width: 100%; overflow: auto; height: 80%; ">
+				<ul class="tabs">
+					<li class="tablabel" id="tab0"><a href="#smarttable0"><span
+							class="label">Table 1</span><!--<input value="Table 1" />--></a>
+						<span class="ui-icon ui-icon-close">X</span></li>
+					<li><a id="newtab" href="#addtab"><span>+</span></a></li>
+				</ul>
+				<div class="smarttable" id="smarttable0">
+					<div class="debug debug_controls">
+						<button class="debug noiser">NOISE</button>
+						<button class="debug shower">SHOW</button>
+						<button class="debug injecter">INJECT</button>
+						<button class="debug toggler">TOGGLE</button>
+					</div>
+					<!--
+                                        <div class="tablemeta">
+                                          <input class="tablename0" value="Table 1"/>
+                                        </div>
+                                        -->
+					<div class="maintable" _style="height: 100%; padding-bottom: 5em;"></div>
+					<!--<pre class="human_program debug"></pre>-->
+
+					<!--
+					<div xmlns:sw="http://smartwrap.cmu.edu" class="controls" style="padding-top: 2em;">
+                                          <button id="swUndo"
+                                                  class="swUndo sw_button"
+	                                          sw:eventType="swUndo"
+                                                  disabled="true">Undo</button>
+                                          <button id="swRedo"
+                                                  style="display: none"
+                                                  class="sw_button"
+	                                          sw:eventType="swRedo"
+                                                  disabled="true">Redo</button>
+	                                  <button
+	                                     id="swAnnotate"
+                                             style="display: none"
+	                                     class="swAnnotate       sw_button annotator"
+	                                     label="Annotate">Annotate</button>
+	                                  <button
+	                                     id="swRunWrapper"
+	                                     class="swRunWrapper     sw_button"
+	                                     sw:eventType="swRunWrapper"
+	                                     disabled="true">Preview</button>
+	                                  <button
+	                                     id="swSaveWrapper"
+	                                     class="swSaveWrapper    sw_button"
+	                                     sw:eventType="swSaveWrapper"
+	                                     disabled="true">Save</button>
+	                                  <button
+	                                     id="swSaveCloseWrapper"
+	                                     class="swSaveCloseWrapper swSaveWrapper sw_button"
+	                                     sw:eventType="swSaveCloseWrapper"
+	                                     disabled="true">Save and Close</button>
+	                                  <button
+	                                     id="swDiscardWrapper"
+	                                     class="swDiscardWrapper sw_button"
+	                                     sw:eventType="swDiscardWrapper"
+	                                     disabled="true">Cancel</button>
+                                       </div>
+                                        -->
+
+				</div>
+				<div id="addtab">This should NEVER be visible</div>
+			</div>
+		</div>
+
+		<div xmlns:sw="http://smartwrap.cmu.edu" class="controls ui-widget ui-widget-content" style="padding-top: 2em;">
+			<button id="swUndo" class="swUndo sw_button" sw:shortcut="ctrl-z meta-z" sw:eventType="swUndo" disabled="true">
+                    <span class="icon">&#x21B6;</span>
+                    <span class="text">Undo</span>
+                  </button>
+			<button id="swRedo" style="display: none" class="sw_button" sw:eventType="swRedo" disabled="true">Redo</button>
+			<button id="swAnnotate" style="display: none" class="swAnnotate       sw_button annotator" label="Annotate">Annotate</button>
+			<button id="swRunWrapper" class="swRunWrapper     sw_button" sw:eventType="swRunWrapper" disabled="true">
+                    <span class="icon">&#x25B6;</span>
+                    <span class="text">Preview</span>
+                  </button>
+			<button id="swSaveWrapper" class="swSaveWrapper    sw_button" sw:eventType="swSaveWrapper" disabled="true">
+                    <span class="icon">&#x2713;</span>
+                    <span class="text">Save</span>
+                  </button>
+			<button id="swSaveCloseWrapper" class="swSaveCloseWrapper swSaveWrapper sw_button" sw:eventType="swSaveCloseWrapper" disabled="true">
+                    <span class="icon">&#x2611;</span>
+                    <span class="text">Save and Close</span>
+                  </button>
+			<button id="swDiscardWrapper" class="swDiscardWrapper sw_button" sw:eventType="swDiscardWrapper" disabled="true">
+                    <span class="icon">&#x274C;</span>
+                    <span class="text">Cancel</span>
+                  </button>
+			<button id="swAnalyze" class="swAnalyze sw_button" sw:eventType="swAnalyze">
+                    <span class="text">Analyze</span>
+                  </button>
+
+		</div>
+		<div class="hidden support">
+			<input class="hidden sink" type="text" size="200" value="FOO BAR" />
+		</div>
+		<div id="disableMessage" style="position: fixed; top: 0; left: 0;">
+			<center>
+				<p>SmartWrap can only handle data from a single wrapped page</p>
+			</center>
+		</div>
+
+	</div>
+	<div id="templates">
+		<div class="template" id="maintable_template">
+			<div class="tablemeta">
+				<input class="tablename" value="One Fine Table" />
+			</div>
+			<table>
+				<thead>
+					<tr class="guide template_page">
+						<th>
+							<!-- empty cell for guide column --><span style="display: none" class="testlabel scrim">SW!</span>
+						</th>
+						<th class="handle colhandle template_glyph">
+							<div class="handle colhandle">
+								<span class="label">A</span> <span style="display: inline-block" class="ui-icon ui-icon-grip-dotted-vertical adjustor">&bull;</span>
+							</div>
+						</th>
+						<th class="spacer" _style="width: 80%">&nbsp</th>
+					</tr>
+					<tr class="header template_page">
+						<th />
+						<!-- empty cell for guide column -->
+						<th class="template_glyph"><input class="colhead incolumn hasid" value="column A" /></th>
+					</tr>
+				</thead>
+				<tfoot style="display: none">
+					<tr>
+						<td colspan="100"><span class="nextPage" /></td>
+					</tr>
+				</tfoot>
+				<tbody class="template_page">
+					<tr class="template_page template_glyph">
+						<th class="handle rowhandle"><span class="label">1</span></th>
+						<td class="template_glyph hasid swcell">
+							<div class="incolumn">
+								<span class="overflow">
+				  <div class="preview">Lorem</div>
+				  <a class="content" href="http://www.google.com" target="_main">Lorem Ipsum</a>
+				  <a href="#" class="preview_control">
+                                    <span sw:clickable="true" class="show">Show More &raquo;</span>
+								<span sw:clickable="true" class="hide">&laquo; Hide More</span>
+								</a>
+								</span>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<table class="template subtable" id="subtable">
+			<tbody class="template_page">
+				<tr class="template_page template_glyph">
+					<td class="template_glyph">
+						<div class="incolumn">
+							<span class="content">Lorem Ipsum</span>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="template sw_selbox" id="sw_selbox">
+			<div class="sw_selinner"><span class="content_mockup">BOXED</span></div>
+		</div>
+		<!--
+		<table class="template sw_selbox" id="sw_selbox">
+			<tr>
+				<td />
+				<td class="sw_box_frame sw_box_top horizontal"></td>
+				<td />
+			</tr>
+			<tr>
+				<td class="sw_box_frame sw_box_left vertical"></td>
+				<td>
+				  <div class="sw_selinner"><span class="content_mockup">BOXED</span></div>
+				</td>
+				<td class="sw_box_frame sw_box_right vertical"></td>
+			</tr>
+			<tr>
+				<td />
+				<td class="sw_box_frame sw_box_bottom horizontal" />
+				<td />
+			</tr>
+		</table>
+		-->
+		<table class="template sw_rowbox" id="sw_rowbox">
+			<tr>
+				<td />
+				<td class="sw_box_frame sw_box_top horizontal"></td>
+				<td />
+			</tr>
+			<tr>
+				<td class="sw_box_frame sw_box_left vertical"></td>
+				<td><span class="content_mockup">BOXED</span></td>
+				<td class="sw_box_frame sw_box_right vertical"></td>
+			</tr>
+			<tr>
+				<td />
+				<td class="sw_box_frame sw_box_bottom horizontal" />
+				<td />
+			</tr>
+		</table>
+		<table class="template sw_tablebox" id="sw_tablebox">
+			<tr>
+				<td />
+				<td class="sw_box_frame sw_box_top horizontal"></td>
+				<td />
+			</tr>
+			<tr>
+				<td class="sw_box_frame sw_box_left vertical"></td>
+				<td><span class="content_mockup">BOXED</span></td>
+				<td class="sw_box_frame sw_box_right vertical"></td>
+			</tr>
+			<tr>
+				<td />
+				<td class="sw_box_frame sw_box_bottom horizontal" />
+				<td />
+			</tr>
+		</table>
+		<ul xmlns:sw="http://smartwrap.cmu.edu" class="template" id="smartwrap_contextmenu" style="position: absolute;">
+			<!--
+	<li><a href="#">Cake</a></li>
+	<li><a href="#">Death</a></li>
+	-->
+			<li><a class="sw_menuitem" sw:eventType="sw_removecell" sw:shortcut="del \b" sw:appliesTo=".smarttable td:not(.fringe), .smarttable .missing" href="#">Remove
+					Cell</a></li>
+			<li><a class="sw_menuitem" sw:eventType="swUndo" sw:appliesTo="#smarttables.undo_ready" href="#">Undo
+                        </a></li>
+		</ul>
+	</div>
+</body>
+<script type="text/javascript" src="smartwrap-page.js"></script>
+
+</html>

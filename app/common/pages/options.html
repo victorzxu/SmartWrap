@@ -1,0 +1,201 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="data:text/css,
+ 
+  
+
+" type="text/css"?> 
+ 
+<prefwindow id="smartwrapper-prefs"
+     title="SmartWrapper Options"
+     xmlns:html="http://www.w3.org/1999/xhtml"
+     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+ 
+  <prefpane id="sw-pane" label="SmartWrapper Settings" style="overflow: auto">
+    
+    <preferences>
+      <preference id="pref_developermode" name="extensions.smartwrapper.developermode" type="bool"/>
+      <preference id="pref_annotatormode" name="extensions.smartwrapper.annotatormode" type="bool"/>
+      <preference id="pref_onedrop" name="extensions.smartwrapper.oneDropManyColumns" type="bool"/>
+      <preference id="pref_permicon" name="extensions.smartwrapper.permicon" type="bool"/>
+      <preference id="pref_buttonstyle" name="extensions.smartwrapper.buttonstyle" type="string"/>
+ 
+      <preference id="pref_annTemplate" name="extensions.smartwrapper.annotationTemplate" type="string"/>
+      <preference id="pref_anndepend" name="extensions.smartwrapper.annotationDependency" type="string"/>
+
+      <preference id="pref_draginterp" name="extensions.smartwrapper.dragInterpretation" type="string"/>
+      <preference id="pref_dragindic" name="extensions.smartwrapper.dragIndicator" type="string"/>
+      <preference id="pref_dragselect" name="extensions.smartwrapper.dragSelector" type="string"/>
+ 
+      <preference id="pref_reportmode" name="extensions.smartwrapper.reportMode" type="string"/>
+
+      <preference id="pref_senduserdata" name="extensions.smartwrapper.sendUserData" type="bool"/>
+      <preference id="pref_sendinferreddata" name="extensions.smartwrapper.sendInferredData" type="bool"/>
+
+      <preference id="pref_algorithm" name="extensions.smartwrapper.algorithm" type="string"/>
+      <preference id="pref_serverquery" name="extensions.smartwrapper.serverquery" type="string"/>
+      <preference id="pref_serverpath" name="extensions.smartwrapper.serverpath" type="string"/>
+      <preference id="pref_serverprepath" name="extensions.smartwrapper.serverprepath" type="string"/>
+      <preference id="pref_servertimeout" name="extensions.smartwrapper.servertimeout" type="int"/>
+
+      <preference id="pref_maxchars" name="extensions.smartwrapper.maxchars" type="int"/>
+
+      <preference id="pref_maxrows" name="extensions.smartwrapper.maxrows" type="int"/>
+      <preference id="pref_minrows" name="extensions.smartwrapper.minrows" type="int"/>
+      <preference id="pref_minfringerows" name="extensions.smartwrapper.minfringerows" type="int"/>
+
+      <preference id="pref_animateselector" name="extensions.smartwrapper.animateSelector" type="bool"/>
+    </preferences>
+
+<!--    
+    <checkbox label="Developer Mode" preference="pref_developermode"/>
+    <checkbox label="Annotator Mode" preference="pref_annotatormode"/>
+    <checkbox label="One Drop Many Columns" preference="pref_onedrop" checked="true"/>
+-->
+    <checkbox label="Show Icon in Toolbar" preference="pref_permicon"/>
+    <checkbox label="Animate Selector Movement" preference="pref_animateselector" checked="true"/>
+<!--
+    <checkbox label="Send User Data" preference="pref_senduserdata" checked="true"/>
+    <checkbox label="Send Inferred Data" preference="pref_sendinferreddata" checked="false"/>
+-->
+
+    <grid>
+      <columns>
+        <column flex="1"/>
+        <column flex="2"/>
+      </columns>
+      <rows>
+
+        <row align="center">
+          <label control="maxchars" value="Maximum characters to show in cell: "/>
+          <textbox preference="pref_maxchars" id="maxchars" maxlength="40"/>
+        </row>
+<!--
+        <row align="center">
+          <label control="minrows" value="Minimum number of rows in smarttable: "/>
+          <textbox preference="pref_minrows" id="minrows" maxlength="40"/>
+        </row>
+        <row align="center">
+          <label control="maxrows" value="Maximum number of rows in smarttable: "/>
+          <textbox preference="pref_maxrows" id="maxrows" maxlength="40"/>
+        </row>
+        <row align="center">
+          <label control="minfringerows" value="Minimum number of fringe rows in smarttable: "/>
+          <textbox preference="pref_minfringerows" id="minfringerows" maxlength="40"/>
+        </row>
+        
+        <row align="center">
+          <label control="serverprepath" value="Server Scheme+Authority: "/>
+          <menulist preference="pref_serverprepath" id="serverprepath" editable="true">
+	    <menupopup>
+	      <menuitem description="Local Tomcat Server" label="http://localhost:8080"/>
+	      <menuitem description="Local Jetty Server" label="http://localhost:9090"/>
+	      <menuitem description="Tomcat Server on pooh" label="http://pooh.radar.cs.cmu.edu:8080"/>
+	      <menuitem description="Jetty Server on pooh" label="http://pooh.radar.cs.cmu:9090"/>
+	    </menupopup>
+          </menulist>
+        </row>
+        <row align="center">
+          <label control="serverpath" value="Server Path: "/>
+          <textbox preference="pref_serverpath" id="serverpath" maxlength="40"/>
+        </row>
+        <row align="center">
+          <label control="serverquery" value="Server Query: "/>
+          <textbox preference="pref_serverquery" id="serverquery" maxlength="40"/>
+        </row>
+        <row align="center">
+          <label control="servertimeout" value="Server Timeout: "/>
+          <textbox preference="pref_servertimeout" id="servertimeout" maxlength="40"/>
+        </row>
+-->
+        <row align="center">
+          <label control="buttonstyle" value="Button Style: "/>
+          <menulist preference="pref_buttonstyle" id="buttonstyle" editable="true">
+	    <menupopup>
+	      <menuitem description="Use both icons and labels" label="both"/>
+	      <menuitem description="Use labels only" label="noicons"/>
+	      <menuitem description="Use icons only" label="iconsonly"/>
+	    </menupopup>
+          </menulist>
+        </row>
+        <row align="center">
+          <label control="algorithm" value="Algorithm: "/>
+          <menulist preference="pref_algorithm" id="algorithm" editable="true">
+	    <menupopup>
+	      <menuitem description="Let the server decide" label="AUTO"/>
+	      <menuitem description="Capstone11" label="LIBSVM"/>
+	      <menuitem description="Heuristic Prefix" label="PREFIX"/>
+	    </menupopup>
+          </menulist>
+        </row>
+<!--
+        <row align="center">
+          <label control="draginterp" value="Drag Interpretation: "/>
+          <menulist preference="pref_draginterp" id="draginterp" editable="true">
+	    <menupopup>
+	      <menuitem description="exactly the element dragged" label="EXACT"/>
+	      <menuitem description="deepest node containing the literal text of the dragged element" label="DEEPEST"/>
+	      <menuitem description="shallowest node containing the literal text of the dragged element" label="SHALLOWEST"/>
+	    </menupopup>
+          </menulist>
+        </row>
+-->
+        <row align="center">
+          <label control="dragselect" value="Drag Selection Mode: "/>
+          <menulist preference="pref_dragselect" id="dragselect" editable="true">
+	    <menupopup>
+	      <menuitem description="highlight to select" label="TEXTSELECT"/>
+	      <menuitem description="click to select" label="CLICK"/>
+	      <menuitem description="hover to select" label="HOVER"/>
+	    </menupopup>
+          </menulist>
+        </row>
+        <row align="center">
+          <label control="dragindic" value="Drag Indication Mode: "/>
+          <menulist preference="pref_dragindic" id="dragindic" editable="true">
+	    <menupopup>
+	      <menuitem description="none" label="NONE"/>
+	      <menuitem description="blue box following mouse" label="BLUEBOX"/>
+	    </menupopup>
+          </menulist>
+        </row>
+        <row align="center">
+          <label value="Change Consent Settings: "></label>
+          <label>
+          <html:a href="chrome://smartwrap/content/consent.html" target="_blank">Click here to change your consent settings</html:a>
+          </label>
+        </row>
+<!--
+        <row align="center">
+          <label control="reportmode" value="Preview Mode: "/>
+          <menulist preference="pref_reportmode" id="reportmode" editable="true">
+	    <menupopup>
+	      <menuitem description="merge into the smart table" label="MERGE"/>
+	      <menuitem description="open a new table containing the information" label="REPORT"/>
+	    </menupopup>
+          </menulist>
+        </row>
+        <row align="center">
+          <label control="annotationTemplate" value="Annotation Template: "/>
+          <textbox preference="pref_annTemplate" id="annotationTemplate" maxlength="40"/>
+        </row>
+        <row align="center">
+          <label control="annDependency" value="Annotation Dependency Handling: "/>
+          <menulist preference="pref_anndepend" id="anndepend" editable="true">
+	    <menupopup>
+	      <menuitem description="local file alongside annotation file" label="ALONGSIDE"/>              
+              -->
+              <!--
+	          <menuitem description="local file in temp directory (writable by all users)" label="TMPDIR"/>
+	          <menuitem description="inline scripts inside annotation file" label="INLINE"/>
+              -->
+              <!--
+	      <menuitem description="via a public global URL" label="GLOBAL"/>
+	    </menupopup>
+          </menulist>
+        </row>
+-->           
+       </rows>
+    </grid>
+  </prefpane>
+</prefwindow>
