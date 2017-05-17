@@ -1,17 +1,9 @@
+import {$ as jQuery} from "jquery";
+
 let Smartwrap;
-let jQuery;
 let module;
 if (!Smartwrap) {
   Smartwrap = {};
-}
-
-if (!jQuery) {
-  if (module) {
-    jQuery = module.require('jquery');
-    if (!jQuery.format) {
-      jQuery.format = module.require("strformat");
-    }
-  }
 }
 
 Smartwrap.getUID = function (uidprefix, uidwidth) {
@@ -37,7 +29,7 @@ Smartwrap.newTableModel = function (spec) {
   const columns = spec.columns || {};
   let colids = spec.colids || [];
   const rows = spec.rows || {};
-  const rowids = spec.rowids || [];
+  let rowids = spec.rowids || [];
 
   const privy = {};
   const defaultSettings = {
