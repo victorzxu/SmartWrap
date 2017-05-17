@@ -1,3 +1,7 @@
+import {$ as jQuery} from "jquery";
+
+export {Smartwrap};
+
 //this is initialized as an object in smartwrap-page
 const Smartwrap = (function () {
   "use strict";
@@ -106,7 +110,6 @@ const Smartwrap = (function () {
       this.log({
         "ANNOTATEATE": detail
       });
-      ;
 
       //var outDoc = this.docClone.cloneNode(true);
       const outDoc = document.implementation.createDocument('http://www.w3.org/1999/xhtml', 'html', null);
@@ -219,7 +222,7 @@ const Smartwrap = (function () {
 
       //alert("OUT: " + JSON.stringify(out));
 
-      const delays = 0;
+      let delays = 0;
       const proceed = function () {
         const pending = jQuery(outDoc).find(".swPending");
         if (pending.length) {
@@ -230,7 +233,7 @@ const Smartwrap = (function () {
           return;
         }
 
-        const domstr = "";
+        let domstr = "";
         const ser = new XMLSerializer();
         const stream = {
           write: function (string, count) {
@@ -1787,7 +1790,7 @@ const Smartwrap = (function () {
             eltCopy.text(text).dialog({
               buttons: {
                 'OK': function () {
-                  $(this).dialog('close');
+                  jQuery(this).dialog('close');
                 }
               }
             });

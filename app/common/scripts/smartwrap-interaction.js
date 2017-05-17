@@ -1,3 +1,5 @@
+import {$ as jQuery} from "jquery";
+
 //TODO: Fix references to smartwrap and logger, try to pass as little info as possible
 let ProcessDOM;
 

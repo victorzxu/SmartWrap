@@ -32,13 +32,13 @@ const greeter = (function () {
 
   const decode = function (pref, key) {
     const prefType = pref.getPrefType(key);
-    if (prefType == pref.PREF_STRING) {
+    if (prefType === pref.PREF_STRING) {
       return pref.getCharPref(key);
     }
-    if (prefType == pref.PREF_BOOL) {
+    if (prefType === pref.PREF_BOOL) {
       return pref.getBoolPref(key);
     }
-    if (prefType == pref.PREF_INT) {
+    if (prefType === pref.PREF_INT) {
       return pref.getIntPref(key);
     }
   };

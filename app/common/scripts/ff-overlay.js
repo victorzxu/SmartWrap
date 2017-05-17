@@ -1,3 +1,6 @@
+import {$ as jQuery} from "jquery";
+
+
 const swo = Smartwrap.overlay;
 (function () {
   swo.doit = function () {

@@ -1,3 +1,6 @@
+import {$ as jQuery} from "jquery";
+
+
 jQuery(document).on('ready', function () {
   jQuery(".decryptHere").each(function (ix, elt) {
     const index = jQuery(elt).attr("decryptIndex");

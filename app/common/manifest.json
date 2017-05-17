@@ -6,7 +6,7 @@
   "version": "1.0",
 
   "icons": {
-    "24": "icons/sw24.png"
+    "24": "images/sw24.png"
   },
 
   "permissions": [
@@ -14,19 +14,18 @@
   ],
 
   "sidebar_action": {
-    "default_icon": "icons/sw24.png",
+    "default_icon": "images/sw24.png",
     "default_title" : "SmartWrap",
-    "default_panel": "sidebar/smartwrap.html"
+    "default_panel": "pages/smartwrap.html"
   },
 
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["lib/jquery-2.0.3.min.js",
-        "lib/jquery-ui.min.js",
-        "lib/jquery.utils.liter.js",
-        "lib/jquery.xcolor.min.js",
+      "js": [
         "sidebar/smartwrap-processdom.js"]
     }
-  ]
+  ],
+
+  "default_locale":"en"
 }

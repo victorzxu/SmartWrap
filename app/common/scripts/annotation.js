@@ -1,5 +1,6 @@
 import {$ as jQuery} from "jquery";
 
+
 const program = JSON.parse(jQuery("meta#sw_program").get(0).content);
 //alert('hum: ' + JSON.stringify(program));
 

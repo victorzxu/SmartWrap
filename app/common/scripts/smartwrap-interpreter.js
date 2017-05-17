@@ -1,3 +1,5 @@
+import {$ as jQuery} from "jquery";
+
 let Smartwrap;
 
 if (!Smartwrap) {
@@ -606,7 +608,7 @@ Smartwrap.ReportInterpreter = (function () {
      cell.xpath = range.selector;
      */
 
-    if ((images.length == 0)) { // && (links.length == 0)) {
+    if ((images.length === 0)) { // && (links.length == 0)) {
       this.cellWidget.appendChild(this.targetDoc.createTextNode(cellText));
       jQuery(this.cellWidget).data("json", {
         text: cellText

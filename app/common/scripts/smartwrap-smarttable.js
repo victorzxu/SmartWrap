@@ -1,3 +1,5 @@
+import {$ as jQuery} from "jquery";
+
 let Smartwrap;
 
 if (!Smartwrap) {
@@ -911,7 +913,7 @@ Smartwrap.SmartTable = (function () {
           jQuery(doc).find(".sink").val(JSON.stringify({
             key: keyCode
           }));
-          if ((keyCode === 13) || (keyCode == 9)) {
+          if ((keyCode === 13) || (keyCode === 9)) {
             self.focus = {};
             self.focus.origin = colid;
             self.focus.dir = event.shiftKey ? "backward" : "forward";
@@ -1178,7 +1180,7 @@ Smartwrap.SmartTable = (function () {
         const mainKid = jQuery(mainKids.get(i));
         const suppKid = jQuery(suppKids.get(i));
 
-        if ((i % 2) == 1) {
+        if ((i % 2) === 1) {
           mainKid.hide();
           suppKid.show();
         } else {

@@ -1,3 +1,5 @@
+import {$ as jQuery} from "jquery";
+
 let Smartwrap;
 
 if (!Smartwrap) {

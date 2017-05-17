@@ -1,3 +1,5 @@
+import {$ as jQuery} from "jquery";
+
 /*Components.utils.import("resource://gre/modules/FileUtils.jsm");
  //TODO:  Revert changes
  //document.getElementById("test-button2").label = "HARUP";
@@ -500,7 +502,7 @@ if (true) {
          }, 2000);*/
         return;
       }
-      if (typeof consent == 'undefined') {
+      if (typeof consent === 'undefined') {
         Smartwrap.emit(jQuery(document), "consent", {});
         //window.open('chrome://smartwrap/content/consent.html');
       }

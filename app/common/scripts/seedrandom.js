@@ -221,7 +221,7 @@
   function flatten(obj, depth, result, prop, typ) {
     result = [];
     typ = typeof(obj);
-    if (depth && typ == 'object') {
+    if (depth && typ === 'object') {
       for (prop in obj) {
         if (prop.indexOf('S') < 5) {    // Avoid FF3 bug (local/sessionStorage)
           try {
@@ -231,7 +231,7 @@
         }
       }
     }
-    return (result.length ? result : obj + (typ != 'string' ? '\0' : ''));
+    return (result.length ? result : obj + (typ !== 'string' ? '\0' : ''));
   }
 
 //

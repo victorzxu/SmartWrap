@@ -1,3 +1,5 @@
+import {$ as jQuery} from "jquery";
+
 jQuery(document).ready(function () {
   "use strict";
   //alert("HEY: " + document.documentURI);
@@ -87,7 +89,7 @@ jQuery(document).ready(function () {
 
   if (that.scrapeTarget) {
     const processurl = document.defaultView.location.href;
-    if (processurl != that.scrapeTarget.url) {
+    if (processurl !== that.scrapeTarget.url) {
       return;
     }
   }

@@ -176,7 +176,7 @@ const prefutil = (function () {
       }
     };
     //privy.prefBranch.addObserver("", observer, false);
-  },
+  };
 
     pu.registerVersion = function (ver) {
       pu.installed = ver.version;

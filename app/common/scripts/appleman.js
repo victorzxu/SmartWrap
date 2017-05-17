@@ -7,7 +7,7 @@
 // Leave the above comments alone!
 // see encryption_instructions.txt for explanation of usage
 
-const decryption_cache = new Array();
+const decryption_cache = [];
 
 function decrypt_string(crypted_string, n, decryption_key, just_email_address) {
   const cache_index = "'" + crypted_string + "," + just_email_address + "'";
@@ -21,7 +21,7 @@ function decrypt_string(crypted_string, n, decryption_key, just_email_address) {
   if (!crypted_string.length) // Make sure the string is actually a string
     return "Error, not a valid index.";
 
-  if (n == 0 || decryption_key == 0) { // If the decryption key and n are not passed to the
+  if (n === 0 || decryption_key === 0) { // If the decryption key and n are not passed to the
     const numbers = crypted_string.split(' '); // function, assume they are stored as the first two
     n = numbers[0];
     decryption_key = numbers[1]; // numbers in crypted string.
@@ -38,7 +38,7 @@ function decrypt_string(crypted_string, n, decryption_key, just_email_address) {
     const decrypted_character = exponentialModulo(current_character, n, decryption_key);
     if (just_email_address && i < 7) // Skip 'mailto:' part
       continue;
-    if (just_email_address && decrypted_character == 63) // Stop at '?subject=....'
+    if (just_email_address && decrypted_character === 63) // Stop at '?subject=....'
       break;
     decrypted_string += String.fromCharCode(decrypted_character);
   }
@@ -72,15 +72,17 @@ function decrypt_and_echo(crypted_string, n, decryption_key) {
 
 // Finds base^exponent % y for large values of (base^exponent)
 function exponentialModulo(base, exponent, y) {
-  if (y % 2 == 0) {
+  let temp;
+  let answer;
+  if (y % 2 === 0) {
     answer = 1;
-    for (var i = 1; i <= y / 2; i++) {
+    for (let i = 1; i <= y / 2; i++) {
       temp = (base * base) % exponent;
       answer = (temp * answer) % exponent;
     }
   } else {
     answer = base;
-    for (var i = 1; i <= y / 2; i++) {
+    for (let i = 1; i <= y / 2; i++) {
       temp = (base * base) % exponent;
       answer = (temp * answer) % exponent;
     }

@@ -13,7 +13,9 @@
     "dev:chrome": "gulp --watch --vendor=chrome",
     "dev:firefox": "gulp --watch --vendor=firefox",
     "dev:opera": "gulp --watch --vendor=opera",
-    "dev:curr": "npm run dev:firefox && web-ext run"
+    "dev:curr": "concurrently -k 'npm run dev:firefox' 'web-ext -s dist/firefox run' ",
+    "dev:win": "concurrently -k \"npm run dev:firefox\" \"npm run helper:win\" ",
+    "helper:win":"web-ext -s=dist/firefox -f=\"C:\\Program Files\\Firefox Developer Edition\\firefox.exe\" run"
   },
   "devDependencies": {
     "babel-cli": "6.x.x",
@@ -24,6 +26,7 @@
     "babel-preset-stage-0": "6.x.x",
     "chai": "3.x.x",
     "chromereload": "0.x.x",
+    "concurrently": "^3.4.0",
     "debounce": "1.x.x",
     "del": "2.x.x",
     "eslint": "3.x.x",

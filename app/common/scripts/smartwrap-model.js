@@ -35,7 +35,7 @@ Smartwrap.newTableModel = function (spec) {
 
   const tabledata = spec.tabledata || {};
   const columns = spec.columns || {};
-  const colids = spec.colids || [];
+  let colids = spec.colids || [];
   const rows = spec.rows || {};
   const rowids = spec.rowids || [];
 
@@ -354,9 +354,7 @@ Smartwrap.newTableModel = function (spec) {
         function (accum, key) {
           const value = tabledata.fringerowmap[key];
           accum[value] = key;
-          return
-            accum
-            ;
+          return accum;
         }, {});
       //tabledata.fringerowmap = {};
 
@@ -451,8 +449,7 @@ Smartwrap.newTableModel = function (spec) {
               logger: logger
             });
               rowspan += kidspan;
-            rowno
-              ++;
+            rowno++;
           });
 
           colids.concat([
@@ -590,8 +587,7 @@ Smartwrap.newTableModel = function (spec) {
       if (callback) {
         callback(view);
       }
-      return
-        view;
+      return view;
     },
     nrows: function () {
       return rowids.length;
@@ -602,8 +598,7 @@ Smartwrap.newTableModel = function (spec) {
     getRowId: function (rowno) {
       if
       (rowno < 0) {
-        return
-          tabledata.fringeRowid;
+        return tabledata.fringeRowid;
       }
       return rowids[rowno];
     },
@@ -684,8 +679,7 @@ Smartwrap.newTableModel = function (spec) {
           if (params.tolerateNoop) {
             colinfo = {};
           } else {
-            throw
-            "setting field of nonextant column: " + colid;
+            throw "setting field of nonextant column: " + colid;
           }
         }
       }
@@ -726,8 +720,7 @@ Smartwrap.newTableModel = function (spec) {
     getCellField: function (rowid, colid
       , key) {
       if (!rows[rowid]) {
-        return
-          undefined;
+        return  undefined;
       }
       let cellObj = rows[rowid][colid
 
@@ -873,8 +866,7 @@ Smartwrap.newTableModel = function (spec) {
       newmodel.init(function (key) {
         return privy.settings[key];
       });
-      return
-        newmodel;
+      return newmodel;
     },
     extend: function (rowid, colid
       , tuple, extra) {
@@ -947,9 +939,7 @@ Smartwrap.newTableModel = function (spec) {
               IN: tabledata.fringerowmap
             });
           }
-          throw
-
-          "unrecognized fringe row " + rowid;
+          throw "unrecognized fringe row " + rowid;
         }
 
         const baseix = rowids.indexOf(baseid);

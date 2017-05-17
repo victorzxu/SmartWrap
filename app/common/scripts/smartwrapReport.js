@@ -1,3 +1,6 @@
+import {$ as jQuery} from "jquery";
+
+
 jQuery(document).ready(function () {
   const detail = {
     source: "report"
@@ -59,7 +62,7 @@ jQuery(document).ready(function () {
   const kvs = (query && query.split('&')) || [];
   kvs.forEach(function (kv) {
     const kvv = kv.split("=");
-    if (kvv.length == 2) {
+    if (kvv.length === 2) {
       params[kvv[0]] = kvv[1];
     } else {
       params[kv] = true;

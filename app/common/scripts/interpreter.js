@@ -1,3 +1,5 @@
+import {$ as jQuery} from "jquery";
+
 Pallette = {
   _colors: ["red", "green", "blue"],
   _index: 0,
@@ -231,10 +233,10 @@ SmartwrapInterpreter0 = {
 
       return fun.call(that, args);
     }
-    if (typeof program == "string") {
+    if (typeof program === "string") {
       return program;
     }
-    if (typeof program == "object") {
+    if (typeof program === "object") {
       return program;
     }
 

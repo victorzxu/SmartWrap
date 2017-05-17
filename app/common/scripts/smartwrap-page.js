@@ -1,3 +1,5 @@
+import {$ as jQuery} from "jquery";
+
 //TODO:  What functions in here need to be moved to a sidebar script, or a content script?
 jQuery(document).ready(function () {
   "use strict";
@@ -746,7 +748,7 @@ jQuery(document).ready(function () {
     //alert(JSON.stringify({status: detail.status}));
 
     const msgid = function (status) {
-      if (status == 404) {
+      if (status === 404) {
         return "msg_serverNotResponding";
       }
       return "msg_serverError";
