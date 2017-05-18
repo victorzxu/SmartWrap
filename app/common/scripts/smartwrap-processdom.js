@@ -1,4 +1,4 @@
-import {$ as jQuery} from "jquery";
+import jQuery from "jquery";
 
 jQuery(document).ready(function () {
   "use strict";

@@ -6,68 +6,9 @@
 	<title>SmartWrap Landing Page</title>
 	<meta charset="UTF-8">
 
-	<link rel="stylesheet" href="../skin/jquery-ui.css" type="text/css" media="all" />
-	<link rel="stylesheet" href="../skin/ui.theme.css" type="text/css" media="all" />
-	<!--
-    <link href="smartwrap.css" rel="stylesheet" type="text/css" media="all" />
--->
+  <script src="../scripts/sidebar.js"></script>
+  <link href="../styles/sidebar.css" rel="stylesheet" type="text/css" media="all" />
 
-	<link href="../skin/smartwrap.css" rel="stylesheet" type="text/css" media="all" />
-
-
-	<style type="text/css">
-		.ui1-tabs-nav .ui-state-default input {
-			display: none;
-			text-align: center;
-			width: 8em;
-		}
-
-		.ui1-tabs-nav .ui-tabs-selected .llabel {
-			display: none
-		}
-
-		.ui1-tabs-nav .ui-tabs-selected input {
-			display: inline
-		}
-
-		li .ui-icon-close {
-			cursor: crosshair;
-			margin-left: 0.5em;
-			margin-right: 0em;
-			display: inline-block
-		}
-
-		li ._ui-icon-close {
-			float: left;
-			margin: 0.4em 0.2em 0 0;
-			cursor: pointer;
-			display: inline;
-		}
-
-		div.tablemeta .tablename {
-			text-align: center;
-		}
-
-		div.tablemeta {
-			text-align: center;
-		}
-
-		#templates>* {
-			display: none
-		}
-
-		#smartwrap.nonDeveloper .debug {
-			display: none
-		}
-
-		.sw_button {
-			border-radius: 0.5ex;
-		}
-
-		.support.hidden {
-			opacity: 0.0;
-		}
-	</style>
 	<!--
   the inclusion below may be unnecessary, no longer sure why I added it.
   it will not work with type text/javascript but per
@@ -83,19 +24,12 @@
 
 	<!--<script src="chrome://swlib/content/jquery-ui-1.8.17.min.js"></script>-->
 
-	<script src="scripts/prefutil.js"></script>
 	<!--<script src="ff-sidebar.js"></script>-->
 	<!-- required by smartwrap.js -->
 	<!--<script src="hyphenator.js"></script>-->
 	<!--<script src="swarmature-page.js"></script>-->
-	<script src="scripts/smarttable-header.js"></script>
-	<script src="scripts/smartwrap.js"></script>
-	<script src="scripts/smartwrap-model.js"></script>
-	<!--<script src="smartwrap-docmarker.js"></script>-->
-	<script src="scripts/smartwrap-smarttable.js"></script>
-	<script src="scripts/smartwrap-palette.js"></script>
-	<script src="scripts/smartwrap-interpreter.js"></script>
-	<!--<script src="smartwrap-interaction.js"></script>-->
+	<!--<script s../rc="smartwrap-docmarker.js"></script>-->
+  <!--<script src="smartwrap-interaction.js"></script>-->
 </head>
 
 <body id="main">
@@ -373,7 +307,9 @@
                         </a></li>
 		</ul>
 	</div>
+
+  <script type="text/javascript" src="../scripts/smartwrap-page.js"></script>
+
 </body>
-<script type="text/javascript" src="smartwrap-page.js"></script>
 
 </html>

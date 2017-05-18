@@ -1,10 +1,8 @@
-let Smartwrap;
-let jQuery;
-//var Components;
+import jQuery from "jquery";
+import './lib/jquery.xcolor'
+import {Smartwrap} from './smartwrap';
 
-if (!Smartwrap) {
-  Smartwrap = {};
-}
+//var Components;
 
 
 Smartwrap.Palette = (function () {

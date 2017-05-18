@@ -1,4 +1,6 @@
-import {$ as jQuery} from "jquery";
+import jQuery from "jquery";
+import prefutil from './prefutil';
+import {smartwrapNamespace, swarmatureNamespace} from './smarttable-header';
 
 
 const swo = Smartwrap.overlay;

@@ -25,6 +25,8 @@
 // the extension has been run before; if it hasn't then open a tab to the
 // registration page.
 
+export {prefutil};
+
 const prefutil = (function () {
   "use strict";
 
@@ -178,34 +180,34 @@ const prefutil = (function () {
     //privy.prefBranch.addObserver("", observer, false);
   };
 
-    pu.registerVersion = function (ver) {
-      pu.installed = ver.version;
-      pu.via = ver.via;
-      const store = browser.storage.local;
+  pu.registerVersion = function (ver) {
+    pu.installed = ver.version;
+    pu.via = ver.via;
+    const store = browser.storage.local;
 
-      if (pu.firstRun(store.get("registeredVersion"), pu.installed)) {
-        let greeturl = store.get("authbase") + store.get("greeturl");
-        const greetquery = store.get("greetquery");
-        if (greetquery) {
-          greeturl = [greeturl, greetquery].join("?");
-        }
-        /*this.log({
-         greeturl: greeturl
-         });*/
-
-        //jQuery(pu.widget).attr("checked", "true");
-        if (pu.widget) {
-          pu.widget.setAttribute("checked", "true");
-        }
-        store.set("registeredVersion", pu.installed);
-        //pu.window = Services.wm.getMostRecentWindow("navigator:browser");
-        //pu.window.gBrowser.selectedTab = pu.window.gBrowser.addTab(greeturl);
-        /*Services.console.logStringMessage(JSON.stringify({
-         greeted: "true",
-         greeturl: greeturl
-         }));*/
+    if (pu.firstRun(store.get("registeredVersion"), pu.installed)) {
+      let greeturl = store.get("authbase") + store.get("greeturl");
+      const greetquery = store.get("greetquery");
+      if (greetquery) {
+        greeturl = [greeturl, greetquery].join("?");
       }
-    };
+      /*this.log({
+       greeturl: greeturl
+       });*/
+
+      //jQuery(pu.widget).attr("checked", "true");
+      if (pu.widget) {
+        pu.widget.setAttribute("checked", "true");
+      }
+      store.set("registeredVersion", pu.installed);
+      //pu.window = Services.wm.getMostRecentWindow("navigator:browser");
+      //pu.window.gBrowser.selectedTab = pu.window.gBrowser.addTab(greeturl);
+      /*Services.console.logStringMessage(JSON.stringify({
+       greeted: "true",
+       greeturl: greeturl
+       }));*/
+    }
+  };
 
   pu.owl = function (winn, prefix) {
     //alert('ppp');

@@ -1,9 +1,9 @@
-import {$ as jQuery} from "jquery";
-
-export {Smartwrap};
+import jQuery from "jquery";
+import prefutil from './prefutil';
+import {smartwrapNamespace, swarmatureNamespace} from './smarttable-header';
 
 //this is initialized as an object in smartwrap-page
-const Smartwrap = (function () {
+let Smartwrap = (function () {
   "use strict";
   const privy = {};
   /*var decode = function(pref, key) {
@@ -166,25 +166,27 @@ const Smartwrap = (function () {
         outDoc.documentElement.appendChild(outDoc.createTextNode("\n"));
 
         switch (depHandling) {
-          case "INLINE":
+          case "INLINE": {
             script.removeAttribute("src");
 
             jQuery(script).addClass("swPending");
 
             depDetail.element = script;
-            var evt = document.createEvent("CustomEvent");
+            const evt = document.createEvent("CustomEvent");
             evt.initCustomEvent("sw_urltodom", true, false, depDetail);
             document.dispatchEvent(evt);
             break;
+          }
           case "ALONGSIDE":
             depDetails.push(depDetail);
             break;
-          case "TMPDIR":
+          case "TMPDIR": {
             depDetail.filedir = null;
-            var evt = document.createEvent("CustomEvent");
+            const evt = document.createEvent("CustomEvent");
             evt.initCustomEvent("sw_urltofile", true, false, depDetail);
             document.dispatchEvent(evt);
             break;
+          }
           case "GLOBAL":
           default:
             const globalDependencyPrefix = this.settings.globalDependencyPrefix;
@@ -491,7 +493,7 @@ const Smartwrap = (function () {
       this.log("EMITT: " + eventName);
     },
     getCoords: function (elt) {
-      const idBearer = jQuery(elt).parents().andSelf().filter(".hasid").get(0);
+      const idBearer = jQuery(elt).parents().addBack().filter(".hasid").get(0);
       const table = jQuery(elt).parents(".smarttable").get(0);
 
       const coords = {};
@@ -507,7 +509,7 @@ const Smartwrap = (function () {
 
       var that = this;
 
-      const idBearer = jQuery(dropTarget).parents().andSelf().filter(".hasid").get(0);
+      const idBearer = jQuery(dropTarget).parents().addBack().filter(".hasid").get(0);
       this.log({
         "SWDROP": dropTarget && new XMLSerializer().serializeToString(dropTarget),
         "ID": idBearer && new XMLSerializer().serializeToString(idBearer)
@@ -733,7 +735,7 @@ const Smartwrap = (function () {
                 that[key] = metadata[key];
               });
 
-              const idBearer = jQuery(dropTarget).parents().andSelf().filter(".hasid").get(0);
+              const idBearer = jQuery(dropTarget).parents().addBack().filter(".hasid").get(0);
 
               const tableid = (idBearer && idBearer.getAttributeNS(smartwrapNamespace, "tableid")) || table.id;
               const colid = idBearer && idBearer.getAttributeNS(smartwrapNamespace, "colid");
@@ -848,7 +850,7 @@ const Smartwrap = (function () {
                 return;
               }
 
-              const ancestors = jQuery(tgt).parents().andSelf();
+              const ancestors = jQuery(tgt).parents().addBack();
 
               let candrop = false;
               candrop = candrop || ancestors.filter(".fringe").length;
@@ -868,7 +870,7 @@ const Smartwrap = (function () {
               if (candrop) {
                 //that.log("CANDROP: " + event.dataTransfer.dropEffect);
                 event.dataTransfer.dropEffect = "move";
-                if (jQuery(tgt).parents().andSelf().filter(".swcell.full").length) {
+                if (jQuery(tgt).parents().addBack().filter(".swcell.full").length) {
                   event.dataTransfer.dropEffect = "copy";
                 }
                 //that.log("CANDROP2: " + event.dataTransfer.dropEffect);
@@ -1032,10 +1034,10 @@ const Smartwrap = (function () {
                 const applySelector = elt.getAttributeNS(smartwrapNamespace, "appliesTo") || elt.getAttribute("sw:appliesTo");
                 // hack since we seem to have lost namespace somewhere
 
-                const showItem = jQuery(tgt).parents().andSelf().filter(applySelector).length;
+                const showItem = jQuery(tgt).parents().addBack().filter(applySelector).length;
                 //alert("SELECTOR: " + applySelector + ":: " + showItem);
                 if (showItem) {
-                  jQuery(elt).parents().andSelf().show();
+                  jQuery(elt).parents().addBack().show();
                 } else {
                   jQuery(elt).hide();
                 }
@@ -1058,7 +1060,7 @@ const Smartwrap = (function () {
 
               const ui = {};
               ui.tableid = table.id;
-              ui.context = jQuery(tgt).parents().andSelf().filter(function (index) {
+              ui.context = jQuery(tgt).parents().addBack().filter(function (index) {
                 ui.colid = ui.colid || this.getAttributeNS(smartwrapNamespace, "colid");
                 ui.rowid = ui.rowid || this.getAttributeNS(smartwrapNamespace, "rowid");
                 return (ui.colid && ui.rowid);
@@ -1222,7 +1224,7 @@ const Smartwrap = (function () {
                   UI: ui
                 });
 
-                const ref = jQuery(tgt).parents().andSelf().filter(".sw_injected_cell, .swcell").get(0);
+                const ref = jQuery(tgt).parents().addBack().filter(".sw_injected_cell, .swcell").get(0);
                 ui.rowid = ui.rowid || ref.getAttributeNS(smartwrapNamespace, "rowid");
                 ui.colid = ui.colid || ref.getAttributeNS(smartwrapNamespace, "colid");
                 ui.tableid = ui.tableid || ref.getAttributeNS(smartwrapNamespace, "tableid");
@@ -2075,3 +2077,6 @@ const Smartwrap = (function () {
     },
   }
 })();
+
+export {Smartwrap};
+

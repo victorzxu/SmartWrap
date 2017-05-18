@@ -1,4 +1,4 @@
-import {$ as jQuery} from "jquery";
+import jQuery from "jquery";
 
 /*Components.utils.import("resource://gre/modules/FileUtils.jsm");
  //TODO:  Revert changes

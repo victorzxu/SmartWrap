@@ -13,6 +13,6 @@
     "strict": 0
   },
   "extends": [
-    "eslint:recommended"
+//    "eslint:recommended"
   ]
 }

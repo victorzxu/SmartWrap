@@ -1,10 +1,6 @@
-import {$ as jQuery} from "jquery";
+import jQuery from "jquery";
+import {Smartwrap} from './smartwrap';
 
-let Smartwrap;
-
-if (!Smartwrap) {
-  Smartwrap = {};
-}
 
 Smartwrap.Interpreter = (function () {
   "use strict";

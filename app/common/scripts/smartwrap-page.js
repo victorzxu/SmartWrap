@@ -1,4 +1,22 @@
-import {$ as jQuery} from "jquery";
+//noinspection ES6UnusedImports
+import $ from "jquery"; // This if for jquery-ui to inject(add) members to jquery object
+import jQuery from "jquery";
+//TODO: yxl: Understand why we can't import $,query in one line?
+import 'jquery-ui/ui/widgets/resizable';
+import 'jquery-ui/ui/widgets/menu';
+import 'jquery-ui/ui/widgets/tabs';
+import 'jquery-ui/ui/widgets/sortable';
+import 'jquery-ui/ui/widgets/button';
+import './lib/jquery.utils.liter';
+
+// yxl:Smartwrap object and its "plugins"
+import {Smartwrap} from './smartwrap';
+import './smartwrap-interpreter';
+import './smartwrap-smarttable';
+import './smartwrap-model';
+import './smartwrap-palette';
+
+import {smartwrapNamespace, swarmatureNamespace} from './smarttable-header';
 
 //TODO:  What functions in here need to be moved to a sidebar script, or a content script?
 jQuery(document).ready(function () {
@@ -12,7 +30,7 @@ jQuery(document).ready(function () {
   // div
 
   //this is in the sidebar
-  jQuery("#smarttables").resizable({
+  $("#smarttables").resizable({
     animate: true,
     grid: [50, 5],
     handles: "s",
@@ -507,7 +525,7 @@ jQuery(document).ready(function () {
     annLink.get(0).href = detail.fileurl;
     //annLink.addClass("text-link");
 
-    annLink.parents().andSelf().show();
+    annLink.parents().addBack().show();
 
     //alert("ANNLINK: " + new XMLSerializer().serializeToString(annLink.get(0)));
   });

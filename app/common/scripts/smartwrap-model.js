@@ -1,10 +1,7 @@
-import {$ as jQuery} from "jquery";
+import jQuery from "jquery";
+import {Smartwrap} from './smartwrap';
 
-let Smartwrap;
 let module;
-if (!Smartwrap) {
-  Smartwrap = {};
-}
 
 Smartwrap.getUID = function (uidprefix, uidwidth) {
   if (!this.getUID.seq) {

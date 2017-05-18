@@ -1,4 +1,5 @@
-import {$ as jQuery} from "jquery";
+import jQuery from "jquery";
+import prefutil from './prefutil';
 
 
 jQuery(document).ready(function () {

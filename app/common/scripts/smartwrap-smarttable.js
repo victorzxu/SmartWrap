@@ -1,10 +1,6 @@
-import {$ as jQuery} from "jquery";
-
-let Smartwrap;
-
-if (!Smartwrap) {
-  Smartwrap = {};
-}
+import jQuery from "jquery";
+import {Smartwrap} from './smartwrap';
+import {smartwrapNamespace, swarmatureNamespace} from './smarttable-header';
 
 Smartwrap.SmartTable = (function () {
   "use strict";
@@ -307,7 +303,7 @@ Smartwrap.SmartTable = (function () {
           return;
         }
 
-        jQuery(intendedElt).find("*").andSelf().filter("img").each(function (index, elt) {
+        jQuery(intendedElt).find("*").addBack().filter("img").each(function (index, elt) {
           //tuple.keys.push("imageSource");
           //tuple.values.push(elt.src);
           tuple.map.imageSource = elt.src;
@@ -321,7 +317,7 @@ Smartwrap.SmartTable = (function () {
 
           tuple.types["image"] = true;
         });
-        jQuery(intendedElt).find("*").andSelf().filter("a").each(function (index, elt) {
+        jQuery(intendedElt).find("*").addBack().filter("a").each(function (index, elt) {
           //tuple.keys.push("linkTarget");
           //tuple.values.push(elt.href);
           tuple.map.linkTarget = elt.href;
@@ -877,7 +873,7 @@ Smartwrap.SmartTable = (function () {
 
         const newHead = jQuery(tableObj.headCell).clone();
         newHead.insertBefore(tableObj.headCell);
-        newHead.children().andSelf().each(function (ix, elt) {
+        newHead.children().addBack().each(function (ix, elt) {
           elt.setAttributeNS(smartwrapNamespace, "colid", colid);
         });
 

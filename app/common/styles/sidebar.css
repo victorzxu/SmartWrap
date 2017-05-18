@@ -1,0 +1,51 @@
+.ui1-tabs-nav .ui-state-default input {
+  display: none;
+  text-align: center;
+  width: 8em;
+}
+
+.ui1-tabs-nav .ui-tabs-selected .llabel {
+  display: none
+}
+
+.ui1-tabs-nav .ui-tabs-selected input {
+  display: inline
+}
+
+li .ui-icon-close {
+  cursor: crosshair;
+  margin-left: 0.5em;
+  margin-right: 0em;
+  display: inline-block
+}
+
+li ._ui-icon-close {
+  float: left;
+  margin: 0.4em 0.2em 0 0;
+  cursor: pointer;
+  display: inline;
+}
+
+div.tablemeta .tablename {
+  text-align: center;
+}
+
+div.tablemeta {
+  text-align: center;
+}
+
+#templates>* {
+  display: none
+}
+
+#smartwrap.nonDeveloper .debug {
+  display: none
+}
+
+.sw_button {
+  border-radius: 0.5ex;
+}
+
+.support.hidden {
+  opacity: 0.0;
+}

@@ -15,7 +15,7 @@
     "dev:opera": "gulp --watch --vendor=opera",
     "dev:curr": "concurrently -k 'npm run dev:firefox' 'web-ext -s dist/firefox run' ",
     "dev:win": "concurrently -k \"npm run dev:firefox\" \"npm run helper:win\" ",
-    "helper:win":"web-ext -s=dist/firefox -f=\"C:\\Program Files\\Firefox Developer Edition\\firefox.exe\" run"
+    "helper:win": "web-ext -s=dist/firefox -f=\"C:\\Program Files\\Firefox Developer Edition\\firefox.exe\" run"
   },
   "devDependencies": {
     "babel-cli": "6.x.x",
@@ -27,14 +27,17 @@
     "chai": "3.x.x",
     "chromereload": "0.x.x",
     "concurrently": "^3.4.0",
+    "css-loader": "^0.28.1",
     "debounce": "1.x.x",
     "del": "2.x.x",
     "eslint": "3.x.x",
     "eslint-loader": "1.x.x",
+    "extract-text-webpack-plugin": "1.0.1",
     "gulp": "3.x.x",
     "gulp-bump": "2.x.x",
     "gulp-cache": "0.x.x",
     "gulp-clean-css": "2.x.x",
+    "gulp-dest": "^0.2.3",
     "gulp-filter": "4.x.x",
     "gulp-git": "1.x.x",
     "gulp-if": "2.x.x",
@@ -51,12 +54,15 @@
     "gulp-util": "3.x.x",
     "gulp-zip": "3.x.x",
     "require-dir": "0.x.x",
+    "style-loader": "^0.17.0",
+    "url-loader": "^0.5.8",
     "vinyl-named": "1.x.x",
     "webpack": "1.x.x",
     "webpack-stream": "3.x.x",
     "yargs": "5.x.x"
   },
   "dependencies": {
-    "jquery": "^3.2.1"
+    "jquery": "^3.2.1",
+    "jquery-ui": "^1.12.1"
   }
 }

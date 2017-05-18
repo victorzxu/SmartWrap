@@ -4,6 +4,9 @@ Smartwrap Extension for Firefox
 
 ## For developer
 
+### Notes from Xiao Liang
+-  For Firefox, please enable source map when debugging [tutorial](https://developer.mozilla.org/en-US/docs/Tools/Debugger/How_to/Use_a_source_map)
+
 ### Installation
 
 	$ npm install

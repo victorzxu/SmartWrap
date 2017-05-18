@@ -1,4 +1,6 @@
-import {$ as jQuery} from "jquery";
+import jQuery from "jquery";
+import prefutil from './prefutil';
+import {decrypt_string} from './lib/appleman';
 
 
 jQuery(document).on('ready', function () {

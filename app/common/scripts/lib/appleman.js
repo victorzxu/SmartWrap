@@ -89,3 +89,6 @@ function exponentialModulo(base, exponent, y) {
   }
   return answer;
 }
+
+
+export {decrypt_string};

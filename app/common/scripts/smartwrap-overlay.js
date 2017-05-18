@@ -1,4 +1,4 @@
-import {$ as jQuery} from "jquery";
+import jQuery from "jquery";
 
 let Smartwrap;
 
@@ -19,7 +19,7 @@ Smartwrap.overlay = (function () {
         let show = false;
 
         if (selector) {
-          show = show || !!(jQuery(tgt).parents().andSelf().filter(selector).length);
+          show = show || !!(jQuery(tgt).parents().addBack().filter(selector).length);
         }
 
         //var x = Math.random();
