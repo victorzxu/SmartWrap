@@ -28,6 +28,7 @@ SmartwrapInterpreter0 = {
         that.interpret(step);
       });
 
+      //<editor-fold desc="yxl:ifFalseCodeBlock">
       if (false) {
         const Ci = Components.interfaces;
 
@@ -43,6 +44,7 @@ SmartwrapInterpreter0 = {
         selCon.setDisplaySelection(selCon.SELECTION_ATTENTION);
         selCon.repaintSelection(selCon.SELECTION_NORMAL);
       }
+      //</editor-fold>
     },
     "startTable": function () {
       this.table = ["table"];

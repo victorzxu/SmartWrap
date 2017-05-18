@@ -1,4 +1,6 @@
 import jQuery from "jquery";
+import DocumentMarker from './smartwrap-docmarker';
+import Interaction from './smartwrap-interaction';
 
 jQuery(document).ready(function () {
   "use strict";
@@ -96,7 +98,7 @@ jQuery(document).ready(function () {
 
   const boxer = function (dragIndicator) {
     if (dragIndicator === "BLUEBOX") {
-      return Object.create(ProcessDOM.Interaction.BoxIndicator).init({
+      return Object.create(Interaction.BoxIndicator).init({
         doc: document,
         smartwrap: that
       });
@@ -112,21 +114,21 @@ jQuery(document).ready(function () {
 
   const selector = function (dragSelector) {
     if (dragSelector === "CLICK") {
-      return Object.create(ProcessDOM.Interaction.ClickSelector).init({
+      return Object.create(Interaction.ClickSelector).init({
         doc: document,
         smartwrap: that,
         logger: that
       });
     }
     if (dragSelector === "HOVER") {
-      return Object.create(ProcessDOM.Interaction.HoverSelector).init({
+      return Object.create(Interaction.HoverSelector).init({
         doc: document,
         smartwrap: that,
         logger: that
       });
     }
     if (dragSelector === "TEXTSELECT") {
-      return Object.create(ProcessDOM.Interaction.SelectTextSelector).init({
+      return Object.create(Interaction.SelectTextSelector).init({
         doc: document,
         smartwrap: that,
         logger: that
@@ -193,7 +195,7 @@ jQuery(document).ready(function () {
   //var marker = Object.create(that.DocumentMarker);
   //marker.init(doc, markParams);
 
-  const marker = new that.DocumentMarker({
+  const marker = new DocumentMarker({
     doc: document,
     params: markParams
   });
@@ -202,6 +204,7 @@ jQuery(document).ready(function () {
   }, 10);
   //marker.mark();
 
+  //<editor-fold desc="yxl:if false">
   if (false) {
     jQuery(document).bind("dragstart", function (event) {
       const tgt = event.target;
@@ -241,6 +244,7 @@ jQuery(document).ready(function () {
       }
     });
   }
+  //</editor-fold>
 
   //that.log({
   //  markdone: true,

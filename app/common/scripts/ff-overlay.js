@@ -1,6 +1,6 @@
 import jQuery from "jquery";
-import prefutil from './prefutil';
-import {smartwrapNamespace, swarmatureNamespace} from './smarttable-header';
+import prefutil from "./prefutil";
+import {smartwrapNamespace} from "./smarttable-header";
 
 
 const swo = Smartwrap.overlay;
@@ -156,6 +156,9 @@ const swo = Smartwrap.overlay;
         if (Object.keys(swo.marksInProgress).length) {
           //swo.markWait.show();
           swo.markWait.css("opacity", "1.0");
+
+
+          //<editor-fold desc="yxl:ifFalseCodeBlock">
           if (false) {
             const max = 1 + (100 * (swo.marks.in || 0));
             swo.analyzing.get(0).max = max;
@@ -169,6 +172,7 @@ const swo = Smartwrap.overlay;
             swo.analyzing.get(0).value = value;
             setprogress(swo.markWait, [0, 0, (100 * value) / max]);
           }
+          //</editor-fold>
         } else {
           //swo.markWait.hide();
           swo.markWait.css("opacity", swo.opaqFloor);

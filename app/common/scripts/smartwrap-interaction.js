@@ -1,25 +1,20 @@
 import jQuery from "jquery";
 
 //TODO: Fix references to smartwrap and logger, try to pass as little info as possible
-let ProcessDOM;
 
-if (!ProcessDOM) {
-  ProcessDOM = {};
-}
-
-ProcessDOM.Interaction = (function () {
+const Interaction = (function () {
   "use strict";
 
-  ProcessDOM.Interaction = {};
-  ProcessDOM.Interaction.enableDragging = function (elt) {
+  let InteractionObj = {};
+  InteractionObj.enableDragging = function (elt) {
     jQuery(elt).data("cached_draggable", elt.draggable);
     elt.draggable = true;
   };
-  ProcessDOM.Interaction.disableDragging = function (elt) {
+  InteractionObj.disableDragging = function (elt) {
     elt.draggable = jQuery(elt).data("cached_draggable");
   };
 
-  ProcessDOM.Interaction.BoxIndicator = {
+  InteractionObj.BoxIndicator = {
     boxTemplName: "sw_selbox",
     init: function (params) {
       this.doc = params.doc;
@@ -205,7 +200,7 @@ ProcessDOM.Interaction = (function () {
     }
   };
 
-  ProcessDOM.Interaction.SelectTextSelector = {
+  InteractionObj.SelectTextSelector = {
     init: function (params) {
       this.doc = params.doc;
       //this.logger = params.logger;
@@ -221,8 +216,8 @@ ProcessDOM.Interaction = (function () {
         return;
       }
 
-      //if (ProcessDOM.log) {
-      //  ProcessDOM.log("...DRRAG");
+      //if (log) {
+      //  log("...DRRAG");
       //}
     },
     handleDragstart: function (event) {
@@ -279,9 +274,9 @@ ProcessDOM.Interaction = (function () {
     }
   };
 
-  ProcessDOM.Interaction.ClickSelector = Object.create(ProcessDOM.Interaction.SelectTextSelector);
-  ProcessDOM.Interaction.ClickSelector.init = function (params) {
-    ProcessDOM.Interaction.SelectTextSelector.init.call(this, params);
+  InteractionObj.ClickSelector = Object.create(InteractionObj.SelectTextSelector);
+  InteractionObj.ClickSelector.init = function (params) {
+    InteractionObj.SelectTextSelector.init.call(this, params);
 
     return this;
   };
@@ -290,7 +285,7 @@ ProcessDOM.Interaction = (function () {
    event.target.ownerDocument.defaultView.alert("DBLCLICK!!");
    };
    */
-  ProcessDOM.Interaction.ClickSelector.handleClick = function (event) {
+  InteractionObj.ClickSelector.handleClick = function (event) {
     const tgt = event.target;
 
     if (this.doc !== tgt.ownerDocument) {
@@ -301,7 +296,7 @@ ProcessDOM.Interaction = (function () {
 
     if (this.selectedElt) {
       //this.selectedElt.draggable = false;
-      ProcessDOM.Interaction.disableDragging(this.selectedElt);
+      InteractionObj.disableDragging(this.selectedElt);
       jQuery(this.selectedElt).removeClass("sw_selected");
       this.selectedElt = null;
     }
@@ -335,13 +330,13 @@ ProcessDOM.Interaction = (function () {
 
     this.selectedElt = tgt;
     jQuery(this.selectedElt).addClass("sw_selected");
-    ProcessDOM.Interaction.enableDragging(this.selectedElt);
+    InteractionObj.enableDragging(this.selectedElt);
     //this.selectedElt.draggable = true;
     //tgt.ownerDocument.defaultView.alert("CLICKED!!");
   };
-  ProcessDOM.Interaction.ClickSelector.registerListeners = function () {
+  InteractionObj.ClickSelector.registerListeners = function () {
     const that = this;
-    ProcessDOM.Interaction.SelectTextSelector.registerListeners.call(this);
+    InteractionObj.SelectTextSelector.registerListeners.call(this);
     jQuery(this.doc).bind("dblclick", function (event) {
       that.handleDblclick(event);
     });
@@ -350,23 +345,23 @@ ProcessDOM.Interaction = (function () {
     });
   };
 
-  ProcessDOM.Interaction.HoverSelector = Object.create(ProcessDOM.Interaction.SelectTextSelector);
-  ProcessDOM.Interaction.HoverSelector.init = function (params) {
-    ProcessDOM.Interaction.SelectTextSelector.init.call(this, params);
+  InteractionObj.HoverSelector = Object.create(InteractionObj.SelectTextSelector);
+  InteractionObj.HoverSelector.init = function (params) {
+    InteractionObj.SelectTextSelector.init.call(this, params);
 
     return this;
   };
-  ProcessDOM.Interaction.HoverSelector.handleMouseover = function (event) {
+  InteractionObj.HoverSelector.handleMouseover = function (event) {
     //event.target.draggable = true;
-    ProcessDOM.Interaction.enableDragging(event.target);
+    InteractionObj.enableDragging(event.target);
   };
-  ProcessDOM.Interaction.HoverSelector.handleMouseout = function (event) {
+  InteractionObj.HoverSelector.handleMouseout = function (event) {
     //event.target.draggable = false;
-    ProcessDOM.Interaction.disableDragging(event.target);
+    InteractionObj.disableDragging(event.target);
   };
-  ProcessDOM.Interaction.HoverSelector.registerListeners = function () {
+  InteractionObj.HoverSelector.registerListeners = function () {
     const that = this;
-    ProcessDOM.Interaction.SelectTextSelector.registerListeners.call(this);
+    InteractionObj.SelectTextSelector.registerListeners.call(this);
     jQuery(this.doc).bind("mouseover", function (event) {
       that.handleMouseover(event);
     });
@@ -375,5 +370,7 @@ ProcessDOM.Interaction = (function () {
     });
   };
 
-  return ProcessDOM.Interaction;
+  return InteractionObj;
 }());
+
+export default Interaction;

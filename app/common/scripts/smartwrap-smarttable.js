@@ -1,6 +1,6 @@
 import jQuery from "jquery";
-import {Smartwrap} from './smartwrap';
-import {smartwrapNamespace, swarmatureNamespace} from './smarttable-header';
+import {Smartwrap} from "./smartwrap";
+import {smartwrapNamespace} from "./smarttable-header";
 
 Smartwrap.SmartTable = (function () {
   "use strict";
@@ -658,12 +658,14 @@ Smartwrap.SmartTable = (function () {
         }
         coldraw = Math.random();
       }
+      //<editor-fold desc="yxl:ifFalseCodeBlock">
       if (false) {
         alert("ROWS: " + nrows0 + " <- " + nrows);
         alert("COLIDS: " + JSON.stringify(colids));
         alert("COORDS: " + JSON.stringify(coords));
         alert("COLS: " + this.model.ncols() + " <- " + j);
       }
+      //</editor-fold>
     },
     getRelation: function () {
       const relation = {

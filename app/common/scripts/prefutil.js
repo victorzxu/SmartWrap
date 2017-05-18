@@ -25,8 +25,6 @@
 // the extension has been run before; if it hasn't then open a tab to the
 // registration page.
 
-export {prefutil};
-
 const prefutil = (function () {
   "use strict";
 
@@ -242,3 +240,5 @@ const prefutil = (function () {
 
   return pu;
 }());
+
+export default prefutil;

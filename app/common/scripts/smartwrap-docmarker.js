@@ -1,12 +1,7 @@
 import jQuery from "jquery";
 
-let ProcessDOM;
-
-if (!ProcessDOM) {
-  ProcessDOM = {};
-}
 //TODO: Fix logging since reference to smartwrap was taken out
-ProcessDOM.DocumentMarker = (function () {
+const DocumentMarker = (function () {
   "use strict";
 
   return function (spec) {
@@ -358,9 +353,11 @@ ProcessDOM.DocumentMarker = (function () {
       }, this.params.chunkDelay);
     };
     self.markNode = function (node) {
+      //<editor-fold desc="yxl:ifFalseCodeBlock">
       if (false) {
         return;
       }
+      //</editor-fold>
 
       if (node.localName) {
         const tag = node.localName.toLowerCase();
@@ -623,3 +620,5 @@ ProcessDOM.DocumentMarker = (function () {
   };
 
 }());
+
+export default DocumentMarker;

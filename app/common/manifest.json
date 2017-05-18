@@ -2,7 +2,7 @@
 
   "manifest_version": 2,
   "name": "SmartWrap",
-  "description": "Smartwrap Extension for Firefox",
+  "description": "Smartwrap Plugin",
   "version": "1.0",
 
   "icons": {

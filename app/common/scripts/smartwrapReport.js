@@ -1,5 +1,5 @@
 import jQuery from "jquery";
-import prefutil from './prefutil';
+import prefutil from "./prefutil";
 
 
 jQuery(document).ready(function () {

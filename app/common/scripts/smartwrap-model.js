@@ -1,5 +1,5 @@
 import jQuery from "jquery";
-import {Smartwrap} from './smartwrap';
+import {Smartwrap} from "./smartwrap";
 
 let module;
 
@@ -227,10 +227,10 @@ Smartwrap.newTableModel = function (spec) {
           );
         };
       rowids.forEach(function (rowid) {
-        row = rows[
-          rowid];
-        colids.forEach(extractFromField);
-      }
+          row = rows[
+            rowid];
+          colids.forEach(extractFromField);
+        }
       );
       return xpaths;
     },
@@ -354,11 +354,11 @@ Smartwrap.newTableModel = function (spec) {
       (query) {
         mainrowids =
           mainrowids.reduce(function (accum, rowid) {
-          if (rows[rowid].foreignKey === query) {
-            return accum.concat([rowid]);
-          }
-          return accum;
-        }, []);
+            if (rows[rowid].foreignKey === query) {
+              return accum.concat([rowid]);
+            }
+            return accum;
+          }, []);
       } else {
         mainrowids =
           mainrowids.slice(0,
@@ -396,58 +396,58 @@ Smartwrap.newTableModel = function (spec) {
           let rowspan = 0;
           kidview1.rowids.forEach(
             function (kidrowid) {
-            outrows[kidrowid]
-              =
-              {};
-            let kidspan = 1;
-            kidview1.colids.forEach(function (kidcolid) {
+              outrows[kidrowid]
+                =
+                {};
+              let kidspan = 1;
+              kidview1.colids.forEach(function (kidcolid) {
+                outrows[
+                  kidrowid][
+                  kidcolid] = kidview1.rows
+                  [kidrowid][
+                  kidcolid];
+                outrows[
+
+                  kidrowid].foreignKey =
+                  rowid;
+                kidspan = Math.max(kidspan, ((outrows[kidrowid] && outrows[kidrowid]
+                      [kidcolid] && outrows[kidrowid][kidcolid].rowspan) || 1
+                  )
+                );
+              });
+              colids.forEach
+              (function (maincolid) {
+                outrows[kidrowid][
+                  maincolid] =
+                  getCellSchematic(self
+                    , rowid,
+                    maincolid, {
+                      rowno: rowno,
+                      rowcount: rowcount,
+
+                      logger: logger
+                    });
+              });
               outrows[
                 kidrowid][
-                kidcolid] = kidview1.rows
-                [kidrowid][
-                kidcolid];
-              outrows[
-
-                kidrowid].foreignKey =
-                rowid;
-              kidspan = Math.max(kidspan, ((outrows[kidrowid] && outrows[kidrowid]
-                    [kidcolid] && outrows[kidrowid][kidcolid].rowspan) || 1
-                )
-              );
-            });
-            colids.forEach
-            (function (maincolid) {
-              outrows[kidrowid][
-                maincolid] =
-                getCellSchematic(self
-                  , rowid,
-                  maincolid, {
+                tabledata.fringeColid] = getCellSchematic(self, rowid, tabledata.fringeColid, {
                 rowno: rowno,
-                    rowcount: rowcount,
-
-                    logger: logger
+                rowcount: rowcount
+                ,
+                fringecol: true,
+                logger: logger
               });
-            });
-            outrows[
-              kidrowid][
-              tabledata.fringeColid] = getCellSchematic(self, rowid, tabledata.fringeColid, {
-              rowno: rowno,
-              rowcount: rowcount
-              ,
-              fringecol: true,
-              logger: logger
-            });
               rowspan += kidspan;
-            rowno++;
-          });
+              rowno++;
+            });
 
           colids.concat([
             tabledata.fringeColid]).forEach(
             function (maincolid) {
-            outrows[
-              kidview1.rowids
-                [0]][maincolid].rowspan = rowspan;
-          });
+              outrows[
+                kidview1.rowids
+                  [0]][maincolid].rowspan = rowspan;
+            });
         } else {
           view.rowids.push(rowid);
           outrows[rowid] = {};
@@ -471,8 +471,8 @@ Smartwrap.newTableModel = function (spec) {
 
             getCellSchematic(self, rowid,
               tabledata.fringeColid, {
-            fringecol: true
-          });
+                fringecol: true
+              });
         }
       });
 
@@ -638,7 +638,7 @@ Smartwrap.newTableModel = function (spec) {
       return jQuery.format(
         "COLUMN {let}", {
           let: this.getColumnLetter(colno)
-      });
+        });
     },
     setColumnField: function (colid, key, value, params) {
       params = params
@@ -709,7 +709,7 @@ Smartwrap.newTableModel = function (spec) {
     getCellField: function (rowid, colid
       , key) {
       if (!rows[rowid]) {
-        return  undefined;
+        return undefined;
       }
       let cellObj = rows[rowid][colid
 
@@ -742,10 +742,10 @@ Smartwrap.newTableModel = function (spec) {
     clearCell: function (rowid, colid) {
       if (this.logger) {
         this.logger.log({
-          PRECLEAR: rows,
-          rowid: rowid,
-          colid: colid
-        }
+            PRECLEAR: rows,
+            rowid: rowid,
+            colid: colid
+          }
         );
       }
 
@@ -765,8 +765,8 @@ Smartwrap.newTableModel = function (spec) {
         colid];
       this.removeRow(
         rowid, {
-        forceRemoveNonEmpty: false
-      });
+          forceRemoveNonEmpty: false
+        });
       this.removeColumn(colid, {
         forceRemoveNonEmpty: false
       });
@@ -807,11 +807,11 @@ Smartwrap.newTableModel = function (spec) {
       let empty = true;
       rowids.forEach(
         function (rowid) {
-        if (rows[rowid][
-            colid]) {
-          empty = false;
-        }
-      });
+          if (rows[rowid][
+              colid]) {
+            empty = false;
+          }
+        });
 
       if (!empty) {
         if (!force) {
@@ -822,9 +822,9 @@ Smartwrap.newTableModel = function (spec) {
 
       colids =
         colids.filter(function (listing) {
-        return (
-        listing !== colid);
-      });
+          return (
+          listing !== colid);
+        });
     },
     cloneTable: function () {
       const newrows = {};
@@ -835,10 +835,10 @@ Smartwrap.newTableModel = function (spec) {
           rows[rowid]).forEach(
           function (key) {
             //if (logger) { logger.log({EXTENDKEY: key, VALUE: rows[rowid][key]}); }
-          if (rows[rowid][key]) {
-            newrows[rowid][key] = Object.create(rows[rowid][key]);
-          }
-        });
+            if (rows[rowid][key]) {
+              newrows[rowid][key] = Object.create(rows[rowid][key]);
+            }
+          });
       });
       const spec = {
         tabledata: Object.create(tabledata),
@@ -954,13 +954,13 @@ Smartwrap.newTableModel = function (spec) {
 
       if (this.logger) {
         this.logger.log({
-          COLID: colid,
-          EQ: (
-            colid === tabledata.fringeColid ?
-              "===" : "!==")
+            COLID: colid,
+            EQ: (
+              colid === tabledata.fringeColid ?
+                "===" : "!==")
             ,
             FRINGECOLL: tabledata.fringeColid
-        }
+          }
         );
       }
 
@@ -1042,38 +1042,38 @@ Smartwrap.newTableModel = function (spec) {
         let kidrowid0;
         rowids.forEach(
           function (rowid) {
-          if (rows[rowid] && rows[rowid][colid]) {
-            const kidrowid = self
-              .getUID("ROW", privy.settings.uidwidth);
-            kidrowids.push(kidrowid);
-            kidrows[kidrowid] = {};
-            kidrows[kidrowid][colid] = rows[rowid][colid];
-            kidrows[kidrowid].foreignKey = rowid;
-          }
+            if (rows[rowid] && rows[rowid][colid]) {
+              const kidrowid = self
+                .getUID("ROW", privy.settings.uidwidth);
+              kidrowids.push(kidrowid);
+              kidrows[kidrowid] = {};
+              kidrows[kidrowid][colid] = rows[rowid][colid];
+              kidrows[kidrowid].foreignKey = rowid;
+            }
 
-          if (rowid === rowid0) {
-            kidrowid0 = self.getUID("ROW", privy.settings.uidwidth);
-            kidrowids.push(kidrowid0);
+            if (rowid === rowid0) {
+              kidrowid0 = self.getUID("ROW", privy.settings.uidwidth);
+              kidrowids.push(kidrowid0);
 
-            kidrows[kidrowid0] = {};
-            kidrows[kidrowid0].foreignKey =
-              rowid;
-          }
-        });
+              kidrows[kidrowid0] = {};
+              kidrows[kidrowid0].foreignKey =
+                rowid;
+            }
+          });
         const kidcols = {};
         kidcols[colid
           ] = coldata;
         tabledata.childTable =
 
           Smartwrap.newTableModel({
-          tabledata: {
-            parentTable: self
-          },
-          rows: kidrows,
+            tabledata: {
+              parentTable: self
+            },
+            rows: kidrows,
             rowids: kidrowids,
-          columns: kidcols,
-          colids: [colid]
-        });
+            columns: kidcols,
+            colids: [colid]
+          });
         tabledata.childTable.init();
         tabledata.childTable.setTableField(
           "nonempty",

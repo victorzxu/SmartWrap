@@ -1,10 +1,6 @@
 import jQuery from "jquery";
+import {Smartwrap} from "./smartwrap";
 
-let Smartwrap;
-
-if (!Smartwrap) {
-  Smartwrap = {};
-}
 
 Smartwrap.overlay = (function () {
   "use strict";

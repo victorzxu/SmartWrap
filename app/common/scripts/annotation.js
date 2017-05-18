@@ -1,6 +1,6 @@
 import jQuery from "jquery";
-import {Smartwrap} from './smartwrap';
-import './smartwrap-interpreter';
+import {Smartwrap} from "./smartwrap";
+import "./smartwrap-interpreter";
 
 const program = JSON.parse(jQuery("meta#sw_program").get(0).content);
 //alert('hum: ' + JSON.stringify(program));
