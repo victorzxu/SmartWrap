@@ -2,30 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8685f108-dad2-48cf-871e-1dcda6c5fb03" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/common/scripts/seedrandom.js" afterPath="" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/common/scripts/content_script.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/common/manifest.json" afterPath="$PROJECT_DIR$/app/common/manifest.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/common/scripts/annotation.js" afterPath="$PROJECT_DIR$/app/common/scripts/annotation.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/common/scripts/consent.js" afterPath="$PROJECT_DIR$/app/common/scripts/consent.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/common/scripts/ff-overlay.js" afterPath="$PROJECT_DIR$/app/common/scripts/ff-overlay.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/common/scripts/interpreter.js" afterPath="$PROJECT_DIR$/app/common/scripts/interpreter.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/common/scripts/lib/jquery.utils.liter.js" afterPath="$PROJECT_DIR$/app/common/scripts/lib/jquery.utils.liter.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/common/scripts/lib/jquery.xcolor.js" afterPath="$PROJECT_DIR$/app/common/scripts/lib/jquery.xcolor.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/common/scripts/prefutil.js" afterPath="$PROJECT_DIR$/app/common/scripts/prefutil.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/common/scripts/sidebar.js" afterPath="$PROJECT_DIR$/app/common/scripts/sidebar.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/common/scripts/smartwrap-docmarker.js" afterPath="$PROJECT_DIR$/app/common/scripts/smartwrap-docmarker.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/common/scripts/smartwrap-interaction.js" afterPath="$PROJECT_DIR$/app/common/scripts/smartwrap-interaction.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/common/scripts/smartwrap-interpreter.js" afterPath="$PROJECT_DIR$/app/common/scripts/smartwrap-interpreter.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/common/scripts/smartwrap-model.js" afterPath="$PROJECT_DIR$/app/common/scripts/smartwrap-model.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/common/scripts/smartwrap-overlay.js" afterPath="$PROJECT_DIR$/app/common/scripts/smartwrap-overlay.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/common/scripts/smartwrap-page.js" afterPath="$PROJECT_DIR$/app/common/scripts/smartwrap-page.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/common/scripts/smartwrap-palette.js" afterPath="$PROJECT_DIR$/app/common/scripts/smartwrap-palette.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/common/scripts/smartwrap-processdom.js" afterPath="$PROJECT_DIR$/app/common/scripts/smartwrap-processdom.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/common/scripts/smartwrap-smarttable.js" afterPath="$PROJECT_DIR$/app/common/scripts/smartwrap-smarttable.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/common/scripts/smartwrap.js" afterPath="$PROJECT_DIR$/app/common/scripts/smartwrap.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/common/scripts/smartwrapReport.js" afterPath="$PROJECT_DIR$/app/common/scripts/smartwrapReport.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -40,9 +18,33 @@
       <file leaf-file-name="smartwrap.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/common/scripts/smartwrap.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="338" column="25" lean-forward="true" selection-start-line="338" selection-start-column="25" selection-end-line="338" selection-end-column="25" />
+            <state relative-caret-position="34618">
+              <caret line="2051" column="14" lean-forward="false" selection-start-line="2051" selection-start-column="14" selection-end-line="2051" selection-end-column="14" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="content_script.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/common/scripts/content_script.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="120">
+              <caret line="4" column="0" lean-forward="true" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="smartwrap-processdom.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/common/scripts/smartwrap-processdom.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="2" selection-end-column="50" />
+              <folding>
+                <element signature="e#0#28#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -53,18 +55,6 @@
             <state relative-caret-position="495">
               <caret line="15" column="0" lean-forward="true" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="smartwrap-processdom.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/common/scripts/smartwrap-processdom.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="248">
-              <caret line="8" column="20" lean-forward="true" selection-start-line="8" selection-start-column="20" selection-end-line="8" selection-end-column="20" />
-              <folding>
-                <element signature="e#0#28#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -129,16 +119,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ff-sidebar.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/common/scripts/ff-sidebar.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="525">
-              <caret line="455" column="7" lean-forward="false" selection-start-line="455" selection-start-column="7" selection-end-line="455" selection-end-column="7" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -151,7 +131,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>./</find>
       <find>.png</find>
       <find>smartwrap/skin</find>
       <find>eval</find>
@@ -180,6 +159,7 @@
       <find>ProcessDOM</find>
       <find>ProcessDOM.</find>
       <find>ProcessDOM.Interaction</find>
+      <find>.docs</find>
       <find>DocumentMarker</find>
     </findStrings>
     <replaceStrings>
@@ -240,6 +220,7 @@
         <option value="$PROJECT_DIR$/app/common/scripts/smartwrap.js" />
         <option value="$PROJECT_DIR$/app/common/scripts/smartwrap-processdom.js" />
         <option value="$PROJECT_DIR$/app/common/scripts/smartwrap-interaction.js" />
+        <option value="$PROJECT_DIR$/app/common/scripts/content_script.js" />
       </list>
     </option>
   </component>
@@ -1051,16 +1032,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/common/scripts/smartwrapReport.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="38">
-          <caret line="2" column="0" lean-forward="false" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#28#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/common/styles/ui.theme.css" />
     <entry file="file://$PROJECT_DIR$/app/common/pages/options.html">
       <provider selected="true" editor-type-id="text-editor">
@@ -1406,14 +1377,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/common/scripts/smartwrap-page.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="1187" column="45" lean-forward="false" selection-start-line="1187" selection-start-column="45" selection-end-line="1187" selection-end-column="45" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/common/scripts/smartwrap-smarttable.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="252">
@@ -1438,14 +1401,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/common/scripts/smartwrap.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="338" column="25" lean-forward="true" selection-start-line="338" selection-start-column="25" selection-end-line="338" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/common/scripts/smartwrap-interaction.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="495">
@@ -1454,10 +1409,36 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/common/scripts/smartwrap-page.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="1187" column="45" lean-forward="false" selection-start-line="1187" selection-start-column="45" selection-end-line="1187" selection-end-column="45" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/common/scripts/smartwrap.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34618">
+          <caret line="2051" column="14" lean-forward="false" selection-start-line="2051" selection-start-column="14" selection-end-line="2051" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/common/scripts/content_script.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="4" column="0" lean-forward="true" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/common/scripts/smartwrap-processdom.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="248">
-          <caret line="8" column="20" lean-forward="true" selection-start-line="8" selection-start-column="20" selection-end-line="8" selection-end-column="20" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="2" selection-end-column="50" />
           <folding>
             <element signature="e#0#28#0" expanded="true" />
           </folding>
