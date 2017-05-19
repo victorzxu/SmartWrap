@@ -8,7 +8,7 @@ import jQuery from "jquery";
  * Dual licensed under the MIT or GPL Version 2 licenses.
  **/
 // ([^a-z."/])m([^a-z:"])
-(function($, undefined) {
+(function ($, undefined) {
 
   // http://www.w3.org/TR/css3-color/#svg-color
   var color_names = {
@@ -270,7 +270,7 @@ import jQuery from "jquery";
       return [v, t, p];
     }
 
-    this["setColor"] = function(color) {
+    this["setColor"] = function (color) {
 
       this.success = true;
 
@@ -415,7 +415,7 @@ import jQuery from "jquery";
       this.success = false;
     };
 
-    this["getColor"] = function(type) {
+    this["getColor"] = function (type) {
 
       if (undefined !== type) switch (type.toLowerCase()) {
         case "rgb":
@@ -440,7 +440,7 @@ import jQuery from "jquery";
       return this["getHex"]();
     };
 
-    this["getRGB"] = function() {
+    this["getRGB"] = function () {
 
       if (this.success) {
 
@@ -454,7 +454,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["getCSS"] = function() {
+    this["getCSS"] = function () {
 
       if (this.success) {
 
@@ -470,7 +470,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["getArray"] = function() {
+    this["getArray"] = function () {
 
       if (this.success) {
         return [this["r"], this["g"], this["b"], 100 * this["a"] | 0];
@@ -478,7 +478,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["getName"] = function() {
+    this["getName"] = function () {
 
       if (this.success) {
 
@@ -506,7 +506,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["getFraction"] = function() {
+    this["getFraction"] = function () {
 
       if (this.success) {
 
@@ -520,7 +520,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["getHSL"] = function() {
+    this["getHSL"] = function () {
 
       // inspiration: http://130.113.54.154/~monger/hsl-rgb.html
       if (this.success) {
@@ -560,7 +560,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["getHSV"] = function() {
+    this["getHSV"] = function () {
 
       if (this.success) {
 
@@ -616,7 +616,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["getHex"] = function() {
+    this["getHex"] = function () {
 
       if (this.success) {
 
@@ -635,7 +635,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["getInt"] = function(alpha) {
+    this["getInt"] = function (alpha) {
 
       if (this.success) {
         if (undefined !== alpha) {
@@ -646,23 +646,23 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["toString"] = function() {
+    this["toString"] = function () {
       return this["getHex"]();
     };
 
     this["setColor"](color);
   }
 
-  $["each"](['color', 'backgroundColor', 'borderColor', 'borderTopColor', 'borderBottomColor', 'borderLeftColor', 'borderRightColor', 'outlineColor'], function(i, attr) {
+  $["each"](['color', 'backgroundColor', 'borderColor', 'borderTopColor', 'borderBottomColor', 'borderLeftColor', 'borderRightColor', 'outlineColor'], function (i, attr) {
 
     $["cssHooks"][attr] = {
 
-      "set": function(elem, value) {
+      "set": function (elem, value) {
         elem["style"][attr] = (new xColor(value))["getCSS"]();
       }
     };
 
-    $["fx"]["step"][attr] = function(fx) {
+    $["fx"]["step"][attr] = function (fx) {
 
       if (undefined === fx["xinit"]) {
 
@@ -713,18 +713,18 @@ import jQuery from "jquery";
     }
   });
 
-  $(function() {
+  $(function () {
     var div = document.createElement("div"),
       div_style = div["style"];
 
-    _RGBAtoCSS = function(r, g, b, a) {
+    _RGBAtoCSS = function (r, g, b, a) {
       return "rgba(" + r + "," + g + "," + b + "," + a + ")";
     };
 
     div_style["cssText"] = "background-color:rgba(1,1,1,.5)";
 
     if (!($["support"]["rgba"] = div_style["backgroundColor"].indexOf("rgba") > -1)) {
-      _RGBAtoCSS = function(r, g, b) {
+      _RGBAtoCSS = function (r, g, b) {
         return "rgb(" + r + "," + g + "," + b + ")";
       };
     }
@@ -759,7 +759,7 @@ import jQuery from "jquery";
    */
   function xColorMix() {
 
-    this["test"] = function(col) {
+    this["test"] = function (col) {
 
       var c = new xColor(col);
 
@@ -769,7 +769,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["red"] = function(col) {
+    this["red"] = function (col) {
 
       var c = new xColor(col);
 
@@ -781,7 +781,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["blue"] = function(col) {
+    this["blue"] = function (col) {
 
       var c = new xColor(col);
 
@@ -793,7 +793,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["green"] = function(col) {
+    this["green"] = function (col) {
 
       var c = new xColor(col);
 
@@ -805,7 +805,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["sepia"] = function(col) {
+    this["sepia"] = function (col) {
 
       var c = new xColor(col);
 
@@ -825,13 +825,13 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["random"] = function() {
+    this["random"] = function () {
 
       return new xColor([
         (255 * Math.random()) | 0, (255 * Math.random()) | 0, (255 * Math.random()) | 0]);
     };
 
-    this["inverse"] = function(col) {
+    this["inverse"] = function (col) {
 
       var c = new xColor(col);
 
@@ -844,7 +844,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["opacity"] = function(x, y, o) {
+    this["opacity"] = function (x, y, o) {
 
       var a = new xColor(x);
       var b = new xColor(y);
@@ -866,7 +866,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["greyfilter"] = function(col, formula) {
+    this["greyfilter"] = function (col, formula) {
 
       var v, c = new xColor(col);
 
@@ -890,7 +890,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["webround"] = function(col) {
+    this["webround"] = function (col) {
 
       var c = new xColor(col);
 
@@ -903,7 +903,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["distance"] = function(x, y) {
+    this["distance"] = function (x, y) {
 
       var a = new xColor(x);
       var b = new xColor(y);
@@ -915,7 +915,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["readable"] = function(bg, col, size) {
+    this["readable"] = function (bg, col, size) {
 
       // good ressource: http://www.hgrebdes.com/colour/spectrum/colourvisibility.html
 
@@ -935,7 +935,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["combine"] = function(x, y) {
+    this["combine"] = function (x, y) {
 
       var a = new xColor(x);
       var b = new xColor(y);
@@ -949,7 +949,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["breed"] = function(x, y) {
+    this["breed"] = function (x, y) {
 
       var a = new xColor(x);
       var b = new xColor(y);
@@ -973,7 +973,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["additive"] = function(x, y) {
+    this["additive"] = function (x, y) {
 
       var a = new xColor(x);
       var b = new xColor(y);
@@ -989,7 +989,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["subtractive"] = function(x, y) {
+    this["subtractive"] = function (x, y) {
 
       var a = new xColor(x);
       var b = new xColor(y);
@@ -1005,7 +1005,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["subtract"] = function(x, y) {
+    this["subtract"] = function (x, y) {
 
       var a = new xColor(x);
       var b = new xColor(y);
@@ -1021,7 +1021,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["multiply"] = function(x, y) {
+    this["multiply"] = function (x, y) {
 
       var a = new xColor(x);
       var b = new xColor(y);
@@ -1035,7 +1035,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["average"] = function(x, y) {
+    this["average"] = function (x, y) {
 
       var a = new xColor(x);
       var b = new xColor(y);
@@ -1049,7 +1049,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["triad"] = function(col) {
+    this["triad"] = function (col) {
 
       var c = new xColor(col);
 
@@ -1062,7 +1062,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["tetrad"] = function(col) {
+    this["tetrad"] = function (col) {
 
       var c = new xColor(col);
 
@@ -1076,7 +1076,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["gradientlevel"] = function(x, y, level, deg) {
+    this["gradientlevel"] = function (x, y, level, deg) {
 
       if (undefined === deg) deg = 1;
 
@@ -1096,7 +1096,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["gradientarray"] = function(arr, level, deg) {
+    this["gradientarray"] = function (arr, level, deg) {
 
       if (level > deg || !arr.length) return null;
 
@@ -1110,7 +1110,7 @@ import jQuery from "jquery";
       return $["xcolor"]["gradientlevel"](arr[e], arr[e + 1], level - e * step, step);
     };
 
-    this["nearestname"] = function(a) {
+    this["nearestname"] = function (a) {
 
       a = new xColor(a);
 
@@ -1120,11 +1120,11 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["darken"] = function(col, by, shade) {
+    this["darken"] = function (col, by, shade) {
 
       if (undefined === by) {
         by = 1;
-      } else if (by < 0) return this["lighten"](col, - by, shade);
+      } else if (by < 0) return this["lighten"](col, -by, shade);
 
       if (undefined === shade) {
         shade = 32;
@@ -1141,11 +1141,11 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["lighten"] = function(col, by, shade) {
+    this["lighten"] = function (col, by, shade) {
 
       if (undefined === by) {
         by = 1;
-      } else if (by < 0) return this["darken"](col, - by, shade);
+      } else if (by < 0) return this["darken"](col, -by, shade);
 
       if (undefined === shade) {
         shade = 32;
@@ -1162,7 +1162,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["analogous"] = function(col, results, slices) {
+    this["analogous"] = function (col, results, slices) {
 
       if (undefined === results) {
         results = 8;
@@ -1190,7 +1190,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["complementary"] = function(col) {
+    this["complementary"] = function (col) {
 
       var c = new xColor(col);
 
@@ -1205,7 +1205,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["splitcomplement"] = function(col) {
+    this["splitcomplement"] = function (col) {
 
       var c = new xColor(col);
 
@@ -1227,7 +1227,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["monochromatic"] = function(col, results) {
+    this["monochromatic"] = function (col, results) {
 
       if (undefined === results) {
         results = 6;
@@ -1253,7 +1253,7 @@ import jQuery from "jquery";
 
   $["xcolor"] = new xColorMix();
 
-  $["fn"]["readable"] = function() {
+  $["fn"]["readable"] = function () {
 
     var elem = this[0];
     var f = "";
@@ -1287,19 +1287,19 @@ import jQuery from "jquery";
     return $["xcolor"]["readable"](b, f);
   };
 
-  $["fn"]["colorize"] = function(FROM, TO, TYPE) {
+  $["fn"]["colorize"] = function (FROM, TO, TYPE) {
 
     var modifiers = {
 
       // Returns number in [0, 1] (0 = FROM, 1 = TO)
 
-      "gradient": function(k, l, diff, c) {
+      "gradient": function (k, l, diff, c) {
         return k / l;
       },
-      "flip": function(k, l, diff, c) {
+      "flip": function (k, l, diff, c) {
         return (" " === c) ? diff : !diff;
       },
-      "pillow": function(k, l, diff, c) {
+      "pillow": function (k, l, diff, c) {
         k *= 2;
         return (k <= l) ? (k / l) : (2 - k / l);
       }
@@ -1316,7 +1316,7 @@ import jQuery from "jquery";
     FROM = new xColor(FROM);
     TO = new xColor(TO);
 
-    this["each"](function() {
+    this["each"](function () {
 
       var tmp = this.childNodes,
         LEN = 0,
@@ -1324,7 +1324,8 @@ import jQuery from "jquery";
 
       if (FROM.success & TO.success) {
 
-        for (var i = tmp.length; i--; LEN += tmp[i]["textContent"].length) {}
+        for (var i = tmp.length; i--; LEN += tmp[i]["textContent"].length) {
+        }
 
         (function replace(node) {
 

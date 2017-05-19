@@ -6,12 +6,10 @@ Smartwrap Extension for Firefox
 
 ### Notes from Xiao Liang
 -  For Firefox, please enable source map when debugging [tutorial](https://developer.mozilla.org/en-US/docs/Tools/Debugger/How_to/Use_a_source_map)
+-  Please install `git-pull-hook` via `npm install -g git-pull-hook` to have the pull scripts working
+-  Please install `yarn` to install dependencies faster and support all scripts that have meant to be used with `yarn`
 
 ### Installation
-
-	$ npm install
-	
-	Or, if you have `yarn`
 	
 	$ yarn
 

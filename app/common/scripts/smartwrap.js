@@ -1,6 +1,6 @@
 import jQuery from "jquery";
-import prefutil from './prefutil';
-import {smartwrapNamespace, swarmatureNamespace} from './smarttable-header';
+import prefutil from "./prefutil";
+import {smartwrapNamespace} from "./smarttable-header";
 
 //this is initialized as an object in smartwrap-page
 let Smartwrap = (function () {
@@ -333,6 +333,7 @@ let Smartwrap = (function () {
       }
       newTable.model.logger = this;
 
+      //<editor-fold desc="yxl:ifFalseCodeBlock">
       if (false) {
         // this code creates a proxy for the model, effectively defining
         // the empirical public interface of the model
@@ -375,6 +376,7 @@ let Smartwrap = (function () {
         };
         newTable.model.smartwrap = this;
       }
+      //</editor-fold>
 
       newTable.model.id = tableid;
 
@@ -1609,6 +1611,7 @@ let Smartwrap = (function () {
         interp.addEventListener("endRow", function () {
           //TODO: Fix all settings
           //if (interp.getSetting("paintRowContainers")) {
+          //<editor-fold desc="yxl:ifFalseCodeBlock">
           if (false) {
             const rowelt = rowrange.commonAncestorContainer;
             jQuery(rowelt).addClass("sw_injected_row");
@@ -1617,12 +1620,15 @@ let Smartwrap = (function () {
               templateName: "sw_rowbox"
             });
           }
+          //</editor-fold>
+          //<editor-fold desc="yxl:ifFalseCodeBlock">
           if (false) {
             //if (interp.getSetting("paintRowRanges")) {
             const rangebox = paintRowBox(rowrange.getBoundingClientRect(), {
               templateName: "sw_rowbox"
             });
           }
+          //</editor-fold>
           rowrange = null;
         });
 
@@ -2025,10 +2031,12 @@ let Smartwrap = (function () {
       return "";
     },
     log: function (msg) {
+      //<editor-fold desc="yxl:ifFalseCodeBlock">
       if (false) {
         console.log(JSON.stringify(msg));
         return;
       }
+      //</editor-fold>
 
       //alert(JSON.stringify(msg));
       const logevt = document.createEvent("CustomEvent");

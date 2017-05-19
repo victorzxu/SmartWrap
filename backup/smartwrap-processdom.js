@@ -1,53 +1,52 @@
 import jQuery from "jquery";
-import DocumentMarker from "./smartwrap-docmarker";
-import Interaction from "./smartwrap-interaction";
-import {Smartwrap} from './smartwrap';
+import DocumentMarker from './smartwrap-docmarker';
+import Interaction from './smartwrap-interaction';
 
-function processDOM(sw ,doc, target) {
-  //alert("HEY: " + doc.documentURI);
+jQuery(document).ready(function () {
+  "use strict";
+  //alert("HEY: " + document.documentURI);
 
-  const that = sw;
+  const that = this;
 
-  const root = doc;
-
-  if (!doc.defaultView) {
+  if (!document.defaultView) {
     return;
   }
 
-  const url = doc.documentURI;
+  const url = document.documentURI;
   if (url && url.match(/^chrome:/)) {
     return;
     // ignore pages representing FF's internal layout
   }
 
-  try {
-    throw new Error();
-  } catch (ee) {
-    that.log({
-      process: url,
-      stack: ee.stack
-    });
-  }
+  //TODO: put logging back in all functions via message passing
+  //try {
+  //  throw new Error();
+  //} catch (ee) {
+  //  that.log({
+  //    process: url,
+  //    stack: ee.stack
+  //  });
+  //}
 
-  const previouslyProcessed = jQuery(doc).data("sw_processed");
+  const previouslyProcessed = jQuery(document).data("sw_processed");
   //that.log({prevcheck: true, prev: !!previouslyProcessed, url: doc.documentURI});
 
   if (previouslyProcessed) {
     return;
   }
 
-  try {
-    throw new Error();
-  } catch (ee) {
-    that.log({
-      process1: url,
-      stack: ee.stack
-    });
-  }
+  //try {
+  //  throw new Error();
+  //} catch (ee) {
+  //  that.log({
+  //    process1: url,
+  //    stack: ee.stack
+  //  });
+  //}
 
-  this.docs.push(doc);
+  this.docs.push(document);
 
-  jQuery(doc).bind("mouseover", function (event) {
+  jQuery(document).bind("mouseover", function (event) {
     const tgt = event.target;
 
     if (that.decommissioned) {
@@ -58,23 +57,23 @@ function processDOM(sw ,doc, target) {
       const mousedDoc = tgt.ownerDocument;
       const mouseurl = mousedDoc.defaultView.location.href;
       if (mouseurl === that.scrapeTarget.url) {
-        that.log({
-          BIB: [mouseurl, '===', that.scrapeTarget.url]
-        });
+        //that.log({
+        //  BIB: [mouseurl, '===', that.scrapeTarget.url]
+        //});
 
         const evt = document.createEvent("Events");
         evt.initEvent("sw_inbounds", true, false);
-        doc.dispatchEvent(evt);
+        document.dispatchEvent(evt);
       } else {
-        that.log({
-          OOB: [mouseurl, '!==', that.scrapeTarget.url]
-        });
+        //that.log({
+        //  OOB: [mouseurl, '!==', that.scrapeTarget.url]
+        //});
 
         const detail = {};
         detail.cause = [mouseurl, '!==', that.scrapeTarget.url];
         detail.observer = that.swid;
 
-        that.emit(jQuery(doc), "sw_outofbounds", detail);
+        that.emit(jQuery(document), "sw_outofbounds", detail);
         /*
          var evt = document.createEvent("CustomEvent");
          evt.initCustomEvent("sw_outofbounds", true, false, detail);
@@ -85,13 +84,13 @@ function processDOM(sw ,doc, target) {
     }
   });
 
-  jQuery(doc).bind("sw_dragstart", function (event) {
+  jQuery(document).bind("sw_dragstart", function (event) {
     //alert("DRAGGY");
-    doc.getSelection().removeAllRanges();
+    document.getSelection().removeAllRanges();
   });
 
   if (that.scrapeTarget) {
-    const processurl = doc.defaultView.location.href;
+    const processurl = document.defaultView.location.href;
     if (processurl !== that.scrapeTarget.url) {
       return;
     }
@@ -100,7 +99,7 @@ function processDOM(sw ,doc, target) {
   const boxer = function (dragIndicator) {
     if (dragIndicator === "BLUEBOX") {
       return Object.create(Interaction.BoxIndicator).init({
-        doc: doc,
+        doc: document,
         smartwrap: that
       });
     }
@@ -116,21 +115,21 @@ function processDOM(sw ,doc, target) {
   const selector = function (dragSelector) {
     if (dragSelector === "CLICK") {
       return Object.create(Interaction.ClickSelector).init({
-        doc: doc,
+        doc: document,
         smartwrap: that,
         logger: that
       });
     }
     if (dragSelector === "HOVER") {
       return Object.create(Interaction.HoverSelector).init({
-        doc: doc,
+        doc: document,
         smartwrap: that,
         logger: that
       });
     }
     if (dragSelector === "TEXTSELECT") {
       return Object.create(Interaction.SelectTextSelector).init({
-        doc: doc,
+        doc: document,
         smartwrap: that,
         logger: that
       });
@@ -145,29 +144,29 @@ function processDOM(sw ,doc, target) {
 
   //that.log({SELECTOR: that.getSetting("dragSelector")});
 
-  jQuery(doc).bind("click", function (event) {
+  jQuery(document).bind("click", function (event) {
     const tgt = event.target;
     if (jQuery(tgt).parents().is("a")) {
       //alert("CLICKY");
     }
   });
 
-  jQuery(doc).bind("click dragstart mousedown mouseup", function (event) {
+  jQuery(document).bind("click dragstart mousedown mouseup", function (event) {
     const tgt = event.target;
     const type = event.type;
 
-    if (doc !== tgt.ownerDocument) {
+    if (document !== tgt.ownerDocument) {
       //alert("SKIP!!");
       return;
     }
 
-    that.log({
-      happened: type,
-      //tgt: new XMLSerializer().serializeToString(tgt),
-      x: event.originalEvent.clientX,
-      y: event.originalEvent.clientY,
-      seln: tgt.ownerDocument.defaultView.getSelection().toString()
-    });
+    //that.log({
+    //  happened: type,
+    //  //tgt: new XMLSerializer().serializeToString(tgt),
+    //  x: event.originalEvent.clientX,
+    //  y: event.originalEvent.clientY,
+    //  seln: tgt.ownerDocument.defaultView.getSelection().toString()
+    //});
 
   });
 
@@ -175,6 +174,7 @@ function processDOM(sw ,doc, target) {
     jQuery(target).mouseover();
   }
 
+  //TODO: Here, "that" should probably refer to ProcessDOM.  Depends on if we want ProcessDOM to call Docmarker or Smartwrap to call Docmarker
   const markParams = {
     smartwrap: that,
     chunkSize: 25,
@@ -196,7 +196,7 @@ function processDOM(sw ,doc, target) {
   //marker.init(doc, markParams);
 
   const marker = new DocumentMarker({
-    doc: doc,
+    doc: document,
     params: markParams
   });
   window.setTimeout(function () {
@@ -204,10 +204,9 @@ function processDOM(sw ,doc, target) {
   }, 10);
   //marker.mark();
 
-
-  //<editor-fold desc="yxl:ifFalseCode">
+  //<editor-fold desc="yxl:if false">
   if (false) {
-    jQuery(doc).bind("dragstart", function (event) {
+    jQuery(document).bind("dragstart", function (event) {
       const tgt = event.target;
 
       if (true) {
@@ -241,17 +240,16 @@ function processDOM(sw ,doc, target) {
 
         const evt = document.createEvent("CustomEvent");
         evt.initCustomEvent("sw_dragstart", true, true, detail);
-        doc.dispatchEvent(evt);
+        document.dispatchEvent(evt);
       }
     });
   }
   //</editor-fold>
 
-  that.log({
-    markdone: true,
-    uri: doc.documentURI
-  });
-  jQuery(doc).data("sw_processed", true);
-}
+  //that.log({
+  //  markdone: true,
+  //  uri: document.documentURI
+  //});
+  jQuery(document).data("sw_processed", true);
 
-export default processDOM;
+});

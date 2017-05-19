@@ -1,5 +1,5 @@
 import jQuery from "jquery";
-import {Smartwrap} from './smartwrap';
+import {Smartwrap} from "./smartwrap";
 
 
 Smartwrap.Interpreter = (function () {
@@ -462,9 +462,11 @@ Smartwrap.ReportInterpreter = (function () {
       rowWidget.appendChild(cellWidget);
       jQuery(rowWidget).data('cells')[colid] = cellWidget;
     });
+    //<editor-fold desc="yxl:ifFalseCodeBlock">
     if (false) {
       jQuery(rowWidget).find(".swCell").first().text(JSON.stringify(that.colids));
     }
+    //</editor-fold>
   });
   interp.addEventListener("endRow", function (params) {
     if (this.logger) {

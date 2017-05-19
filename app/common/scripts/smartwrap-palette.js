@@ -1,6 +1,6 @@
 import jQuery from "jquery";
-import './lib/jquery.xcolor'
-import {Smartwrap} from './smartwrap';
+import "./lib/jquery.xcolor";
+import {Smartwrap} from "./smartwrap";
 
 //var Components;
 

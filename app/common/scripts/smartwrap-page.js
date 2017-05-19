@@ -2,21 +2,20 @@
 import $ from "jquery"; // This if for jquery-ui to inject(add) members to jquery object
 import jQuery from "jquery";
 //TODO: yxl: Understand why we can't import $,query in one line?
-import 'jquery-ui/ui/widgets/resizable';
-import 'jquery-ui/ui/widgets/menu';
-import 'jquery-ui/ui/widgets/tabs';
-import 'jquery-ui/ui/widgets/sortable';
-import 'jquery-ui/ui/widgets/button';
-import './lib/jquery.utils.liter';
-
+import "jquery-ui/ui/widgets/resizable";
+import "jquery-ui/ui/widgets/menu";
+import "jquery-ui/ui/widgets/tabs";
+import "jquery-ui/ui/widgets/sortable";
+import "jquery-ui/ui/widgets/button";
+import "./lib/jquery.utils.liter";
 // yxl:Smartwrap object and its "plugins"
-import {Smartwrap} from './smartwrap';
-import './smartwrap-interpreter';
-import './smartwrap-smarttable';
-import './smartwrap-model';
-import './smartwrap-palette';
+import {Smartwrap} from "./smartwrap";
+import "./smartwrap-interpreter";
+import "./smartwrap-smarttable";
+import "./smartwrap-model";
+import "./smartwrap-palette";
 
-import {smartwrapNamespace, swarmatureNamespace} from './smarttable-header';
+import {smartwrapNamespace} from "./smarttable-header";
 
 //TODO:  What functions in here need to be moved to a sidebar script, or a content script?
 jQuery(document).ready(function () {
@@ -1186,6 +1185,7 @@ jQuery(document).ready(function () {
 
   jQuery(document).bind("swRunWrapper swUndo sw_reportSlot", function (event) {
     const eventType = event.type;
+    //<editor-fold desc="yxl:ifFalseCodeBlock">
     if (false) {
       const obj = {
         "PROXY": eventType,
@@ -1196,6 +1196,7 @@ jQuery(document).ready(function () {
         alert(JSON.stringify(obj));
       }, 800);
     }
+    //</editor-fold>
 
     sw.getHandler(eventType).call(sw, event);
 
