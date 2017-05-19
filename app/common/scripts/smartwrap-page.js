@@ -540,6 +540,7 @@ jQuery(document).ready(function () {
   });
 
   let body;
+  //TODO: TEC - uncomment the following
   /*prefutil.observeSetting("buttonstyle", function(spec) {
    //alert("BUTT!");
    jQuery("#smartwrap").removeClass("sw_icononly sw_noicon");

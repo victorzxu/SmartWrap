@@ -1,7 +1,7 @@
 import jQuery from "jquery";
-
+ //TODO:  TEC - Uncomment block below, leave comments on individual lines
 /*Components.utils.import("resource://gre/modules/FileUtils.jsm");
- //TODO:  Revert changes
+
  //document.getElementById("test-button2").label = "HARUP";
  var sss = Components.classes["@mozilla.org/content/style-sheet-service;1"]
  .getService(Components.interfaces.nsIStyleSheetService);
@@ -17,8 +17,10 @@ import jQuery from "jquery";
 
 //var currentWindow = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService(Components.interfaces.nsIWindowMediator).getMostRecentWindow("navigator:browser");
 //var main = currentWindow.getBrowser().contentDocument;//content.document;
+//TODO: TEC - uncomment
 //var main = currentWindow.document.getElementById("appcontent");
 //var main = document.getElementById("main");
+//TODO: TEC - was if(main)
 if (true) {
   //alert('sidebar');
 
@@ -58,6 +60,7 @@ if (true) {
    });
    */
 
+   //TODO: TEC - Uncomment block
   /*var fileioHandler = {
    writeStreamToFile: function(istream, filename, callback) {
    var file = Components.classes["@mozilla.org/file/local;1"]
@@ -115,6 +118,7 @@ if (true) {
    },
    };*/
 
+    //TODO: TEC - Uncomment block
   /*jQuery(document).bind("sw_urltofile", function(event) {
    var detail = event.originalEvent && event.originalEvent.detail;
 
@@ -148,7 +152,7 @@ if (true) {
 
    });*/
 
-
+  //TODO: TEC - Uncomment block
   /*jQuery(document).bind("sw_urltodom", function(event) {
    var detail = event.originalEvent && event.originalEvent.detail;
 
@@ -188,7 +192,7 @@ if (true) {
 
    });*/
 
-
+  //TODO: TEC - Uncomment block
   /*jQuery(document).bind("sw_savelocalfile", function(event) {
    var detail = event.originalEvent && event.originalEvent.detail;
 

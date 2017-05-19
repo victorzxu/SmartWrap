@@ -118,6 +118,7 @@ Smartwrap.Palette = (function () {
         css: this.getCSS()
       });
     },
+	//TODO:  TEC - uncomment following section
     /*unregisterStylesheet: function() {
      this.registerStylesheet({
      unregister: true

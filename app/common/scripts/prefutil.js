@@ -30,7 +30,7 @@ const prefutil = (function () {
 
   const pu = {};
   const privy = {};
-
+  //TODO: TEC - uncomment block
   /*pu.decode = function(pref, key) {
    var prefType = pref.getPrefType(key);
    if (prefType == pref.PREF_STRING) {
@@ -43,7 +43,7 @@ const prefutil = (function () {
    return pref.getIntPref(key);
    }
    };*/
-
+  //TODO - TEC - uncomment block
   /*pu.branch2json = function(branch) {
    privy.prefs = {};
    privy.prefs.foo = "bar";
@@ -87,6 +87,7 @@ const prefutil = (function () {
     this.log({
       spec1: spec
     });
+    //TODO: TEC - Uncomment
     /*if (!privy.prefManager) {
      privy.prefManager = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
      }*/
@@ -97,6 +98,7 @@ const prefutil = (function () {
         }
       };
     }
+    //TODO - TEC - uncomment                     
     /*if (!privy.prefBranch) {
      privy.prefBranch = privy.prefManager.getBranch(spec.prefix || pu.prefix || "extensions.smartwrapper.");
      privy.prefBranch.addObserver("", privy.prefClear, false);
@@ -127,6 +129,7 @@ const prefutil = (function () {
         }
       };
     }
+    //TODO: TEC - Uncomment these two blocks                            
     /*if (!privy.prefBranch) {
      privy.prefBranch = privy.prefManager.getBranch(spec.prefix || pu.prefix || "extensions.smartwrapper.");
      privy.prefBranch.addObserver("", privy.prefClear, false);
@@ -175,6 +178,7 @@ const prefutil = (function () {
         }
       }
     };
+    //TODO: TEC - Uncomment this line
     //privy.prefBranch.addObserver("", observer, false);
   };
 
@@ -213,7 +217,7 @@ const prefutil = (function () {
     pu.window = winn;
 
     pu.prefix = prefix || pu.prefix || "extensions.smartwrapper.";
-
+    //TODO: TEC - Uncomment down to pu.prefs
     //var prefManager = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
     //pu.prefBranch = prefManager.getBranch(pu.prefix);
     //pu.prefs = pu.branch2json(pu.prefBranch);
