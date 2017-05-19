@@ -40,11 +40,12 @@ gulp.task('scripts', (cb) => {
         preLoaders: [{
           test: /\.js$/,
           loader: 'eslint-loader',
-          exclude: /node_modules/
+          exclude: /(node_modules|yxl-sidebar)/
         }],
         loaders: [{
           test: /\.js$/,
-          loader: 'babel'
+          loader: 'babel',
+          exclude: /yxl-sidebar/
         },
           {
             test: /\.css$/,

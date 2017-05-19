@@ -4,14 +4,17 @@ Smartwrap Extension for Firefox
 
 ## For developer
 
+We are using jsx, ES6, and ES&. Therefore, traspile is necessary.
+
 ### Code names
 
 *yxl*: Xiao Liang
 
 ### Notes from Xiao Liang
--  For Firefox, please enable source map when debugging [tutorial](https://developer.mozilla.org/en-US/docs/Tools/Debugger/How_to/Use_a_source_map)
 -  Please install `git-pull-hook` via `npm install -g git-pull-hook` to have the pull scripts working
--  Please install `yarn` to install dependencies faster and support all scripts that have meant to be used with `yarn`
+-  Recommend to install `yarn` to install dependencies faster (It's not a must, but good to have)
+-  For Firefox, please enable source map when debugging [tutorial](https://developer.mozilla.org/en-US/docs/Tools/Debugger/How_to/Use_a_source_map)
+    + This is not supported yet... (Help wanted)
 
 ### Installation
 	
@@ -24,6 +27,8 @@ Run `$ gulp --watch` and load the `dist`-directory into browsers.
 ### When developing
 
 Run `$ npm run dev:curr` and load the `dist`-directory into browsers.
+
+YXL: Sadly, this currently doesn't support Windows... (Help wanted)
 
 ### Entryfiles (bundles)
 
