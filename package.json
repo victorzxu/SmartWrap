@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "description": "Smartwrap Plugin",
   "scripts": {
-    "postpull":"yarn",
+    "postpull": "yarn",
     "start": "npm run dev:chrome",
     "build": "npm run build:chrome",
     "build:chrome": "gulp --production --vendor=chrome && gulp pack --vendor=chrome",
@@ -34,7 +34,7 @@
     "eslint": "3.x.x",
     "eslint-loader": "1.x.x",
     "extract-text-webpack-plugin": "1.0.1",
-    "gulp": "3.x.x",
+    "gulp": "^3.9.1",
     "gulp-bump": "2.x.x",
     "gulp-cache": "0.x.x",
     "gulp-clean-css": "2.x.x",
