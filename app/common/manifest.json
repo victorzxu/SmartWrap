@@ -27,11 +27,10 @@
 
   "default_locale":"en",
 
-<<<<<<< HEAD
   "web_accessible_resources": [
     "pages/smartwrap.html"
-  ]
-=======
+  ],
+
   "options_ui": {
    "page": "pages/options.html"
  },
@@ -39,5 +38,4 @@
  "permissions": ["storage"],
 
   "default_locale":"en"
->>>>>>> cb88f8ddcb85ca85f81b19fb04aca849af3e2775
 }

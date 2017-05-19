@@ -3,13 +3,8 @@ const prefutil = (function () {
 
   const pu = {};
   const privy = {};
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 4cad7b8f4f1ba8cb99e81dbae2ab8eddcb8d86f2
   //TODO: TEC - uncomment block
-  /*pu.decode = function(pref, key) {
+   pu.decode = function(pref, key) {
    var prefType = pref.getPrefType(key);
    if (prefType == pref.PREF_STRING) {
    return pref.getCharPref(key);
@@ -20,9 +15,9 @@ const prefutil = (function () {
    if (prefType == pref.PREF_INT) {
    return pref.getIntPref(key);
    }
-   };*/
+   };
   //TODO - TEC - uncomment block
-  /*pu.branch2json = function(branch) {
+   pu.branch2json = function(branch) {
    privy.prefs = {};
    privy.prefs.foo = "bar";
 
@@ -32,9 +27,8 @@ const prefutil = (function () {
    });
 
    return privy.prefs;
-   };*/
+   };
 
->>>>>>> 4cad7b8f4f1ba8cb99e81dbae2ab8eddcb8d86f2
   pu.firstRun = function (registeredVersion, installedVersion) {
     this.log({
       first: "?",
@@ -61,17 +55,15 @@ const prefutil = (function () {
     });
     return false;
   };
-<<<<<<< HEAD
-=======
 
   pu.setPrefs = function (spec) {
     this.log({
       spec1: spec
     });
     //TODO: TEC - Uncomment
-    /*if (!privy.prefManager) {
+     if (!privy.prefManager) {
      privy.prefManager = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
-     }*/
+     }
     if (!privy.prefClear) {
       privy.prefClear = {
         observe: function () {
@@ -79,12 +71,12 @@ const prefutil = (function () {
         }
       };
     }
-    //TODO - TEC - uncomment                     
-    /*if (!privy.prefBranch) {
+    //TODO - TEC - uncomment
+     if (!privy.prefBranch) {
      privy.prefBranch = privy.prefManager.getBranch(spec.prefix || pu.prefix || "extensions.smartwrapper.");
      privy.prefBranch.addObserver("", privy.prefClear, false);
      // simply invalidate cached version whenever something changes.
-     }*/
+     }
     Object.keys(spec).forEach(function (key) {
       browser.storage.local.set({key: spec[key].toString()});
     });
@@ -110,19 +102,19 @@ const prefutil = (function () {
         }
       };
     }
-    //TODO: TEC - Uncomment these two blocks                            
-    /*if (!privy.prefBranch) {
+    //TODO: TEC - Uncomment these two blocks
+     if (!privy.prefBranch) {
      privy.prefBranch = privy.prefManager.getBranch(spec.prefix || pu.prefix || "extensions.smartwrapper.");
      privy.prefBranch.addObserver("", privy.prefClear, false);
      // simply invalidate cached version whenever something changes.
-     }*/
-    /*if (!privy.prefObject) {
+     }
+     if (!privy.prefObject) {
      privy.prefObject = this.branch2json(privy.prefBranch);
      this.log({
      prefs: privy.prefObject
      });
      //dump(JSON.stringify({regened: privy.prefObject},null,2) + "\n\n");
-     }*/
+     }
     spec.out = browser.storage.local.get(spec.key);
     //this.log(spec);
     return spec.out;
@@ -160,7 +152,7 @@ const prefutil = (function () {
       }
     };
     //TODO: TEC - Uncomment this line
-    //privy.prefBranch.addObserver("", observer, false);
+    privy.prefBranch.addObserver("", observer, false);
   };
 
   pu.registerVersion = function (ver) {
@@ -199,9 +191,9 @@ const prefutil = (function () {
 
     pu.prefix = prefix || pu.prefix || "extensions.smartwrapper.";
     //TODO: TEC - Uncomment down to pu.prefs
-    //var prefManager = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
-    //pu.prefBranch = prefManager.getBranch(pu.prefix);
-    //pu.prefs = pu.branch2json(pu.prefBranch);
+    var prefManager = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
+    pu.prefBranch = prefManager.getBranch(pu.prefix);
+    pu.prefs = pu.branch2json(pu.prefBranch);
     //pu.log({prefs:pu.prefs});
 
     //pu.getVersion("smartwrap@cmu.edu", pu.registerVersion);
@@ -227,4 +219,3 @@ const prefutil = (function () {
 }());
 
 export default prefutil;
->>>>>>> 4cad7b8f4f1ba8cb99e81dbae2ab8eddcb8d86f2
