@@ -18,7 +18,7 @@ function boot() {
   document.body.appendChild(root);
 
   const App = (
-    <Frame url={"about:blank"} />
+    <Frame url={chrome.extension.getURL("pages/smartwrap.html")} />
   );
 
   ReactDOM.render(App, root)

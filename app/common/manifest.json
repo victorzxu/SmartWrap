@@ -25,5 +25,9 @@
     "default_title" : "SmartWrap"
   },
 
-  "default_locale":"en"
+  "default_locale":"en",
+
+  "web_accessible_resources": [
+    "pages/smartwrap.html"
+  ]
 }
