@@ -4,7 +4,10 @@ const prefutil = (function () {
   const pu = {};
   const privy = {};
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 4cad7b8f4f1ba8cb99e81dbae2ab8eddcb8d86f2
   //TODO: TEC - uncomment block
   /*pu.decode = function(pref, key) {
    var prefType = pref.getPrefType(key);
