@@ -35,7 +35,7 @@
     "eslint": "3.x.x",
     "eslint-loader": "1.x.x",
     "extract-text-webpack-plugin": "1.0.1",
-    "gulp": "3.x.x",
+    "gulp": "^3.9.1",
     "gulp-bump": "2.x.x",
     "gulp-cache": "0.x.x",
     "gulp-clean-css": "2.x.x",

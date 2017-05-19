@@ -9,6 +9,7 @@ We are using jsx, ES6, and ES&. Therefore, traspile is necessary.
 ### Code names
 
 *yxl*: Xiao Liang
+*zd*: Zhan Dong 
 
 ### Notes from Xiao Liang
 -  Please install `git-pull-hook` via `npm install -g git-pull-hook` to have the pull scripts working
@@ -17,7 +18,7 @@ We are using jsx, ES6, and ES&. Therefore, traspile is necessary.
     + This is not supported yet... (Help wanted)
 
 ### Installation
-	
+
 	$ yarn
 
 ### Usage
@@ -86,10 +87,3 @@ The build tool also defines a variable named `ENV` in your scripts. It will be s
 	if(ENV === 'development'){
 		console.log('We are in development mode!');
 	}
-
-
-
-
-
-
-
