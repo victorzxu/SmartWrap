@@ -1,11 +1,12 @@
 import jQuery from "jquery";
 import DocumentMarker from "./smartwrap-docmarker";
 import Interaction from "./smartwrap-interaction";
+import {Smartwrap} from './smartwrap';
 
-function processDOM(doc, target) {
+function processDOM(sw ,doc, target) {
   //alert("HEY: " + doc.documentURI);
 
-  const that = this;
+  const that = sw;
 
   const root = doc;
 

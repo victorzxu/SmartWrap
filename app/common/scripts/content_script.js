@@ -2,18 +2,28 @@
  * Created by Xiao Liang Yu <me@hiubright.com> Code name: yxl
  */
 
-import {$, jQuery} from "jquery";
+import jQuery from "jquery";
+import {Smartwrap} from './smartwrap';
+import processDOM from './smartwrap-processdom';
+
+const $ = jQuery;
 
 $(document).ready(onDocReady);
 
-function onDocReady() {
+
+function bindEvents() {
   jQuery(document).bind("sw_targetdocument", function (event) {
     var detail = event.originalEvent && event.originalEvent.detail;
 
     if (detail && detail.document) {
-      sw.processDOM(detail.document, detail.target);
+      processDOM(sw, detail.document, detail.target);
     }
   });
+}
+
+function onDocReady() {
+
+  bindEvents();
 
   var checkLoad = function (event, detail) {
     if (!detail) {
@@ -25,9 +35,11 @@ function onDocReady() {
     }
 
     var root = document.documentElement;
-    if (jQuery(root).hasClass("sidebarHidden")) {
-      return;
-    }
+
+    // yxl: Not always inject content_script anymore so this is useless
+    // if (jQuery(root).hasClass("sidebarHidden")) {
+    //   return;
+    // }
 
     //event.originalEvent.originalTarget.defaultView.addEventListener("load", function() { alert("um"); }, true);
 
@@ -35,7 +47,7 @@ function onDocReady() {
 
     detail.readyState = detail.document.readyState;
 
-    var body = jQuery(detail.document).find("body");
+    const body = jQuery(detail.document).find("body");
     var t = 1 + (body.data("iters") || 0);
     Smartwrap.log({
       ITERS: body.data("iters"),
@@ -50,6 +62,7 @@ function onDocReady() {
       CSS: body.css("opacity"),
       URL: detail.document.documentURI
     });
+
     body.data("opacity", body.data("opacity") || body.css("opacity"));
 
     if (!(detail.readyState === "complete")) {
