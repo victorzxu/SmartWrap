@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "description": "Smartwrap Plugin",
   "scripts": {
-    "postpull":"yarn",
+    "postpull": "yarn",
     "start": "npm run dev:chrome",
     "build": "npm run build:chrome",
     "build:chrome": "gulp --production --vendor=chrome && gulp pack --vendor=chrome",
@@ -16,7 +16,7 @@
     "dev:opera": "gulp --watch --vendor=opera",
     "dev:curr": "concurrently -k 'npm run dev:firefox' 'web-ext -s dist/firefox run' ",
     "dev:win": "concurrently -k \"npm run dev:firefox\" \"npm run helper:win\" ",
-    "helper:win": "web-ext -s=dist/firefox -f=\"C:\\Program Files\\Firefox Developer Edition\\firefox.exe\" run"
+    "helper:win": "web-ext -s=\"dist\\firefox\" -f=\"C:\\Program Files\\Firefox Developer Edition\\firefox.exe\" run"
   },
   "devDependencies": {
     "babel-cli": "6.x.x",
@@ -24,6 +24,7 @@
     "babel-eslint": "6.x.x",
     "babel-loader": "6.x.x",
     "babel-preset-es2015": "6.x.x",
+    "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "6.x.x",
     "chai": "3.x.x",
     "chromereload": "0.x.x",
@@ -60,10 +61,14 @@
     "vinyl-named": "1.x.x",
     "webpack": "1.x.x",
     "webpack-stream": "3.x.x",
-    "yargs": "5.x.x"
+    "yargs": "5.x.x",
+    "yarn": "^0.24.4"
   },
   "dependencies": {
+    "chrome-sidebar": "^0.1.2",
     "jquery": "^3.2.1",
-    "jquery-ui": "^1.12.1"
+    "jquery-ui": "^1.12.1",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4"
   }
 }
