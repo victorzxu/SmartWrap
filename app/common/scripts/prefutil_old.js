@@ -1,37 +1,10 @@
-// Copyright (c) 2013 Carnegie Mellon University
-
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
-
-//Components.utils.import("resource://gre/modules/Services.jsm");
-//Components.utils.import("resource://gre/modules/AddonManager.jsm");
-
-// perform a simple check against the Firefox preferences to see if
-// the extension has been run before; if it hasn't then open a tab to the
-// registration page.
-
 const prefutil = (function () {
   "use strict";
 
   const pu = {};
   const privy = {};
-
-  /*pu.decode = function(pref, key) {
+  //TODO: TEC - uncomment block
+   pu.decode = function(pref, key) {
    var prefType = pref.getPrefType(key);
    if (prefType == pref.PREF_STRING) {
    return pref.getCharPref(key);
@@ -42,9 +15,9 @@ const prefutil = (function () {
    if (prefType == pref.PREF_INT) {
    return pref.getIntPref(key);
    }
-   };*/
-
-  /*pu.branch2json = function(branch) {
+   };
+  //TODO - TEC - uncomment block
+   pu.branch2json = function(branch) {
    privy.prefs = {};
    privy.prefs.foo = "bar";
 
@@ -54,7 +27,7 @@ const prefutil = (function () {
    });
 
    return privy.prefs;
-   };*/
+   };
 
   pu.firstRun = function (registeredVersion, installedVersion) {
     this.log({
@@ -87,9 +60,10 @@ const prefutil = (function () {
     this.log({
       spec1: spec
     });
-    /*if (!privy.prefManager) {
+    //TODO: TEC - Uncomment
+     if (!privy.prefManager) {
      privy.prefManager = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
-     }*/
+     }
     if (!privy.prefClear) {
       privy.prefClear = {
         observe: function () {
@@ -97,11 +71,12 @@ const prefutil = (function () {
         }
       };
     }
-    /*if (!privy.prefBranch) {
+    //TODO - TEC - uncomment
+     if (!privy.prefBranch) {
      privy.prefBranch = privy.prefManager.getBranch(spec.prefix || pu.prefix || "extensions.smartwrapper.");
      privy.prefBranch.addObserver("", privy.prefClear, false);
      // simply invalidate cached version whenever something changes.
-     }*/
+     }
     Object.keys(spec).forEach(function (key) {
       browser.storage.local.set({key: spec[key].toString()});
     });
@@ -127,18 +102,19 @@ const prefutil = (function () {
         }
       };
     }
-    /*if (!privy.prefBranch) {
+    //TODO: TEC - Uncomment these two blocks
+     if (!privy.prefBranch) {
      privy.prefBranch = privy.prefManager.getBranch(spec.prefix || pu.prefix || "extensions.smartwrapper.");
      privy.prefBranch.addObserver("", privy.prefClear, false);
      // simply invalidate cached version whenever something changes.
-     }*/
-    /*if (!privy.prefObject) {
+     }
+     if (!privy.prefObject) {
      privy.prefObject = this.branch2json(privy.prefBranch);
      this.log({
      prefs: privy.prefObject
      });
      //dump(JSON.stringify({regened: privy.prefObject},null,2) + "\n\n");
-     }*/
+     }
     spec.out = browser.storage.local.get(spec.key);
     //this.log(spec);
     return spec.out;
@@ -175,7 +151,8 @@ const prefutil = (function () {
         }
       }
     };
-    //privy.prefBranch.addObserver("", observer, false);
+    //TODO: TEC - Uncomment this line
+    privy.prefBranch.addObserver("", observer, false);
   };
 
   pu.registerVersion = function (ver) {
@@ -213,10 +190,10 @@ const prefutil = (function () {
     pu.window = winn;
 
     pu.prefix = prefix || pu.prefix || "extensions.smartwrapper.";
-
-    //var prefManager = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
-    //pu.prefBranch = prefManager.getBranch(pu.prefix);
-    //pu.prefs = pu.branch2json(pu.prefBranch);
+    //TODO: TEC - Uncomment down to pu.prefs
+    var prefManager = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
+    pu.prefBranch = prefManager.getBranch(pu.prefix);
+    pu.prefs = pu.branch2json(pu.prefBranch);
     //pu.log({prefs:pu.prefs});
 
     //pu.getVersion("smartwrap@cmu.edu", pu.registerVersion);
