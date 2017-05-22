@@ -9,6 +9,7 @@ import Interaction from "./smartwrap-interaction";
 let Smartwrap = (function () {
   "use strict";
   const privy = {};
+  //TODO: TEC - Uncomment all of the following
   /*var decode = function(pref, key) {
    var prefType = pref.getPrefType(key);
    if (prefType == pref.PREF_STRING) {
@@ -264,6 +265,7 @@ let Smartwrap = (function () {
       this.palettes = {};
       this.dialogs = {};
       const table0 = this.newTable(params.table0);
+      //TODO: TEC - Must get rid of these API dependencies
       /*this.mediator = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService(Components.interfaces.nsIWindowMediator);
        this.currentWindow = this.mediator.getMostRecentWindow("navigator:browser");
 
@@ -330,6 +332,8 @@ let Smartwrap = (function () {
         newTable.model.logger = this;
         newTable.model.init(function (key) {
           }
+          //TODO: TEC - the first commented line is the actual version, not sure what the next three are
+          //return that.getSetting(key);
           /*function(key) {
            return that.getSetting(key);
            }*/);
@@ -385,7 +389,7 @@ let Smartwrap = (function () {
 
       //newTable.hidden = newTable.model.metadata.hidden;
 
-      //CHANGE BACK
+      //TODO: TEC - uncomment this line
       //newTable.hidden = newTable.model.getTableField("hidden");
       newTable.hidden = false;
 
@@ -1088,7 +1092,7 @@ let Smartwrap = (function () {
               return;
 
               //alert("OK SHOWED: " + new XMLSerializer().serializeToString(menu));
-
+              //TODO: TEC - the entire large commented block here needs to be uncommented, except for the specific lines that are commented
               /*var ignore = [];
                var ummm = {};
                ummm.id = Math.floor(100 * Math.random());
@@ -1493,11 +1497,13 @@ let Smartwrap = (function () {
         jQuery(doc).find(".sw_tablebox").detach();
         Object.keys(that.palettes).forEach(function (key) {
           const palette = that.palettes[key];
+          //TODO: TEC - Uncomment this line
           //palette.registerStylesheet();
 
           jQuery(doc).find(".sw_injected_cell").removeClass(palette.getClassNames().join(" "));
         });
         if (that.palette) {
+          //TODO: TEC - Uncomment this line
           //that.palette.registerStylesheet();
 
           //alert("CLASSES: " + that.palette.getClassNames().join(" "));
@@ -1612,7 +1618,7 @@ let Smartwrap = (function () {
         };
 
         interp.addEventListener("endRow", function () {
-          //TODO: Fix all settings
+          //TODO: TEC - Uncomment the if statement
           //if (interp.getSetting("paintRowContainers")) {
           //<editor-fold desc="yxl:ifFalseCodeBlock">
           if (false) {
@@ -1835,6 +1841,7 @@ let Smartwrap = (function () {
           //alert("KEY: " + key);
           const palette = that.palettes[key];
           const doc = that.currentWindow.getBrowser().contentDocument;
+          //TODO: TEC - Uncomment this line
           //palette.unregisterStylesheet();
           jQuery(doc).find(".sw_injected_cell").removeClass(palette.getClassNames().join(" "));
           jQuery(doc).find(".sw_injected_cell").removeClass("sw_injected_cell");

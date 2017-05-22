@@ -30,6 +30,7 @@ const DocumentMarker = (function () {
       this.nodelist = [];
       this.nodemap = {};
       this.styleids = {};
+      //TODO: TEC - either fix by refactoring, or uncomment the following
       //this.smartwrap = this.params.smartwrap;
       //this.logger = this.params.logger || this.smartwrap;
       this.chunkCount = 0;
@@ -549,6 +550,7 @@ const DocumentMarker = (function () {
         //   "METAKEYS": Object.keys(metadata)
         // });
 
+        //TODO: TEC - uncomment the following or fix by refactoring
         //if (this.smartwrap && this.smartwrap.scrapeTarget) {
         // that.logger.log({
         //   "USEMETAKEYS": Object.keys(metadata)
@@ -568,7 +570,8 @@ const DocumentMarker = (function () {
         jQuery(this.doc).data("metadata", metadata);
 
         let detail = {};
-
+        
+        //TODO: TEC - uncomment the following or fix by refactoring
         // if (this.smartwrap) {
         //   detail.smartwrap = this.smartwrap;
         //   this.smartwrap.status.fresh = false;

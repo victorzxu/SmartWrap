@@ -69,7 +69,7 @@ const Interaction = (function () {
 
       this.selboxmodel = selboxmodel;
 
-      //TODO: Fix hardcoded settings here and everywhere
+      //TODO: TEC - Fix hardcoded settings here
       this.settings = {};
       //this.settings.animateSelector = params.smartwrap && params.smartwrap.getSetting("animateSelector");
       this.settings.animateSelector = false;
@@ -230,7 +230,7 @@ const Interaction = (function () {
         return;
       }
 
-      //TODO: Bring this back, probably have to send event in a message but might not be wise due to asynchronity...
+      //TODO: TEC - Uncomment the following
       // var url = tgt.ownerDocument.defaultView.location.href;
       // if (this.smartwrap.scrapeTarget) {
       //   if (this.smartwrap.scrapeTarget.url !== url) {
