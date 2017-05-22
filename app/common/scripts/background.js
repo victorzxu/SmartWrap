@@ -6,6 +6,7 @@ const context = typeof browser === 'undefined' ? chrome : browser;
 
 context.browserAction.onClicked.addListener(()=>{
   context.tabs.executeScript({
-    file:'scripts/sidebar.js'
+    file:'scripts/browser_action.js',
+    runAt:'document_idle'
   });
 });

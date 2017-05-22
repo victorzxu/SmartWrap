@@ -8,6 +8,8 @@ import "jquery-ui/ui/widgets/tabs";
 import "jquery-ui/ui/widgets/sortable";
 import "jquery-ui/ui/widgets/button";
 import "./lib/jquery.utils.liter";
+
+
 // yxl:Smartwrap object and its "plugins"
 import {Smartwrap} from "./smartwrap";
 import "./smartwrap-interpreter";
@@ -16,6 +18,8 @@ import "./smartwrap-model";
 import "./smartwrap-palette";
 
 import {smartwrapNamespace} from "./smarttable-header";
+
+import processDOM from './smartwrap-processdom';
 
 //TODO:  What functions in here need to be moved to a sidebar script, or a content script?
 jQuery(document).ready(function () {
@@ -180,10 +184,10 @@ jQuery(document).ready(function () {
   };
   jQuery(".sink").on("keypress", function (event) {
     const key = [
-      event.shiftKey ? "shift-" : "",
-      event.ctrlKey ? "ctrl-" : "",
-      event.metaKey ? "meta-" : "",
-      event.altKey ? "alt-" : "",
+      typeof event.shiftKey !== 'undefined' ? "shift-" : "",
+      typeof event.ctrlKey !== 'undefined' ? "ctrl-" : "",
+      typeof event.metaKey !== 'undefined' ? "meta-" : "",
+      typeof event.altKey !== 'undefined' ? "alt-" : "",
       getKeyString(Math.max(event.which, event.keyCode)),
       //Math.max(event.which,event.keyCode),
       ""
@@ -452,7 +456,7 @@ jQuery(document).ready(function () {
     const detail = event.originalEvent && event.originalEvent.detail;
 
     if (detail && detail.document) {
-      sw.processDOM(detail.document, detail.target);
+      processDOM(sw,detail.document, detail.target);
     }
   });
 
