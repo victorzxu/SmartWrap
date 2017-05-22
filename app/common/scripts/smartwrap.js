@@ -2,6 +2,9 @@ import jQuery from "jquery";
 import prefutil from "./prefutil";
 import {smartwrapNamespace} from "./smarttable-header";
 
+import DocumentMarker from "./smartwrap-docmarker";
+import Interaction from "./smartwrap-interaction";
+
 //this is initialized as an object in smartwrap-page
 let Smartwrap = (function () {
   "use strict";

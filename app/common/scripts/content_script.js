@@ -4,28 +4,16 @@
 
 import jQuery from "jquery";
 import {Smartwrap} from './smartwrap';
-import processDOM from './smartwrap-processdom';
 
 const $ = jQuery;
 
-$(document).ready(onDocReady);
+onReady();
 
+function onReady() {
 
-function bindEvents() {
-  jQuery(document).bind("sw_targetdocument", function (event) {
-    var detail = event.originalEvent && event.originalEvent.detail;
+  console.log('content_script!');
 
-    if (detail && detail.document) {
-      processDOM(sw, detail.document, detail.target);
-    }
-  });
-}
-
-function onDocReady() {
-
-  bindEvents();
-
-  var checkLoad = function (event, detail) {
+  function checkLoad(event, detail) {
     if (!detail) {
       detail = {};
 

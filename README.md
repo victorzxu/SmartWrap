@@ -4,20 +4,20 @@ Smartwrap Extension for Firefox
 
 ## For developer
 
-We are using jsx, ES6, and ES&. Therefore, traspile is necessary.
+We are using jsx, ES6, and ES7. Therefore, traspile is necessary.
 
 ### Code names
 
 *yxl*: Xiao Liang
 
 ### Notes from Xiao Liang
--  Please install `git-pull-hook` via `npm install -g git-pull-hook` to have the pull scripts working
+-  Please install `git-pull-hook` via `npm install -g git-pull-hook` to have the pull scripts working. After installing, please perform pulling using `gitp` later on instead of `git pull` in order to run the pull hooks.
 -  Recommend to install `yarn` to install dependencies faster (It's not a must, but good to have)
 -  For Firefox, please enable source map when debugging [tutorial](https://developer.mozilla.org/en-US/docs/Tools/Debugger/How_to/Use_a_source_map)
     + This is not supported yet... (Help wanted)
 
 ### Installation
-	
+
 	$ yarn
 
 ### Usage
