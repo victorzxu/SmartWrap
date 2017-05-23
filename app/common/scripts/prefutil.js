@@ -80,7 +80,7 @@ const prefutil = (function () {
       return false;
     };
   /*set the preferences.
-    spec has form key:value
+    spec is an object of
   */
   pu.setPrefs = function (spec) {
     this.log({
@@ -160,10 +160,10 @@ const prefutil = (function () {
        }));*/
     }
   };
-  pu.owl = function (winn, prefix) {
+  /*pu.owl = function (winn, prefix) {
     pu.window = winn;
     pu.prefix = prefix || pu.prefix || "extensions.smartwrapper.";
-    /*//TODO: TEC - Uncomment down to pu.prefs
+    //TODO: TEC - Uncomment down to pu.prefs
     var prefManager = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
     pu.prefBranch = prefManager.getBranch(pu.prefix);
     pu.prefs = pu.branch2json(pu.prefBranch);
@@ -181,9 +181,9 @@ const prefutil = (function () {
         });
       });
     });
-  };*/
+  };
 
-  }
+}*/
   return pu;
 }());
 

@@ -9,43 +9,43 @@
 
     <form>
 
-      <label>Show Icon in Toolbar  <input id="show_icon_in_toolbar" type="checkbox"></label><br /><br />
-      <label>Animate Selector Movement  <input id="animate_selector_movement" type="checkbox"></label><br /><br />
-      <label>Maximum Characters to Show in Cells:  <input type="text" id="max_char_in_cells" value = 400 ></label><br /><br />
+      <label>Show Icon in Toolbar  <input id="show_icon_in_toolbar" class = "pref" type="checkbox"></label><br /><br />
+      <label>Animate Selector Movement  <input id="animate_selector_movement" class = "pref" type="checkbox"></label><br /><br />
+      <label>Maximum Characters to Show in Cells:  <input class = "pref" type="text" id="max_char_in_cells" value = 400 ></label><br /><br />
       <label>Button Style:
-        <select id ="button_style">
+        <select id ="button_style" class = "pref">
           <option value="both">both(Use both icons and labels)</option>
           <option value="noicons">noicons(Use labels only)</option>
           <option value="iconsonly">iconsonly(Use icons only)</option>
         </select>
       </label><br /><br />
       <label>Algorithm:
-        <select id ="algorithm">
+        <select id ="algorithm" class = "pref">
           <option value="AUTO">AUTO(Let the server decide)</option>
           <option value="LIBSVM">LIBSVM(Capstone11)</option>
           <option value="PREFIX">PREFIX(Heuristic Prefix)</option>
         </select>
       </label><br /><br />
       <label>Drag Selection Mode:
-        <select id ="drag_selection_mode">
+        <select id ="drag_selection_mode" class = "pref">
           <option value="HOVER">HOVER(Hover to select)</option>
           <option value="CLICK">CLICK(Click to select)</option>
           <option value="TEXTSELECT">TEXTSELECT(Highlich to select)</option>
         </select>
       </label><br /><br />
       <label>Drag Indication Mode:
-        <select id ="drag_indication_mode">
+        <select id ="drag_indication_mode" class = "pref">
           <option value="NONE">NONE</option>
           <option value="BLUEBOX">BLUEBOX(Blue box following mouse)</option>
         </select>
       </label><br /><br />
       <label>
       <a href="./consent.html" target="_blank">Click here to change your consent settings</a>
+      <button id = "default">default</button>
       </label><br /><br />
-       <button type="submit">Save</button>
     </form>
 
-
+    <script type="text/javascript" src="../scripts/options.js"></script>
   </body>
 
 </html>

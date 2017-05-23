@@ -1,4 +1,19 @@
 {
-  "presets": ["es2015", "stage-0", "react"],
-  "ignore": ["node_modules"]
+  "presets": [
+    "env",
+    "stage-0",
+    "react"
+  ],
+  "ignore": [
+    "node_modules"
+  ],
+  "plugins": ["transform-async-to-generator",
+              ["transform-runtime",
+                {
+                  "helpers": false,
+                  "polyfill": false,
+                  "regenerator": true,
+                  "moduleName": "babel-runtime"
+                }]],
+  "compact": false
 }

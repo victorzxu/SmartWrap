@@ -1,7 +1,14 @@
 //Placeholder for future codes
 //Used to save the changes of the perference, and deal with the changes
-  function initOptions = function () {
-    defaultOptions = {
+  localStorage.debug = true;
+  import bow from 'bows';
+  import $ from 'jquery';
+  import ChromePromise from 'chrome-promise';
+  global.chrome = new ChromePromise();
+  import 'chrome-browser-object-polyfill';
+   async function initOptions (evt)  {
+    const log = bow('initOptions');
+    const defaultOptions = {
       'pref_permicon': false,
       'pref_animateselector': true,
       'pref_maxchars': 400,
@@ -10,31 +17,59 @@
       'pref_dragselect': "HOVER",
       'pref_dragindic' : "BLUEBOX"
     }
-    Object.keys(defaultOptions).forEach(function (key) {
-      brower.storage.local.setItem(key,defaultOptions[key]);
-    });
+    await global.chrome.storage.local.set(defaultOptions);
+    await restoreOptions();
+    evt.stopPropagation();
+    return false;
   }
-  function saveOptions = function () {
-    newOptions = {};
-    newOptions['pref_permicon'] = document.querySelector('#show_icon_in_toolbar');
-    newOptions['pref_animateselector'] = document.querySelector('#animate_selector_movement');
-    newOptions['pref_maxchars'] = document.querySelector('#max_char_in_cell');
-    newOptions['pref_buttonstyle'] = document.querySelector('#button_style');
-    newOptions['pref_algorithm'] = document.querySelector('#algorithm');
-    newOptions['pref_dragselect'] = document.querySelector('#drag_selection_mode');
-    newOptions['pref_dragindic'] = document.querySelector('#drag_indication_mode');
-    Object.keys(defaultOptions).forEach(function (key) {
-      brower.storage.local.setItem(key,newOptions[key]);
-    });
+
+
+  function saveOptions() {
+    let newOptions = {
+      pref_permicon : $('#show_icon_in_toolbar')[0].checked,
+      pref_animateselector :  $('#animate_selector_movement')[0].checked,
+      pref_maxchars : $('#max_char_in_cells').val(),
+      pref_buttonstyle : $('#button_style').val(),
+      pref_algorithm : $('#algorithm').val(),
+      pref_dragselect : $('#drag_selection_mode').val(),
+      pref_dragindic : $('#drag_indication_mode').val(),
+  };
+    browser.storage.local.set(newOptions);
   }
-  function restoreOptions() {
-    document.querySelector('#show_icon_in_toolbar').value = browers.storage.local.get('pref_permicon');
-    document.querySelector('#animate_selector_movement').value = browers.storage.local.get('pref_animateselector');
-    document.querySelector('#max_char_in_cell').value = browers.storage.local.get('pref_maxchars');
-    document.querySelector('#button_style').value = browers.storage.local.get('pref_buttonstyle');
-    document.querySelector('#algorithm').value = browers.storage.local.get('pref_algorithm');
-    document.querySelector('#drag_selection_mode').value = browers.storage.local.get('pref_dragselect');
-    document.querySelector('#drag_indication_mode').value = browers.storage.local.get('pref_dragindic');
+  async function restoreOptions()  {
+    removeChangeListeners();
+    const log = bow('restoreOptions');
+    $('#show_icon_in_toolbar').prop ("checked",Object.values(await global.chrome .storage.local.get('pref_permicon'))[0]);
+
+    $('#animate_selector_movement').prop ("checked",Object.values(await global.chrome .storage.local.get('pref_animateselector'))[0]);
+    $('#max_char_in_cells').val(Object.values(await global.chrome .storage.local.get('pref_maxchars'))[0]);
+    $('#button_style').val(Object.values( await global.chrome .storage.local.get('pref_buttonstyle'))[0]);
+    $('#algorithm').val(Object.values(await global.chrome .storage.local.get('pref_algorithm'))[0]);
+    $('#drag_selection_mode').val(Object.values(await global.chrome .storage.local.get('pref_dragselect'))[0]);
+    $('#drag_indication_mode').val(Object.values(await global.chrome .storage.local.get('pref_dragindic'))[0]);
+    createChangeListeners();
   }
-  document.addEventListener("DOMContentLoaded", restoreOptions);
-  document.querySelector("form").addEventListener("submit", saveOptions);
+  async function onReady() {
+    await restoreOptions();
+    const log = bow('onReady');
+    log("before click");
+    log(document.querySelector('#default'));
+    /*ZD: querySelector doesn't work somehow. Why?
+      Tell us if you find out.
+     */
+    // document.querySelector('#default').addEventListener("click",initOptions);
+    $("#default").click(initOptions);
+  }
+  function createChangeListeners() {
+
+    document.querySelectorAll(".pref").forEach((x)=>{x.addEventListener("change",saveOptions);});
+  }
+  function removeChangeListeners() {
+     const log = bow('removeChangeListeners');
+      document.querySelectorAll(".pref").forEach((x)=>{x.removeEventListener("change",saveOptions);});
+  }
+
+
+
+
+  document.addEventListener("DOMContentLoaded", onReady);
