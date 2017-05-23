@@ -97,41 +97,19 @@ const prefutil = (function () {
     browser.storage.local.get(spec.key)
     return res;
   }
-  /*observeSetting: a function used to add an obeserver
-    to a specific setting, so that any changes can be directly
-    applied.
-    MIGHT be Deprecated
-    pu.observeSetting = function (key, callback, prefix) {
-      const value = this.getPref({
-        key: key,
-        prefix: prefix
-      });
-      callback({
-        key: key,
-        value: value
-      });
-      const self = this;
-      const observer = {
-        observe: function (aSubject, aTopic, aData) {
-          //dump(JSON.stringify({observing: key, saw: {subj:aSubject,top:aTopic,data:aData}}, null, 2) + "\n\n");
-          if (aData
-            === key) {
-            setTimeout(function () {
-              callback({
-                key: key,
-                value: self.getPref({
-                  key: key,
-                  prefix: prefix
-                })
-              });
-            }, 25);
+  pu.observeSetting = function (key, callback, prefix) {
+    const value = this.getPref(key);
+    browser.storage.onChanged.addListener(
+      function (changes,area) {
+        var changedItems = Object.keys(changes);
+        for (var item of ChangedItems) {
+          if ((item ===  "key") && (area === "local")) {
+            callback({key:value});
           }
         }
-      };
-      //TODO: TEC - Uncomment this line
-      privy.prefBranch.addObserver("", observer, false);
-    };
-  */
+      });
+    }
+
   pu.registerVersion = function (ver) {
     pu.installed = ver.version;
     pu.via = ver.via;

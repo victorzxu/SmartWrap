@@ -33,9 +33,5 @@
 
   "options_ui": {
    "page": "pages/options.html"
- },
-
- "permissions": ["storage"],
-
-  "default_locale":"en"
+ }
 }
