@@ -4,14 +4,29 @@
 
 import jQuery from "jquery";
 import {Smartwrap} from './smartwrap';
-
+import prefutil from "./prefutil";
 const $ = jQuery;
 
 onReady();
 
+
 function onReady() {
 
   console.log('content_script!');
+  var getFirstTime = browser.storage.local.get("isFirstTime");
+  getFirstTime.then(function (item) {
+    console.log(Object.size(item));
+    if (Object.size(item) === 0) {
+      console.log("first time");
+      browser.storage.local.set({isFirstTime:false});
+      document.addEventListener("DOMContentLoaded",
+      function () {prefutil.initPref()});
+    }
+    else {
+      console.log("not first time");
+    }
+  },function () {console.log("error");});
+
 
   function checkLoad(event, detail) {
     if (!detail) {

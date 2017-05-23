@@ -86,9 +86,7 @@ const prefutil = (function () {
     this.log({
       spec1: spec
     });
-    Object.keys(spec).forEach(function (key) {
-      browser.storage.local.set(key,spec[key]);
-    });
+    browser.storage.local.set(spec);
   }
   /*get a set of preferences.
     take in the keys
@@ -96,6 +94,18 @@ const prefutil = (function () {
   pu.getPref = function (spec) {
     browser.storage.local.get(spec.key)
     return res;
+  }
+  pu.initPref = function (spec) {
+    const defaultOptions = {
+      pref_permicon: true,
+      pref_animateselector: true,
+      pref_maxchars: 400,
+      pref_buttonstyle: "both",
+      pref_algorithm: "AUTO",
+      pref_dragselect: "HOVER",
+      pref_dragindic: "BLUEBOX"
+    }
+    browser.storage.local.set(defaultOptions);
   }
   pu.observeSetting = function (key, callback, prefix) {
     const value = this.getPref(key);

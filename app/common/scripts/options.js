@@ -4,12 +4,12 @@
   import bow from 'bows';
   import $ from 'jquery';
   import ChromePromise from 'chrome-promise';
-  global.chrome = new ChromePromise();
+  browser = new ChromePromise();
   import 'chrome-browser-object-polyfill';
    async function initOptions (evt)  {
     const log = bow('initOptions');
     const defaultOptions = {
-      'pref_permicon': false,
+      'pref_permicon': true,
       'pref_animateselector': true,
       'pref_maxchars': 400,
       'pref_buttonstyle': "both",
@@ -17,9 +17,9 @@
       'pref_dragselect': "HOVER",
       'pref_dragindic' : "BLUEBOX"
     }
-    await global.chrome.storage.local.set(defaultOptions);
+    await browser.storage.local.set(defaultOptions);
     await restoreOptions();
-    evt.stopPropagation();
+    evt.preventDefault();
     return false;
   }
 
@@ -39,14 +39,14 @@
   async function restoreOptions()  {
     removeChangeListeners();
     const log = bow('restoreOptions');
-    $('#show_icon_in_toolbar').prop ("checked",Object.values(await global.chrome .storage.local.get('pref_permicon'))[0]);
+    $('#show_icon_in_toolbar').prop ("checked",Object.values(await browser.storage.local.get('pref_permicon'))[0]);
 
-    $('#animate_selector_movement').prop ("checked",Object.values(await global.chrome .storage.local.get('pref_animateselector'))[0]);
-    $('#max_char_in_cells').val(Object.values(await global.chrome .storage.local.get('pref_maxchars'))[0]);
-    $('#button_style').val(Object.values( await global.chrome .storage.local.get('pref_buttonstyle'))[0]);
-    $('#algorithm').val(Object.values(await global.chrome .storage.local.get('pref_algorithm'))[0]);
-    $('#drag_selection_mode').val(Object.values(await global.chrome .storage.local.get('pref_dragselect'))[0]);
-    $('#drag_indication_mode').val(Object.values(await global.chrome .storage.local.get('pref_dragindic'))[0]);
+    $('#animate_selector_movement').prop ("checked",Object.values(await browser.storage.local.get('pref_animateselector'))[0]);
+    $('#max_char_in_cells').val(Object.values(await browser.storage.local.get('pref_maxchars'))[0]);
+    $('#button_style').val(Object.values( await browser.storage.local.get('pref_buttonstyle'))[0]);
+    $('#algorithm').val(Object.values(await browser.storage.local.get('pref_algorithm'))[0]);
+    $('#drag_selection_mode').val(Object.values(await browser.storage.local.get('pref_dragselect'))[0]);
+    $('#drag_indication_mode').val(Object.values(await browser.storage.local.get('pref_dragindic'))[0]);
     createChangeListeners();
   }
   async function onReady() {
