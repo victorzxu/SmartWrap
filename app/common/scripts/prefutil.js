@@ -95,17 +95,42 @@ const prefutil = (function () {
     browser.storage.local.get(spec.key)
     return res;
   }
-  pu.initPref = function (spec) {
-    const defaultOptions = {
+  pu.initPref = function (details) {
+    console.log("initPref");
+    const initOptions = {
       pref_permicon: true,
       pref_animateselector: true,
       pref_maxchars: 400,
       pref_buttonstyle: "both",
       pref_algorithm: "AUTO",
       pref_dragselect: "HOVER",
-      pref_dragindic: "BLUEBOX"
+      pref_dragindic: "BLUEBOX",
+      consent: true,
+      developermode: false,
+      onDropManyColumns: false,
+      paintCells: true,
+      paintRowRanges: false,
+      paintRowContainers: false,
+      paintTableRanges: true,
+      paintTableContainers: false,
+      serverprepath: "http://localhost:9090",
+      _serverpath: "/smartwrap/Wrap",
+      serverpath: "/Wrap",
+      serverquery: "?algorithm={algorithm}",
+      servertimeout: 20000, // 2000 milliseconds = 2 seconds
+      maxchars: 100,
+      minrows: 2, // 1,
+      maxrows: 2, // Infinity,
+      minfringerows: 0, // 1,
+      sendUserData: true,
+      sendInferredData: false,
+      dragInterpretation: "EXACT",
+      annotationTemplate: "{tempDir}{easy_url}",
+      annotationDependency: "GLOBAL",
+      globalDependencyPrefix: "http://www.cs.cmu.edu/~sgardine/mixer/smartwrap/",
+      showAuxiliaryTables: false,    
     }
-    browser.storage.local.set(defaultOptions);
+    browser.storage.local.set(initOptions);
   }
   pu.observeSetting = function (key, callback, prefix) {
     const value = this.getPref(key);

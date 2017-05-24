@@ -16,6 +16,7 @@ import "./smartwrap-interpreter";
 import "./smartwrap-smarttable";
 import "./smartwrap-model";
 import "./smartwrap-palette";
+import prefutil from "./prefutil";
 
 import {smartwrapNamespace} from "./smarttable-header";
 
@@ -24,7 +25,23 @@ import processDOM from './smartwrap-processdom';
 //TODO:  What functions in here need to be moved to a sidebar script, or a content script?
 jQuery(document).ready(function () {
   "use strict";
-
+  var getFirstTime = browser.storage.local.get("isFirstTime");
+  getFirstTime.then(
+    function (item) {
+      console.log(item.constructor);
+      if (Object.keys(item).length === 0) {
+        console.log("first time");
+        prefutil.initPref();
+        browser.storage.local.set({isFirstTime:false});
+      }
+      else {
+        console.log("not first time");
+      }
+    },
+    function (error) {
+      console.log("error when getting isFirstTime");
+    }
+  );
   console.log("We're in!");
   window.scrollbars.visible = false;
   // added this line per
