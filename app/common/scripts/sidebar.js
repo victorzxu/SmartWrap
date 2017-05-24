@@ -13,13 +13,15 @@ function main() {
   if (Frame.isReady()) {
     Frame.toggle();
   } else {
-    boot();
+    document.addEventListener('DOMContentLoaded',boot());
   }
 }
 
 function boot() {
   const root = document.createElement('div');
-  document.body.appendChild(root);
+  if (document.body !== null) {
+    document.body.appendChild(root);
+  }
 
   const divStyle = {
     resize: 'horizontal',
