@@ -331,7 +331,7 @@ if (true) {
     const evt = document.createEvent("CustomEvent");
     evt.initCustomEvent(event.type, true, false, detail);
     ignorable = evt;
-    browser.contentDocument.dispatchEvent(evt);
+    document.dispatchEvent(evt);
     Smartwrap.log('OUTGONE: ' + event.type);
   });
 
@@ -374,7 +374,7 @@ if (true) {
     const browser = jQuery("#smartwrap-browser").get(0);
     const evt = document.createEvent("CustomEvent");
     evt.initCustomEvent("sw_configure", true, false, detail);
-    browser.contentDocument.dispatchEvent(evt);
+    document.dispatchEvent(evt);
   });
 
   jQuery(document).bind("sw_outofbounds sw_inbounds", function (event) {
@@ -391,7 +391,7 @@ if (true) {
 
     const evt = document.createEvent("CustomEvent");
     evt.initCustomEvent(eventName, true, false, detail);
-    browser.contentDocument.dispatchEvent(evt);
+    document.dispatchEvent(evt);
   });
 
   const logP = Math.log(0.99);
@@ -471,8 +471,7 @@ if (true) {
     //TODO: This is a problem area due to the discrepancy between xul and the document
     const evt = document.createEvent("CustomEvent");
     evt.initCustomEvent("sw_targetdocument", true, false, detail);
-    if (browser && browser.contentDocument) {
-      browser.contentDocument.dispatchEvent(evt);
+    document.dispatchEvent(evt);
     }
   };
   jQuery(document).bind("DOMContentLoaded mouseover load", function (event) {
@@ -487,7 +486,7 @@ if (true) {
 
     const evt = document.createEvent("CustomEvent");
     evt.initCustomEvent("sw_dialogs", true, false, detail);
-    browser.contentDocument.dispatchEvent(evt);
+    document.dispatchEvent(evt);
   });
 
 
@@ -529,7 +528,7 @@ if (true) {
     source: "sidebar"
   });
   document.dispatchEvent(evt);
-}
+
 
 /*
  window.setTimeout(function() {

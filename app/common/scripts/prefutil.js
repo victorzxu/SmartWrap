@@ -16,7 +16,7 @@
     pref_dragindic: Drag Indication Mode
       val:"NONE","BLUEBOX"
 */
-
+import browser from "webextension-polyfill";
 
 const prefutil = (function () {
   "use strict";
@@ -92,7 +92,7 @@ const prefutil = (function () {
     take in the keys
   */
   pu.getPref = function (spec) {
-    browser.storage.local.get(spec.key)
+    res = browser.storage.local.get(spec.key);
     return res;
   }
   pu.initPref = function () {
@@ -102,9 +102,8 @@ const prefutil = (function () {
       pref_animateselector: true,
       pref_maxchars: 400,
       pref_buttonstyle: "both",
-      pref_algorithm: "AUTO",
-      pref_dragselect: "HOVER",
-      pref_dragindic: "BLUEBOX",
+      dragIndicator: "BLUEBOX",
+      dragSelector:"HOVER",
       consent: true,
       developermode: false,
       onDropManyColumns: false,
@@ -133,8 +132,9 @@ const prefutil = (function () {
     }
     browser.storage.local.set(initOptions);
   }
-  pu.observeSetting = function (key, callback, prefix) {
-    const value = this.getPref(key);
+  pu.observeSetting = function (key, callback) {
+    const value = this.getPref({
+        key:key});
     browser.storage.onChanged.addListener(
       function (changes,area) {
         var changedItems = Object.keys(changes);

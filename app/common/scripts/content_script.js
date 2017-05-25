@@ -5,13 +5,10 @@
 import jQuery from "jquery";
 import {Smartwrap} from './smartwrap';
 import prefutil from "./prefutil";
+import swp from "./smartwrap-page";
 const $ = jQuery;
 
-onReady();
-
-
 function onReady() {
-
   console.log('content_script!');
   function checkLoad(event, detail) {
     if (!detail) {
@@ -90,12 +87,13 @@ function onReady() {
 
     var evt = document.createEvent("CustomEvent");
     evt.initCustomEvent("sw_targetdocument", true, false, detail);
-    if (browser && browser.contentDocument) {
-      browser.contentDocument.dispatchEvent(evt);
-    }
+    document.dispatchEvent(evt);
   };
 
   jQuery(document).bind("DOMContentLoaded mouseover load", function (event) {
     checkLoad(event);
   });
+  swp();
 }
+
+export default onReady;

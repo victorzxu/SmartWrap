@@ -78,6 +78,7 @@
     "jquery-ui": "^1.12.1",
     "react": "^15.5.4",
     "react-dom": "x.x.x",
+    "webextension-polyfill": "^0.1.1",
     "yxl-sidebar": "^0.1.0"
   }
 }

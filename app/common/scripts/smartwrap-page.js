@@ -1,6 +1,7 @@
 //noinspection ES6UnusedImports
+import browser from "webextension-polyfill";
 import $ from "jquery"; // This if for jquery-ui to inject(add) members to jquery object
-import jQuery from "jquery";
+let jQuery = $;
 //TODO: yxl: Understand why we can't import $,query in one line?
 import "jquery-ui/ui/widgets/resizable";
 import "jquery-ui/ui/widgets/menu";
@@ -23,7 +24,7 @@ import {smartwrapNamespace} from "./smarttable-header";
 import processDOM from './smartwrap-processdom';
 
 //TODO:  What functions in here need to be moved to a sidebar script, or a content script?
-jQuery(document).ready(function () {
+function swp(){
   "use strict";
   var getFirstTime = browser.storage.local.get("isFirstTime");
   getFirstTime.then(
@@ -43,7 +44,8 @@ jQuery(document).ready(function () {
     }
   );
   console.log("We're in!");
-  window.scrollbars.visible = false;
+  //ZD: Doesn't work under chrome.
+  //window.scrollbars.visible = false;
   // added this line per
   //http://old.nabble.com/Re%3A-Disable-scrollbars-in-browser-control-within-XUL-application-p5112444.html
   // since the browser now scrolls for itself in the #smarttables
@@ -103,7 +105,7 @@ jQuery(document).ready(function () {
     Smartwrap.SmartTable.setTemplate(elt.id, elt);
   });
 
-  const st0 = jQuery("#smarttable0");
+  const st0 = jQuery('#smarttable0');
   const st0copy = jQuery("#smarttable0").clone();
 
   jQuery("#smarttables").on("add_table", function (event) {
@@ -224,7 +226,7 @@ jQuery(document).ready(function () {
       event.preventDefault();
     }
   });
-
+  console.log("hi");
   var swTabs = jQuery("#smarttables").tabs({ //collapsible: true,
     active: false,
     activate: function (event, ui) {
@@ -362,7 +364,7 @@ jQuery(document).ready(function () {
     //alert("HI: " + new XMLSerializer().serializeToString(tab) + ":: " + href);
     swTabs.tabs("remove", href);
   });
-
+  console.log(st0);
   sw.init({
     "table0": st0.get(0).id
   });
@@ -660,12 +662,12 @@ jQuery(document).ready(function () {
       sw.wrapDoc = (function () {
         for (let tabno = 0; tabno < tabs.length; tabno++) {
           const browser = tabs[tabno].linkedBrowser;
-          const taburl = browser.contentDocument.defaultView.location.href;
+          const taburl = document.defaultView.location.href;
           if (taburl === detail.response.scrapedURL) {
-            return browser.contentDocument;
+            return document;
           }
         }
-        return sw.currentWindow.getBrowser().contentDocument;
+        return sw.currentWindow.getBrowser().document;
       })();
 
       window.open('chrome://smartwrap/content/smartwrapReport.html');
@@ -1432,4 +1434,6 @@ jQuery(document).ready(function () {
   jQuery(document).bind("sw_datacell", function (event) {
     exportButton.button("option", "disabled", false);
   });
-});
+}
+
+export default swp;

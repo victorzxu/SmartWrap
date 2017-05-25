@@ -3,4 +3,4 @@
  */
 
 import './sidebar';
-import './content_script';
+// import './content_script';

@@ -6,7 +6,7 @@ import "../styles/sidebar.css";
 import React from "react";
 import ReactDOM from "react-dom";
 import {Frame} from "yxl-sidebar";
-
+import onReady from "./content_script";
 main();
 
 function main() {
@@ -35,5 +35,5 @@ function boot() {
     </div>
   );
 
-  ReactDOM.render(App, root)
+  ReactDOM.render(App, root,() => {onReady()});
 }

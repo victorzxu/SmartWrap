@@ -13,9 +13,9 @@
       'pref_animateselector': true,
       'pref_maxchars': 400,
       'pref_buttonstyle': "both",
-      'pref_algorithm': "AUTO",
-      'pref_dragselect': "HOVER",
-      'pref_dragindic' : "BLUEBOX"
+      algorithm: "AUTO",
+      dragSelector: "HOVER",
+      dragIndicator : "BLUEBOX"
     }
     await browser.storage.local.set(defaultOptions);
     await restoreOptions();
@@ -30,9 +30,9 @@
       pref_animateselector :  $('#animate_selector_movement')[0].checked,
       pref_maxchars : $('#max_char_in_cells').val(),
       pref_buttonstyle : $('#button_style').val(),
-      pref_algorithm : $('#algorithm').val(),
-      pref_dragselect : $('#drag_selection_mode').val(),
-      pref_dragindic : $('#drag_indication_mode').val(),
+      algorithm : $('#algorithm').val(),
+      dragSelector : $('#drag_selection_mode').val(),
+      dragIndicator : $('#drag_indication_mode').val(),
   };
     browser.storage.local.set(newOptions);
   }
@@ -44,9 +44,9 @@
     $('#animate_selector_movement').prop ("checked",Object.values(await browser.storage.local.get('pref_animateselector'))[0]);
     $('#max_char_in_cells').val(Object.values(await browser.storage.local.get('pref_maxchars'))[0]);
     $('#button_style').val(Object.values( await browser.storage.local.get('pref_buttonstyle'))[0]);
-    $('#algorithm').val(Object.values(await browser.storage.local.get('pref_algorithm'))[0]);
-    $('#drag_selection_mode').val(Object.values(await browser.storage.local.get('pref_dragselect'))[0]);
-    $('#drag_indication_mode').val(Object.values(await browser.storage.local.get('pref_dragindic'))[0]);
+    $('#algorithm').val(Object.values(await browser.storage.local.get('algorithm'))[0]);
+    $('#drag_selection_mode').val(Object.values(await browser.storage.local.get('dragSelector'))[0]);
+    $('#drag_indication_mode').val(Object.values(await browser.storage.local.get('dragIndicator'))[0]);
     createChangeListeners();
   }
   async function onReady() {

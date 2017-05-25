@@ -546,7 +546,7 @@ let Smartwrap = (function () {
         DRAGGEDRANGE: draggedRange && draggedRange.toString()
       });
 
-      const dragDetail = {};
+      let dragDetail = {};
 
       if (draggedRange) {
         dragDetail.text = draggedRange.toString();
@@ -652,6 +652,7 @@ let Smartwrap = (function () {
             listener = function (event) {
 
               const dropTarget = event && event.target;
+              console.log(that);
 
               const dragDetail = that.dragDetail;
               //that.log("DROP:" + JSON.stringify(Object.keys(dragDetail)));
@@ -665,6 +666,7 @@ let Smartwrap = (function () {
             break;
           case "dragstart":
             listener = function (event) {
+              console.log("in dragstart");
               //alert("ITDRAG!");
 
               const detail = {};
@@ -1840,7 +1842,7 @@ let Smartwrap = (function () {
         Object.keys(this.palettes).forEach(function (key) {
           //alert("KEY: " + key);
           const palette = that.palettes[key];
-          const doc = that.currentWindow.getBrowser().contentDocument;
+          const doc = that.currentWindow.getBrowser().document;
           //TODO: TEC - Uncomment this line
           //palette.unregisterStylesheet();
           jQuery(doc).find(".sw_injected_cell").removeClass(palette.getClassNames().join(" "));
@@ -1882,7 +1884,7 @@ let Smartwrap = (function () {
     setProgram: function (program, meta) {
       alert("SETPROG!!");
       const interp = Object.create(Smartwrap.LoadInterpreter);
-      const doc = this.currentWindow.getBrowser().contentDocument;
+      const doc = this.currentWindow.getBrowser().document;
 
       interp.setContext(doc);
       interp.inferredCount = 0;
@@ -2097,4 +2099,3 @@ let Smartwrap = (function () {
 })();
 
 export {Smartwrap};
-
