@@ -10,7 +10,7 @@ interp.setContext(document);
 
 const palette = Palette.mainPalette;
 
-interp.addEventListener("makeCell", function (params) {
+interp.addEventListener("makeCell", params => {
   //alert("CELL: " + JSON.stringify(params));
   if (params.range && params.colid) {
     const color = palette.getColor(params.colid);

@@ -2,7 +2,7 @@ import jQuery from "jquery";
 import prefutil from "./prefutil";
 
 
-jQuery(document).ready(function () {
+jQuery(document).ready(() => {
   const detail = {
     source: "report"
   };
@@ -12,7 +12,7 @@ jQuery(document).ready(function () {
   evt.initCustomEvent("sw_reportSlot", true, false, detail);
   detail.target.dispatchEvent(evt);
 
-  jQuery(".dismissal").on("click", function () {
+  jQuery(".dismissal").on("click", () => {
     jQuery('#export').toggleClass("dismissed");
   });
 
@@ -25,7 +25,7 @@ jQuery(document).ready(function () {
   }
 
 
-  jQuery("#confirmCode").on("click", function () {
+  jQuery("#confirmCode").on("click", () => {
     const code = jQuery("#responseid").val();
     jQuery("#ersatzClipboard").get(0).src = [
       [jQuery("#prepath").val(), "/clip/put"].join(""), ["ersatz_clipboard_text", code].join("=")
@@ -40,7 +40,7 @@ jQuery(document).ready(function () {
     gClipboardHelper.copyString(" " + code + " ");
   });
 
-  prefutil.observeSetting("cssclasses", function (spec) {
+  prefutil.observeSetting("cssclasses", spec => {
     if (!spec.value) {
       return;
     }
@@ -51,7 +51,7 @@ jQuery(document).ready(function () {
     spec.elt = jQuery(document).find("#extraCssContainer");
     spec.elt.removeClass();
     spec.pre = spec.elt.get(0).className;
-    spec.clazzes.forEach(function (clazz) {
+    spec.clazzes.forEach(clazz => {
       spec.elt.addClass(clazz);
     });
     spec.post = spec.elt.get(0).className;
@@ -61,7 +61,7 @@ jQuery(document).ready(function () {
   const params = {};
   const query = window.location.toString().split('?')[1];
   const kvs = (query && query.split('&')) || [];
-  kvs.forEach(function (kv) {
+  kvs.forEach(kv => {
     const kvv = kv.split("=");
     if (kvv.length === 2) {
       params[kvv[0]] = kvv[1];

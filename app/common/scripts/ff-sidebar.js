@@ -308,7 +308,7 @@ if (true) {
 
   let ignorable = null;
   const browser = jQuery("#smartwrap-browser").get(0);
-  jQuery(document).bind("hideSidebar swRunWrapper swSaveWrapper swSaveCloseWrapper swDiscardWrapper swPing sw_autodrop sw_dragstart sw_removecell swAnnotate sw_dom swCancelRequest sw_reportSlot swUndo swRunWrapper swSidebar consent", function (event) {
+  jQuery(document).bind("hideSidebar swRunWrapper swSaveWrapper swSaveCloseWrapper swDiscardWrapper swPing sw_autodrop sw_dragstart sw_removecell swAnnotate sw_dom swCancelRequest sw_reportSlot swUndo swRunWrapper swSidebar consent", event => {
     const detail = event.originalEvent && event.originalEvent.detail;
     //Smartwrap.log({"RELAY?": detail});
     if (detail.sidebar_relayed) {
@@ -335,7 +335,7 @@ if (true) {
     Smartwrap.log('OUTGONE: ' + event.type);
   });
 
-  window.setTimeout(function () {
+  window.setTimeout(() => {
     const evt = document.createEvent("CustomEvent");
     evt.initCustomEvent("swSidebar", true, false, {
       sidebarDoc: jQuery(document),
@@ -344,7 +344,7 @@ if (true) {
     document.dispatchEvent(evt);
   }, 100);
 
-  jQuery(document).bind("sw_configure", function (event) {
+  jQuery(document).bind("sw_configure", event => {
     //alert("CONFIG1: " + new XMLSerializer().serializeToString(event.target));
 
     if (event.target !== jQuery(document).get(0)) {
@@ -377,7 +377,7 @@ if (true) {
     browser.contentDocument.dispatchEvent(evt);
   });
 
-  jQuery(document).bind("sw_outofbounds sw_inbounds", function (event) {
+  jQuery(document).bind("sw_outofbounds sw_inbounds", event => {
     //alert("OOB0: " + JSON.stringify(event));
 
     let detail = {};
@@ -396,7 +396,7 @@ if (true) {
 
   const logP = Math.log(0.99);
   const logO = Math.log(0.6);
-  const checkLoad = function (event, detail) {
+  const checkLoad = (event, detail) => {
     if (!detail) {
       detail = {};
 
@@ -440,7 +440,7 @@ if (true) {
         readyState: detail.readyState,
         done: false
       });
-      setTimeout(function () {
+      setTimeout(() => {
         checkLoad(event, detail);
       }, 1000);
       return;
@@ -475,12 +475,12 @@ if (true) {
       browser.contentDocument.dispatchEvent(evt);
     }
   };
-  jQuery(document).bind("DOMContentLoaded mouseover load", function (event) {
+  jQuery(document).bind("DOMContentLoaded mouseover load", event => {
     checkLoad(event);
   });
 
   const dialogs = jQuery("#dialog_templates .dialog_template");
-  jQuery(browser).bind("DOMContentLoaded", function (event) {
+  jQuery(browser).bind("DOMContentLoaded", event => {
     const detail = {};
 
     detail.dialogs = dialogs;
@@ -494,8 +494,8 @@ if (true) {
   const devMode = false;
   const annotatorMode = false;
 
-  jQuery(document).bind("showSidebar", function (event) {
-    setTimeout(function () {
+  jQuery(document).bind("showSidebar", event => {
+    setTimeout(() => {
       const reqConsent = Smartwrap.getSetting('requestConsent');
       let consent = Smartwrap.getSetting('consent');
       //alert(JSON.stringify({jsconsent: true, consent: consent, consent2: (typeof consent)}));
@@ -516,7 +516,7 @@ if (true) {
     }, 100);
   });
 
-  window.setTimeout(function () {
+  window.setTimeout(() => {
     //alert('hi: 10');
     document.getElementById('loadTarget').classList.add('loaded');
     document.getElementById('loadTarget').classList.remove('notloaded');

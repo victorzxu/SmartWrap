@@ -8,8 +8,7 @@ import jQuery from "jquery";
  * Dual licensed under the MIT or GPL Version 2 licenses.
  **/
 // ([^a-z."/])m([^a-z:"])
-(function ($, undefined) {
-
+((($, undefined) => {
   // http://www.w3.org/TR/css3-color/#svg-color
   var color_names = {
     "aliceblue": "f0f8ff",
@@ -160,7 +159,9 @@ import jQuery from "jquery";
     "whitesmoke": "f5f5f5",
     "yellow": "ff0",
     "yellowgreen": "9acd32"
-  }, _RGBAtoCSS;
+  };
+
+  var _RGBAtoCSS;
 
   /**
    * @constructor
@@ -321,10 +322,10 @@ import jQuery from "jquery";
       }
 
       if ("string" === typeof color) {
-
         color = color.toLowerCase().replace(/[^a-z0-9,.()#%]/g, '');
 
-        var part, c;
+        var part;
+        var c;
 
         if ('transparent' === color) {
           this["a"] = /* void */
@@ -524,7 +525,6 @@ import jQuery from "jquery";
 
       // inspiration: http://130.113.54.154/~monger/hsl-rgb.html
       if (this.success) {
-
         var r = this["r"] / 255;
         var g = this["g"] / 255;
         var b = this["b"] / 255;
@@ -533,7 +533,9 @@ import jQuery from "jquery";
         var max = Math.max(r, g, b);
         var delta = max - min;
 
-        var h, s, l = (max + min) / 2;
+        var h;
+        var s;
+        var l = (max + min) / 2;
 
         if (0 === delta) {
           h = 0;
@@ -563,7 +565,6 @@ import jQuery from "jquery";
     this["getHSV"] = function () {
 
       if (this.success) {
-
         var r = this["r"] / 255;
         var g = this["g"] / 255;
         var b = this["b"] / 255;
@@ -588,7 +589,9 @@ import jQuery from "jquery";
         var max = Math.max(r, g, b);
         var delta = max - min;
 
-        var h, s, v = max;
+        var h;
+        var s;
+        var v = max;
 
         if (0 === max) {
           s = 0;
@@ -653,7 +656,7 @@ import jQuery from "jquery";
     this["setColor"](color);
   }
 
-  $["each"](['color', 'backgroundColor', 'borderColor', 'borderTopColor', 'borderBottomColor', 'borderLeftColor', 'borderRightColor', 'outlineColor'], function (i, attr) {
+  $["each"](['color', 'backgroundColor', 'borderColor', 'borderTopColor', 'borderBottomColor', 'borderLeftColor', 'borderRightColor', 'outlineColor'], (i, attr) => {
 
     $["cssHooks"][attr] = {
 
@@ -662,13 +665,13 @@ import jQuery from "jquery";
       }
     };
 
-    $["fx"]["step"][attr] = function (fx) {
+    $["fx"]["step"][attr] = fx => {
 
       if (undefined === fx["xinit"]) {
 
         if ("string" === typeof fx["end"] && -1 !== fx["end"].indexOf(";")) {
-
-          var x, arr = fx["end"].split(";");
+          var x;
+          var arr = fx["end"].split(";");
 
           if (arr.length > 2) {
 
@@ -698,8 +701,8 @@ import jQuery from "jquery";
       var P = fx["pos"];
 
       if (null === S) {
-        var m = P * (E.length - 1),
-          n = P < 1 ? m | 0 : E.length - 2;
+        var m = P * (E.length - 1);
+        var n = P < 1 ? m | 0 : E.length - 2;
         S = E[n];
         E = E[n + 1];
         P = m - n;
@@ -713,20 +716,16 @@ import jQuery from "jquery";
     }
   });
 
-  $(function () {
-    var div = document.createElement("div"),
-      div_style = div["style"];
+  $(() => {
+    var div = document.createElement("div");
+    var div_style = div["style"];
 
-    _RGBAtoCSS = function (r, g, b, a) {
-      return "rgba(" + r + "," + g + "," + b + "," + a + ")";
-    };
+    _RGBAtoCSS = (r, g, b, a) => "rgba(" + r + "," + g + "," + b + "," + a + ")";
 
     div_style["cssText"] = "background-color:rgba(1,1,1,.5)";
 
     if (!($["support"]["rgba"] = div_style["backgroundColor"].indexOf("rgba") > -1)) {
-      _RGBAtoCSS = function (r, g, b) {
-        return "rgb(" + r + "," + g + "," + b + ")";
-      };
+      _RGBAtoCSS = (r, g, b) => "rgb(" + r + "," + g + "," + b + ")";
     }
   });
 
@@ -759,7 +758,7 @@ import jQuery from "jquery";
    */
   function xColorMix() {
 
-    this["test"] = function (col) {
+    this["test"] = col => {
 
       var c = new xColor(col);
 
@@ -769,7 +768,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["red"] = function (col) {
+    this["red"] = col => {
 
       var c = new xColor(col);
 
@@ -781,7 +780,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["blue"] = function (col) {
+    this["blue"] = col => {
 
       var c = new xColor(col);
 
@@ -793,7 +792,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["green"] = function (col) {
+    this["green"] = col => {
 
       var c = new xColor(col);
 
@@ -805,16 +804,15 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["sepia"] = function (col) {
+    this["sepia"] = col => {
 
       var c = new xColor(col);
 
       // Microsoft's sepia function http://msdn.microsoft.com/en-us/magazine/cc163866.aspx
       if (c.success) {
-
-        var r = c["r"],
-          g = c["g"],
-          b = c["b"];
+        var r = c["r"];
+        var g = c["g"];
+        var b = c["b"];
 
         c["r"] = Math.round(r * .393 + g * .769 + b * .189);
         c["g"] = Math.round(r * .349 + g * .686 + b * .168);
@@ -825,13 +823,10 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["random"] = function () {
+    this["random"] = () => new xColor([
+      (255 * Math.random()) | 0, (255 * Math.random()) | 0, (255 * Math.random()) | 0]);
 
-      return new xColor([
-        (255 * Math.random()) | 0, (255 * Math.random()) | 0, (255 * Math.random()) | 0]);
-    };
-
-    this["inverse"] = function (col) {
+    this["inverse"] = col => {
 
       var c = new xColor(col);
 
@@ -844,7 +839,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["opacity"] = function (x, y, o) {
+    this["opacity"] = (x, y, o) => {
 
       var a = new xColor(x);
       var b = new xColor(y);
@@ -866,9 +861,9 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["greyfilter"] = function (col, formula) {
-
-      var v, c = new xColor(col);
+    this["greyfilter"] = (col, formula) => {
+      var v;
+      var c = new xColor(col);
 
       if (c.success) {
         switch (formula) {
@@ -890,7 +885,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["webround"] = function (col) {
+    this["webround"] = col => {
 
       var c = new xColor(col);
 
@@ -903,7 +898,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["distance"] = function (x, y) {
+    this["distance"] = (x, y) => {
 
       var a = new xColor(x);
       var b = new xColor(y);
@@ -915,7 +910,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["readable"] = function (bg, col, size) {
+    this["readable"] = (bg, col, size) => {
 
       // good ressource: http://www.hgrebdes.com/colour/spectrum/colourvisibility.html
 
@@ -930,12 +925,12 @@ import jQuery from "jquery";
 
         var diff = b["r"] * 0.299 + b["g"] * 0.587 + b["b"] * 0.114 - a["r"] * 0.299 - a["g"] * 0.587 - a["b"] * 0.114;
 
-        return !((diff < (1.5 + 141.162 * Math.pow(0.975, size))) && (diff > (-.5 - 154.709 * Math.pow(0.990, size))));
+        return !((diff < (1.5 + 141.162 * (0.975 ** size))) && (diff > (-.5 - 154.709 * (0.990 ** size))));
       }
       return null;
     };
 
-    this["combine"] = function (x, y) {
+    this["combine"] = (x, y) => {
 
       var a = new xColor(x);
       var b = new xColor(y);
@@ -949,13 +944,12 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["breed"] = function (x, y) {
-
+    this["breed"] = (x, y) => {
       var a = new xColor(x);
       var b = new xColor(y);
 
-      var mask = 0,
-        i = 6;
+      var mask = 0;
+      var i = 6;
 
       if (a.success & b.success) {
 
@@ -973,7 +967,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["additive"] = function (x, y) {
+    this["additive"] = (x, y) => {
 
       var a = new xColor(x);
       var b = new xColor(y);
@@ -989,7 +983,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["subtractive"] = function (x, y) {
+    this["subtractive"] = (x, y) => {
 
       var a = new xColor(x);
       var b = new xColor(y);
@@ -1005,7 +999,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["subtract"] = function (x, y) {
+    this["subtract"] = (x, y) => {
 
       var a = new xColor(x);
       var b = new xColor(y);
@@ -1021,7 +1015,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["multiply"] = function (x, y) {
+    this["multiply"] = (x, y) => {
 
       var a = new xColor(x);
       var b = new xColor(y);
@@ -1035,7 +1029,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["average"] = function (x, y) {
+    this["average"] = (x, y) => {
 
       var a = new xColor(x);
       var b = new xColor(y);
@@ -1049,7 +1043,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["triad"] = function (col) {
+    this["triad"] = col => {
 
       var c = new xColor(col);
 
@@ -1062,7 +1056,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["tetrad"] = function (col) {
+    this["tetrad"] = col => {
 
       var c = new xColor(col);
 
@@ -1076,7 +1070,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["gradientlevel"] = function (x, y, level, deg) {
+    this["gradientlevel"] = (x, y, level, deg) => {
 
       if (undefined === deg) deg = 1;
 
@@ -1096,7 +1090,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["gradientarray"] = function (arr, level, deg) {
+    this["gradientarray"] = (arr, level, deg) => {
 
       if (level > deg || !arr.length) return null;
 
@@ -1110,7 +1104,7 @@ import jQuery from "jquery";
       return $["xcolor"]["gradientlevel"](arr[e], arr[e + 1], level - e * step, step);
     };
 
-    this["nearestname"] = function (a) {
+    this["nearestname"] = a => {
 
       a = new xColor(a);
 
@@ -1162,7 +1156,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["analogous"] = function (col, results, slices) {
+    this["analogous"] = (col, results, slices) => {
 
       if (undefined === results) {
         results = 8;
@@ -1175,10 +1169,9 @@ import jQuery from "jquery";
       var c = new xColor(col);
 
       if (c.success) {
-
         var hsv = c["getHSV"]();
-        var part = 360 / slices,
-          ret = [c];
+        var part = 360 / slices;
+        var ret = [c];
 
         for (hsv["h"] = ((hsv["h"] - (part * results >> 1)) + 720) % 360; --results;) {
           hsv["h"] += part;
@@ -1190,7 +1183,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["complementary"] = function (col) {
+    this["complementary"] = col => {
 
       var c = new xColor(col);
 
@@ -1205,7 +1198,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["splitcomplement"] = function (col) {
+    this["splitcomplement"] = col => {
 
       var c = new xColor(col);
 
@@ -1227,7 +1220,7 @@ import jQuery from "jquery";
       return null;
     };
 
-    this["monochromatic"] = function (col, results) {
+    this["monochromatic"] = (col, results) => {
 
       if (undefined === results) {
         results = 6;
@@ -1317,10 +1310,9 @@ import jQuery from "jquery";
     TO = new xColor(TO);
 
     this["each"](function () {
-
-      var tmp = this.childNodes,
-        LEN = 0,
-        K = 0;
+      var tmp = this.childNodes;
+      var LEN = 0;
+      var K = 0;
 
       if (FROM.success & TO.success) {
 
@@ -1328,17 +1320,18 @@ import jQuery from "jquery";
         }
 
         (function replace(node) {
-
-          var i = 0,
-            len;
+          var i = 0;
+          var len;
 
           if (3 === node.nodeType) {
-
             var x = FROM;
             var y = TO;
             var l = LEN;
-            var elem, ctx, diff = 0,
-              c, calc = TYPE;
+            var elem;
+            var ctx;
+            var diff = 0;
+            var c;
+            var calc = TYPE;
 
             len = node.nodeValue.length;
             ctx = document.createElement('span');
@@ -1362,7 +1355,6 @@ import jQuery from "jquery";
               ++K;
             }
             node.parentNode.replaceChild(ctx, node);
-
           } else {
             for (len = node.childNodes.length; i < len; ++i) {
               replace(node.childNodes[i]);
@@ -1373,5 +1365,4 @@ import jQuery from "jquery";
       }
     });
   };
-
-}(jQuery));
+})(jQuery));

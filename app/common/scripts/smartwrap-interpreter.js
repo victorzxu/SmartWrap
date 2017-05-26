@@ -2,14 +2,13 @@ import jQuery from "jquery";
 import {Smartwrap} from "./smartwrap";
 
 
-Smartwrap.Interpreter = (function () {
-  "use strict";
+Smartwrap.Interpreter = ((() => {
   return {
     functions: {
       "begin": function (steps) {
         const that = this;
         let result = null;
-        steps.forEach(function (step) {
+        steps.forEach(step => {
           result = that.interpret(step);
         });
         return result;
@@ -64,7 +63,7 @@ Smartwrap.Interpreter = (function () {
         if (node1) {
           range.selectNodeContents(node1);
           this.fireEvent("select", {
-            range: range
+            range
           });
           range.selector = node1.selector;
         } else {
@@ -113,7 +112,7 @@ Smartwrap.Interpreter = (function () {
             if (Smartwrap.log) {
               Smartwrap.log({
                 NONESUCH: selector,
-                partials: partials
+                partials
               });
             }
           }
@@ -128,12 +127,12 @@ Smartwrap.Interpreter = (function () {
         const node = this.interpret(args[0]);
         if (node) {
           this.fireEvent("nextPage", {
-            node: node
+            node
           });
         }
       }
     },
-    addEventListener: function (eventName, listener) {
+    addEventListener(eventName, listener) {
       if (!this.listeners) {
         this.listeners = {};
       }
@@ -143,21 +142,21 @@ Smartwrap.Interpreter = (function () {
 
       this.listeners[eventName].push(listener);
     },
-    fireEvent: function (eventName, params) {
+    fireEvent(eventName, params) {
       if (!this.listeners) {
         return;
       }
       const that = this;
       if (this.listeners[eventName]) {
-        this.listeners[eventName].forEach(function (listener) {
+        this.listeners[eventName].forEach(listener => {
           listener.call(that, params);
         });
       }
     },
-    setContext: function (doc) {
+    setContext(doc) {
       this.doc = doc;
     },
-    interpret: function (program) {
+    interpret(program) {
       //alert("interp: " + JSON.stringify(program));
       if (Smartwrap.log) {
         Smartwrap.log({
@@ -186,10 +185,9 @@ Smartwrap.Interpreter = (function () {
       return program;
     }
   };
-}());
+})());
 
-Smartwrap.LoadInterpreter = (function () {
-  "use strict";
+Smartwrap.LoadInterpreter = ((() => {
   const interp = Object.create(Smartwrap.Interpreter);
 
   interp.addEventListener("startTable", function (params) {
@@ -245,11 +243,11 @@ Smartwrap.LoadInterpreter = (function () {
 
     cell.contents = contents.join("");
 
-    images.first().each(function (index, img) {
+    images.first().each((index, img) => {
       cell.imageSource = img.src;
       cell.imageAltText = img.alt;
     });
-    links.first().each(function (index, link) {
+    links.first().each((index, link) => {
       cell.linkTarget = link.href;
     });
 
@@ -294,10 +292,9 @@ Smartwrap.LoadInterpreter = (function () {
     //that.log({"LOADDATA": loaddata});
   });
   return interp;
-}());
+})());
 
-Smartwrap.ReportInterpreter = (function () {
-  "use strict";
+Smartwrap.ReportInterpreter = ((() => {
   const interp = Object.create(Smartwrap.Interpreter);
 
   interp.tables = {};
@@ -383,9 +380,7 @@ Smartwrap.ReportInterpreter = (function () {
     }
 
     const tableElt = jQuery(this.tableStack[0]);
-    tableElt.data('json', tableElt.find("tr").map(function (ix, elt) {
-      return [jQuery(elt).data('json')];
-    }).get());
+    tableElt.data('json', tableElt.find("tr").map((ix, elt) => [jQuery(elt).data('json')]).get());
 
 
     this.tablecontents.push(tableElt.data('json'));
@@ -453,7 +448,7 @@ Smartwrap.ReportInterpreter = (function () {
     jQuery(rowWidget).data('cells', {});
 
     const that = this;
-    this.colids.forEach(function (colid) {
+    this.colids.forEach(colid => {
       const cellWidget = that.targetDoc.createElement("td");
       jQuery(cellWidget).addClass("swCell");
       jQuery(cellWidget).addClass(colid);
@@ -483,7 +478,7 @@ Smartwrap.ReportInterpreter = (function () {
 
     if (prevRow.size()) {
       const that = this;
-      rowWidget.find(".swCell.leer").each(function (ix, elt) {
+      rowWidget.find(".swCell.leer").each((ix, elt) => {
         const elt1 = jQuery(elt);
         const colid = elt1.data("colid");
         elt1.detach();
@@ -493,9 +488,7 @@ Smartwrap.ReportInterpreter = (function () {
       });
     }
 
-    rowWidget.data('json', rowWidget.find("td").map(function (ix, elt) {
-      return jQuery(elt).data('json');
-    }).get());
+    rowWidget.data('json', rowWidget.find("td").map((ix, elt) => jQuery(elt).data('json')).get());
     if (this.logger) {
       this.logger.log({
         "ROWJSON!!": rowWidget.data('json')
@@ -617,7 +610,7 @@ Smartwrap.ReportInterpreter = (function () {
     const that = this;
 
     if (images.length > 0) {
-      images.first().each(function (index, img) {
+      images.first().each((index, img) => {
         const cellImage = that.targetDoc.createElement("img");
         cellImage.src = img.src;
         cellImage.alt = img.alt;
@@ -638,4 +631,4 @@ Smartwrap.ReportInterpreter = (function () {
   });
 
   return interp;
-}());
+})());

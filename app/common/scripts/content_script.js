@@ -5,15 +5,26 @@
 import jQuery from "jquery";
 import {Smartwrap} from './smartwrap';
 import prefutil from "./prefutil";
+import main from './sidebar';
+
+
+
+
 const $ = jQuery;
 
-onReady();
+localStorage.debug = true;
+import bow from 'bows';
+const log = bow('content_script');
 
+main(onReady);
 
 function onReady() {
-
+  const frame = $('#yxl_sidebar');
+  console.log(frame);
   console.log('content_script!');
   function checkLoad(event, detail) {
+    console.log('checkLoad start');
+    console.log('reaches here');
     if (!detail) {
       detail = {};
 
@@ -60,7 +71,7 @@ function onReady() {
         readyState: detail.readyState,
         done: false
       });
-      setTimeout(function () {
+      setTimeout(() => {
         checkLoad(event, detail);
       }, 1000);
       return;
@@ -87,15 +98,16 @@ function onReady() {
       HASBODY: !!detail.document.body,
       HASDOC: !!detail.target.ownerDocument
     });
-
-    var evt = document.createEvent("CustomEvent");
+    var evt = frame.createEvent("CustomEvent");
     evt.initCustomEvent("sw_targetdocument", true, false, detail);
-    if (browser && browser.contentDocument) {
-      browser.contentDocument.dispatchEvent(evt);
-    }
+    frame.dispatchEvent(evt);
+    console.log("checkload ends");
+
   };
 
-  jQuery(document).bind("DOMContentLoaded mouseover load", function (event) {
+  jQuery(frame).bind("DOMContentLoaded mouseover load", event => {
     checkLoad(event);
   });
 }
+
+export default onReady;

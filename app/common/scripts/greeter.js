@@ -25,12 +25,10 @@ Components.utils.import("resource://gre/modules/AddonManager.jsm");
 // the extension has been run before; if it hasn't then open a tab to the
 // registration page.
 
-const greeter = (function () {
-  "use strict";
-
+const greeter = ((() => {
   const swg = {};
 
-  const decode = function (pref, key) {
+  const decode = (pref, key) => {
     const prefType = pref.getPrefType(key);
     if (prefType === pref.PREF_STRING) {
       return pref.getCharPref(key);
@@ -43,19 +41,19 @@ const greeter = (function () {
     }
   };
 
-  swg.branch2json = function (branch) {
+  swg.branch2json = branch => {
     const prefs = {};
     prefs.foo = "bar";
 
     //var keys = branch.getChildList("",{})
-    branch.getChildList("", {}).forEach(function (key) {
+    branch.getChildList("", {}).forEach(key => {
       prefs[key] = decode(branch, key);
     });
 
     return prefs;
   };
 
-  swg.firstRun = function (registeredVersion, installedVersion) {
+  swg.firstRun = (registeredVersion, installedVersion) => {
     Services.console.logStringMessage(JSON.stringify({
       first: "?",
       reg: registeredVersion,
@@ -82,7 +80,7 @@ const greeter = (function () {
     return false;
   };
 
-  swg.registerVersion = function (ver) {
+  swg.registerVersion = ver => {
     swg.installed = ver.version;
     swg.prefs.via = ver.via;
 
@@ -93,7 +91,7 @@ const greeter = (function () {
         greeturl = [greeturl, greetquery].join("?");
       }
       Services.console.logStringMessage(JSON.stringify({
-        greeturl: greeturl
+        greeturl
       }));
 
       //jQuery(swg.widget).attr("checked", "true");
@@ -105,12 +103,12 @@ const greeter = (function () {
       swg.window.gBrowser.selectedTab = swg.window.gBrowser.addTab(greeturl);
       Services.console.logStringMessage(JSON.stringify({
         greeted: "true",
-        greeturl: greeturl
+        greeturl
       }));
     }
   };
 
-  swg.owl = function (winn) {
+  swg.owl = winn => {
     //alert('ppp');
 
     swg.window = winn;
@@ -124,8 +122,8 @@ const greeter = (function () {
 
     //swg.getVersion("smartwrap@cmu.edu", swg.registerVersion);
     //swg.getVersion("swath@cmu.edu", swg.registerVersion);
-    ["smartwrap@cmu.edu", "swath@cmu.edu"].forEach(function (addonid) {
-      AddonManager.getAddonByID(addonid, function (addon) {
+    ["smartwrap@cmu.edu", "swath@cmu.edu"].forEach(addonid => {
+      AddonManager.getAddonByID(addonid, addon => {
         if (!addon) {
           return;
         }
@@ -139,7 +137,7 @@ const greeter = (function () {
   try {
     if (window) {
       swg.widget = document.getElementById("sw-show-status");
-      window.addEventListener("load", function () {
+      window.addEventListener("load", () => {
         swg.owl(window);
       }, false);
 
@@ -153,9 +151,9 @@ const greeter = (function () {
     }));
     Services.console.logStringMessage(JSON.stringify({
       where: "greeter",
-      ee: ee
+      ee
     }));
   }
 
   return swg;
-}());
+})());

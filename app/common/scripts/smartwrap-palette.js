@@ -5,10 +5,9 @@ import {Smartwrap} from "./smartwrap";
 //var Components;
 
 
-Smartwrap.Palette = (function () {
-  "use strict";
+Smartwrap.Palette = ((() => {
   return {
-    init: function (params) {
+    init(params) {
       if (!params) {
         params = {};
       }
@@ -22,7 +21,7 @@ Smartwrap.Palette = (function () {
       };
 
       if (params.settings) {
-        Object.keys(params.settings).forEach(function (key) {
+        Object.keys(params.settings).forEach(key => {
           that.settings[key] = params.settings[key];
         });
       }
@@ -38,13 +37,13 @@ Smartwrap.Palette = (function () {
         }
       }
       if (this.baseColor) {
-        jQuery.xcolor.tetrad(this.baseColor).forEach(function (newColor) {
+        jQuery.xcolor.tetrad(this.baseColor).forEach(newColor => {
           that.baseColors.push(newColor);
         });
       }
       if (this.baseColors.length) {
         const lol = [];
-        this.baseColors.forEach(function (color) {
+        this.baseColors.forEach(color => {
           lol.push(jQuery.xcolor.analogous(color));
         });
         while (lol.length) {
@@ -72,13 +71,13 @@ Smartwrap.Palette = (function () {
       let className;
       const oldPalette = params.oldPalette;
       if (oldPalette) {
-        Object.keys(oldPalette.colorMap).forEach(function (className) {
+        Object.keys(oldPalette.colorMap).forEach(className => {
           that.getColor(className);
         });
         this.uri = oldPalette.uri;
       }
     },
-    getColor: function (alias) {
+    getColor(alias) {
       if (!this.colorMap[alias]) {
         this.colorMap[alias] = this.colors[this.counter];
         this.counter += 1;
@@ -94,17 +93,17 @@ Smartwrap.Palette = (function () {
       //alert(jQuery.format("{alias} -> {color}", {alias:alias, color:this.colorMap[alias]}));
       return this.colorMap[alias];
     },
-    getCSS: function () {
+    getCSS() {
       //alert("COLORS: " + JSON.stringify(this.colors));
       //alert("MAP: " + JSON.stringify(this.colorMap));
 
       const that = this;
 
       const lines = [];
-      Object.keys(this.colorMap).forEach(function (className) {
+      Object.keys(this.colorMap).forEach(className => {
         const color = that.colorMap[className];
         lines.push(jQuery.format(".{className} {open} background-color: {colorCss} !important {close}", {
-          className: className,
+          className,
           colorCss: color.getCSS(),
           open: "{", // workaround bugs in format method
           close: "}"
@@ -113,7 +112,7 @@ Smartwrap.Palette = (function () {
       //alert("LINES: " + JSON.stringify(lines));
       return lines.join(" ");
     },
-    getURI: function () {
+    getURI() {
       return jQuery.format("data:text/css,{css}", {
         css: this.getCSS()
       });
@@ -160,13 +159,13 @@ Smartwrap.Palette = (function () {
      }
      return true;
      },*/
-    getClassNames: function () {
+    getClassNames() {
       return Object.keys(this.colorMap);
     },
     log: [],
     services: {}
   };
-}());
+})());
 
 Smartwrap.mainPalette = Object.create(Smartwrap.Palette);
 //Smartwrap.mainSmartwrap.init({"colors":["red","green","blue"]});

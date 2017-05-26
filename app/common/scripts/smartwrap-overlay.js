@@ -2,14 +2,13 @@ import jQuery from "jquery";
 import {Smartwrap} from "./smartwrap";
 
 
-Smartwrap.overlay = (function () {
-  "use strict";
+Smartwrap.overlay = ((() => {
   //alert('define');
 
 
   const swo = {
-    showhide: function (widget, selector) {
-      return function (event) {
+    showhide(widget, selector) {
+      return event => {
         const tgt = gContextMenu.target;
 
         let show = false;
@@ -28,11 +27,11 @@ Smartwrap.overlay = (function () {
         }
       };
     },
-    openurl: function (detail) {
+    openurl(detail) {
       const url = detail.url || detail.redirect;
       window.open(url);
     },
-    log: function (detail) {
+    log(detail) {
       if (this.devMode) {
         try {
           const domain = detail.domain || "";
@@ -58,4 +57,4 @@ Smartwrap.overlay = (function () {
   };
 
   return swo;
-}());
+})());

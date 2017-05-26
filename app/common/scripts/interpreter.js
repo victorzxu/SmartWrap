@@ -3,7 +3,7 @@ import jQuery from "jquery";
 Pallette = {
   _colors: ["red", "green", "blue"],
   _index: 0,
-  getNewColor: function () {
+  getNewColor() {
     const color = this._colors[this._index];
     this._index++;
     return color;
@@ -19,12 +19,12 @@ SmartwrapInterpreter0 = {
   currentCell: null,
   rownum: -1,
   _env: {},
-  _noop: function () {
+  _noop() {
   },
   _functions: {
     "begin": function (steps) {
       const that = this;
-      steps.forEach(function (step) {
+      steps.forEach(step => {
         that.interpret(step);
       });
 
@@ -203,10 +203,10 @@ SmartwrapInterpreter0 = {
       //alert("COLUMNS: " + JSON.stringify(this._env.columns));
     },
   },
-  getColumnObject: function (colid) {
+  getColumnObject(colid) {
     return this._env.columns[colid];
   },
-  interpret: function (program) {
+  interpret(program) {
     const that = this;
 
     if (!this.explicitProgram) {

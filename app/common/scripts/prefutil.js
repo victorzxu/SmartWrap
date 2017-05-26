@@ -16,11 +16,9 @@
     pref_dragindic: Drag Indication Mode
       val:"NONE","BLUEBOX"
 */
+import browser from "webextension-polyfill";
 
-
-const prefutil = (function () {
-  "use strict";
-
+const prefutil = ((() => {
   const pu = {};
   var privy = {};
   /*DECODE: decode the preferences according to its typeof
@@ -91,12 +89,11 @@ const prefutil = (function () {
   /*get a set of preferences.
     take in the keys
   */
-  pu.getPref = function (spec) {
-    browser.storage.local.get(spec.key)
+  pu.getPref = spec => {
+    const res = browser.storage.local.get(spec.key);
     return res;
   }
-  pu.initPref = function () {
-    console.log("initPref");
+  pu.initPref = () => {
     const initOptions = {
       pref_permicon: true,
       pref_animateselector: true,
@@ -136,7 +133,7 @@ const prefutil = (function () {
   pu.observeSetting = function (key, callback, prefix) {
     const value = this.getPref(key);
     browser.storage.onChanged.addListener(
-      function (changes,area) {
+      (changes, area) => {
         var changedItems = Object.keys(changes);
         for (var item of ChangedItems) {
           if ((item ===  "key") && (area === "local")) {
@@ -146,7 +143,7 @@ const prefutil = (function () {
       });
     }
 
-  pu.registerVersion = function (ver) {
+  pu.registerVersion = ver => {
     pu.installed = ver.version;
     pu.via = ver.via;
     const store = browser.storage.local;
@@ -199,6 +196,6 @@ const prefutil = (function () {
 
 }*/
   return pu;
-}());
+})());
 
 export default prefutil;

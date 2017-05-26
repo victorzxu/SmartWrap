@@ -1,4 +1,5 @@
 //noinspection ES6UnusedImports
+import browser from "webextension-polyfill";
 import $ from "jquery"; // This if for jquery-ui to inject(add) members to jquery object
 import jQuery from "jquery";
 //TODO: yxl: Understand why we can't import $,query in one line?
@@ -22,13 +23,16 @@ import {smartwrapNamespace} from "./smarttable-header";
 
 import processDOM from './smartwrap-processdom';
 
-//TODO:  What functions in here need to be moved to a sidebar script, or a content script?
+localStorage.debug = true;
+
+import bow from 'bows';
+
+const log = bow('page');
+
 jQuery(document).ready(function () {
-  "use strict";
   var getFirstTime = browser.storage.local.get("isFirstTime");
   getFirstTime.then(
-    function (item) {
-      console.log(item.constructor);
+    item => {
       if (Object.keys(item).length === 0) {
         console.log("first time");
         prefutil.initPref();
@@ -38,12 +42,12 @@ jQuery(document).ready(function () {
         console.log("not first time");
       }
     },
-    function (error) {
+    error => {
       console.log("error when getting isFirstTime");
     }
   );
   console.log("We're in!");
-  window.scrollbars.visible = false;
+  //window.scrollbars.visible = false;
   // added this line per
   //http://old.nabble.com/Re%3A-Disable-scrollbars-in-browser-control-within-XUL-application-p5112444.html
   // since the browser now scrolls for itself in the #smarttables
@@ -54,8 +58,8 @@ jQuery(document).ready(function () {
     animate: true,
     grid: [50, 5],
     handles: "s",
-    stop: function () {
-      setTimeout(function () {
+    stop() {
+      setTimeout(() => {
         jQuery("#smarttables").animate({
           width: "100%"
         });
@@ -67,13 +71,13 @@ jQuery(document).ready(function () {
 
   sw.contextmenu = jQuery("ul#smartwrap_contextmenu");
   sw.contextmenu.menu({
-    select: function (event, ui) {
+    select(event, ui) {
       event.stopPropagation();
       event.preventDefault();
 
       sw.contextmenu.hide();
       jQuery(".contextualized").removeClass("contextualized");
-      setTimeout(function () {
+      setTimeout(() => {
         const item = jQuery(ui.item).find(".sw_menuitem").get(0);
         const eventType = item.getAttributeNS(smartwrapNamespace, "eventType") || item.getAttribute("sw:eventType");
 
@@ -91,22 +95,21 @@ jQuery(document).ready(function () {
 
       }, 10);
     },
-    blur2: function () {
-      setTimeout(function () {
+    blur2() {
+      setTimeout(() => {
         sw.contextmenu.hide();
       }, 1200);
     },
   });
-  jQuery("#templates .template").each(function (index, elt) {
+  jQuery("#templates .template").each((index, elt) => {
     //alert("TEMPLATE: " + new XMLSerializer().serializeToString(elt));
     Smartwrap.setTemplate(elt.id, elt);
     Smartwrap.SmartTable.setTemplate(elt.id, elt);
   });
-
   const st0 = jQuery("#smarttable0");
   const st0copy = jQuery("#smarttable0").clone();
 
-  jQuery("#smarttables").on("add_table", function (event) {
+  jQuery("#smarttables").on("add_table", event => {
     const spec = (event && event.originalEvent && event.originalEvent.detail) || {};
     event.spec2 = Object.create(spec);
     if (!event.spec2.tabno) {
@@ -132,6 +135,7 @@ jQuery(document).ready(function () {
     tabElt.find("a").first().attr("href", href);
     tabElt.find("a .label").first().text(label);
 
+    log('p1');
     sw.emit(jQuery("#smarttables"), "bind_table", event.spec2);
 
     swTabs.tabs('refresh');
@@ -142,7 +146,7 @@ jQuery(document).ready(function () {
       STADDTAB: event.spec2
     });
   });
-  jQuery(document).on("bind_table", function (event) {
+  jQuery(document).on("bind_table", event => {
     const spec = (event && event.originalEvent && event.originalEvent.detail) || {};
     event.spec2 = Object.create(spec);
     sw.log({
@@ -155,7 +159,7 @@ jQuery(document).ready(function () {
     }
 
     event.spec2.containers = {};
-    event.spec2.table.viewNames.forEach(function (key) {
+    event.spec2.table.viewNames.forEach(key => {
       event.spec2.containers[key] = jQuery(event.spec2.panel).find("." + key).get(0);
     });
     event.spec2.table.setContainers(event.spec2.containers);
@@ -163,7 +167,7 @@ jQuery(document).ready(function () {
     //event.spec2.panel.find(".tablename").val(event.spec2.labelText);
     event.spec2.panel.find(".tablename").val(event.spec2.labelText);
 
-    event.spec2.panel.on("rename_table", function (delta) {
+    event.spec2.panel.on("rename_table", delta => {
       //setTimeout(function() { alert('RDELTA'); }, 1200);
       event.spec2.tab.find("a .label").first().text(event.spec2.panel.find(".tablename").val().slice(0, 20));
     });
@@ -172,7 +176,7 @@ jQuery(document).ready(function () {
       STBINDTAB: Object.keys(event.spec2)
     });
   });
-  jQuery(document).on("rename_table", function (event) {
+  jQuery(document).on("rename_table", event => {
     const spec = (event && event.originalEvent && event.originalEvent.detail) || {};
     sw.log({
       RENAME_TABLE: event,
@@ -180,8 +184,8 @@ jQuery(document).ready(function () {
     });
   });
 
-  jQuery(document).on("consent", function (event) {
-    setTimeout(function () {
+  jQuery(document).on("consent", event => {
+    setTimeout(() => {
       //alert("HIHITELLUSER");
       //sw.tellUser({msgid: "msg_consent"});
       window.open('chrome://smartwrap/content/consent.html');
@@ -190,7 +194,7 @@ jQuery(document).ready(function () {
   });
 
   const sink = jQuery(".sink");
-  const getKeyString = function (charCode) {
+  const getKeyString = charCode => {
     if (charCode === 46) {
       return "del";
     }
@@ -199,7 +203,7 @@ jQuery(document).ready(function () {
     }
     return String.fromCharCode(charCode);
   };
-  jQuery(".sink").on("keypress", function (event) {
+  jQuery(".sink").on("keypress", event => {
     const key = [
       typeof event.shiftKey !== 'undefined' ? "shift-" : "",
       typeof event.ctrlKey !== 'undefined' ? "ctrl-" : "",
@@ -211,7 +215,7 @@ jQuery(document).ready(function () {
     ].join("");
 
     sink.val(JSON.stringify({
-      key: key,
+      key,
       code: Math.max(event.which, event.keyCode),
       cb: !!sw.shortcuts[key]
     }));
@@ -227,7 +231,7 @@ jQuery(document).ready(function () {
 
   var swTabs = jQuery("#smarttables").tabs({ //collapsible: true,
     active: false,
-    activate: function (event, ui) {
+    activate(event, ui) {
       //alert("NOW: " + new XMLSerializer().serializeToString(ui.tab.parentNode));
       let newtab = (ui.tab && (ui.tab.id === 'newtab'));
       if (ui.newTab && (jQuery(ui.newTab).find("a#newtab").length > 0)) {
@@ -236,7 +240,7 @@ jQuery(document).ready(function () {
       if (newtab) {
 
         const spec = {};
-        spec.callback = function (newid) {
+        spec.callback = newid => {
           swTabs.tabs('activate', '#' + newid);
         };
         sw.emit(jQuery("#smarttables"), "add_table", spec);
@@ -254,7 +258,7 @@ jQuery(document).ready(function () {
       }
       // alert("NOW: " + ui.panel.id);
     },
-    add: function (event, ui) {
+    add(event, ui) {
       const newtab = ui.tab;
       const label = jQuery(newtab).find(".label").get(0);
 
@@ -266,7 +270,7 @@ jQuery(document).ready(function () {
       swTabs.tabs('widget').data('panelTemplate', st0copy.clone().get(0));
 
       jQuery(ui.panel).find(".tablename").val(labelText);
-      jQuery(ui.panel).find(".tablename").bind("change", function (event) {
+      jQuery(ui.panel).find(".tablename").bind("change", event => {
         //alert("CHANGED0");
         //label.innerHTML = jQuery(event.target).val();
         //alert("CHANGED");
@@ -276,7 +280,7 @@ jQuery(document).ready(function () {
         });
       });
 
-      jQuery(ui.panel).on("rename_table", function (event) {
+      jQuery(ui.panel).on("rename_table", event => {
         //alert(JSON.stringify({RENAME:2,html:label.innerHTML, text: jQuery(label).text()}));
 
         jQuery(label).text(jQuery(ui.panel).find(".tablename").val());
@@ -287,6 +291,7 @@ jQuery(document).ready(function () {
       spec.panel = ui.panel;
       spec.labelText = labelText;
       if (true) {
+        log('p2');
         sw.emit(jQuery("#smarttables"), "bind_table", spec);
 
         if (spec.callback) {
@@ -296,7 +301,7 @@ jQuery(document).ready(function () {
       } else {
         const stN = sw.newTable(ui.panel.id);
         ui.containers = {};
-        stN.viewNames.forEach(function (key) {
+        stN.viewNames.forEach(key => {
           ui.containers[key] = jQuery(ui.panel).find("." + key).get(0);
         });
         //alert("PANEL N: " + new XMLSerializer().serializeToString(ui.panel));
@@ -327,7 +332,7 @@ jQuery(document).ready(function () {
   swTabs.tabs('option', 'tabTemplate', '<li><a refid="#{href}" href="#{href}"><!--<input value="#{label}"/>--><span class="label">#{label}</span></a><span class="ui-icon ui-icon-close">X</span></li>');
   swTabs.tabs('widget').data('tabTemplate', jQuery("#smarttables ul li").first().clone());
 
-  jQuery(document).bind("sw_addtable", function (event) {
+  jQuery(document).bind("sw_addtable", event => {
     const detail = event.originalEvent && event.originalEvent.detail;
 
     try {
@@ -349,27 +354,26 @@ jQuery(document).ready(function () {
 
   const label0 = jQuery("#tab0").find(".label").get(0);
 
-  jQuery("#smarttable0").on("rename_table", function (event) {
+  jQuery("#smarttable0").on("rename_table", event => {
     //alert(JSON.stringify({RENAME: 1, html: label0.innerHTML, text: jQuery(label0).text()}));
 
     jQuery(label0).text(jQuery("#smarttable0").find(".tablename").val().slice(0, 20));
   });
 
-  jQuery("#smarttables").on("click", ".ui-icon-close", function (event) {
+  jQuery("#smarttables").on("click", ".ui-icon-close", event => {
     const target = event.target;
     const tab = target.parentNode;
     const href = jQuery(tab).find("a").get(0).getAttribute("refid");
     //alert("HI: " + new XMLSerializer().serializeToString(tab) + ":: " + href);
     swTabs.tabs("remove", href);
   });
-
   sw.init({
     "table0": st0.get(0).id
   });
   sw.setPalette("columnPalette", Smartwrap.monoPalette);
   sw.setPalette("tablePalette", Smartwrap.mainPalette);
   sw.containers = {};
-  sw.tables[st0.get(0).id].viewNames.forEach(function (key) {
+  sw.tables[st0.get(0).id].viewNames.forEach(key => {
     sw.containers[key] = st0.find("." + key).get(0);
   });
   sw.tables[st0.get(0).id].model.setTableField("label", "Table 1");
@@ -394,7 +398,7 @@ jQuery(document).ready(function () {
   document.dispatchEvent(evt);
 
 
-  const activate = function (widget) {
+  const activate = widget => {
     if (widget.disabled) {
       return;
     }
@@ -418,18 +422,18 @@ jQuery(document).ready(function () {
     evt.initCustomEvent(eventType, true, false, widget.detail);
     document.dispatchEvent(evt);
   };
-  jQuery(".sw_button").click(function (event) {
+  jQuery(".sw_button").click(event => {
     const widget = event.target;
     activate(widget);
     //sw.getHandler(eventType).call(sw, evt);
   });
   sw.shortcuts = {};
-  jQuery(".sw_button, .sw_menuitem").each(function (ix, elt) {
+  jQuery(".sw_button, .sw_menuitem").each((ix, elt) => {
     const button = jQuery(elt);
     const shortcut = elt.getAttributeNS(smartwrapNamespace, "shortcut") || elt.getAttribute("sw:shortcut");
     if (shortcut) {
-      shortcut.split(/\s+/).forEach(function (key) {
-        sw.shortcuts[key] = function () {
+      shortcut.split(/\s+/).forEach(key => {
+        sw.shortcuts[key] = () => {
           //alert('click: ' + button.is(":disabled"));
           if (!button.is(":disabled")) {
             activate(button.get(0));
@@ -445,7 +449,7 @@ jQuery(document).ready(function () {
 
   jQuery(document).bind("sw_removecell", sw.getHandler("sw_removecell"));
 
-  jQuery(document).bind("hideSidebar", function (event) {
+  jQuery(document).bind("hideSidebar", event => {
     alert("HIDEY!");
     sw.setContainer(null);
 
@@ -469,29 +473,30 @@ jQuery(document).ready(function () {
     document.dispatchEvent(evt);
   });
 
-  jQuery(document).bind("sw_targetdocument", function (event) {
+  jQuery(document).bind("sw_targetdocument", event => {
     const detail = event.originalEvent && event.originalEvent.detail;
 
     if (detail && detail.document) {
+      log('processDOM');
       processDOM(sw,detail.document, detail.target);
     }
   });
 
-  jQuery(document).bind("sw_outofbounds", function (event) {
+  jQuery(document).bind("sw_outofbounds", event => {
     const detail = event.originalEvent && event.originalEvent.detail;
     sw.log({
       OOB: "received",
-      detail: detail
+      detail
     });
 
     jQuery("#smartwrap").addClass("disabled");
   });
 
-  jQuery(document).bind("sw_inbounds", function (event) {
+  jQuery(document).bind("sw_inbounds", event => {
     jQuery("#smartwrap").removeClass("disabled");
   });
 
-  jQuery(document).bind("sw_configure", function (event) {
+  jQuery(document).bind("sw_configure", event => {
     //alert("SWCONFIG!");
     const detail = event.originalEvent && event.originalEvent.detail;
     if (detail.config.developermode) {
@@ -505,11 +510,11 @@ jQuery(document).ready(function () {
       sw.configure(event.originalEvent.detail);
     }
   });
-  jQuery(document).bind("sw_autodrop", function (event) {
+  jQuery(document).bind("sw_autodrop", event => {
     alert("HTMLAUTODROP!");
   });
 
-  jQuery(document).bind("sw_dom", function (event) {
+  jQuery(document).bind("sw_dom", event => {
     const detail = event.originalEvent && event.originalEvent.detail;
     //sw.log({"SWDOM": Object.keys(detail)});
     if (detail.bwdominfo) {
@@ -524,7 +529,7 @@ jQuery(document).ready(function () {
   });
 
   const annLink = jQuery(document).find("#handyLink a");
-  jQuery(document).bind("sw_annotatedfile", function (event) {
+  jQuery(document).bind("sw_annotatedfile", event => {
     const detail = event.originalEvent && event.originalEvent.detail;
     sw.log({
       "ANNOTATED": detail
@@ -532,7 +537,7 @@ jQuery(document).ready(function () {
 
     const dependencies = detail.dependencies;
 
-    dependencies.forEach(function (depDetail) {
+    dependencies.forEach(depDetail => {
       depDetail.filedir = detail.filename;
 
       //alert("DEPDETAIL: " + JSON.stringify(depDetail));
@@ -550,19 +555,19 @@ jQuery(document).ready(function () {
     //alert("ANNLINK: " + new XMLSerializer().serializeToString(annLink.get(0)));
   });
 
-  jQuery(document).bind("swAnnotate", function (event) {
+  jQuery(document).bind("swAnnotate", event => {
     const detail = event.originalEvent && event.originalEvent.detail;
     sw.annotate(detail);
   });
-  jQuery(document).bind("sw_dragstart", function (event) {
+  jQuery(document).bind("sw_dragstart", event => {
     //sw.log("HTMLDRAGSTART!");
     const detail = event.originalEvent && event.originalEvent.detail;
     sw.dragDetail = detail;
   });
 
   let body;
-  //TODO: TEC - uncomment the following
-  /*prefutil.observeSetting("buttonstyle", function(spec) {
+  //TODO: ZD:Check Needed
+  prefutil.observeSetting("buttonstyle", function(spec) {
    //alert("BUTT!");
    jQuery("#smartwrap").removeClass("sw_icononly sw_noicon");
 
@@ -572,9 +577,9 @@ jQuery(document).ready(function () {
    if (spec.value === 'noicons') {
    jQuery("#smartwrap").addClass("sw_noicon");
    }
-   });*/
+   });
 
-  jQuery(document).bind("swWrapperResponse swServerError swServerTimeout swServerCancel", function (event) {
+  jQuery(document).bind("swWrapperResponse swServerError swServerTimeout swServerCancel", event => {
     //var detail = {};
     //detail.smartwrap = sw;
 
@@ -586,7 +591,7 @@ jQuery(document).ready(function () {
     });
     document.dispatchEvent(evt);
   });
-  jQuery(document).bind("swWrapperResponse", function (event) {
+  jQuery(document).bind("swWrapperResponse", event => {
     const detail = event.originalEvent.detail;
 
     if (detail && detail.responseText && (!detail.response)) {
@@ -627,14 +632,14 @@ jQuery(document).ready(function () {
 
     if (sw.getSetting("reportMode") === "MERGE") {
       var wrapper = detail.response.wrapper;
-      const callback = function (msg) {
+      const callback = msg => {
         switch (msg) {
           case "success":
             sw.wrapper = wrapper;
 
             const evt = document.createEvent("CustomEvent");
             evt.initCustomEvent("swWrapperReady", true, true, {
-              wrapper: wrapper
+              wrapper
             });
             document.dispatchEvent(evt);
             break;
@@ -647,7 +652,7 @@ jQuery(document).ready(function () {
       };
 
       sw.setProgram(program, {
-        callback: callback
+        callback
       });
 
     }
@@ -657,7 +662,7 @@ jQuery(document).ready(function () {
       sw.explicitProgram = program;
 
       const tabs = browser.tabs;
-      sw.wrapDoc = (function () {
+      sw.wrapDoc = ((() => {
         for (let tabno = 0; tabno < tabs.length; tabno++) {
           const browser = tabs[tabno].linkedBrowser;
           const taburl = browser.contentDocument.defaultView.location.href;
@@ -666,7 +671,7 @@ jQuery(document).ready(function () {
           }
         }
         return sw.currentWindow.getBrowser().contentDocument;
-      })();
+      }))();
 
       window.open('chrome://smartwrap/content/smartwrapReport.html');
     }
@@ -680,7 +685,7 @@ jQuery(document).ready(function () {
      */
 
   });
-  jQuery(document).bind("sw_status", function (event) {
+  jQuery(document).bind("sw_status", event => {
     jQuery(".swUndo").attr('disabled', !sw.getStatus("undo_ready"));
     jQuery("#smarttables").toggleClass("undo_ready", !!sw.getStatus("undo_ready"));
 
@@ -692,7 +697,7 @@ jQuery(document).ready(function () {
     jQuery(".swDiscardWrapper").attr('disabled', !sw.getStatus("discard_ready"));
   });
 
-  jQuery(document).bind("swWrapperReady", function (event) {
+  jQuery(document).bind("swWrapperReady", event => {
     const detail = event.originalEvent.detail;
 
 
@@ -701,7 +706,7 @@ jQuery(document).ready(function () {
 
     sw.log({
       wrapperis: "ready",
-      wrapper: wrapper
+      wrapper
     });
 
     sw.status.fresh = false;
@@ -711,7 +716,7 @@ jQuery(document).ready(function () {
     document.dispatchEvent(evt);
   });
 
-  jQuery("document").bind("swServerReady swServerError swBadResponse", function (event) {
+  jQuery("document").bind("swServerReady swServerError swBadResponse", event => {
     const detail = event.originalEvent.detail;
     //alert("SERVER: " + event.type + ":: " + JSON.stringify(detail));
 
@@ -723,11 +728,11 @@ jQuery(document).ready(function () {
 
     sw.log({
       "server event": event.type,
-      detail: detail
+      detail
     });
   });
 
-  jQuery(document).bind("swBadResponse", function (event) {
+  jQuery(document).bind("swBadResponse", event => {
     const detail = event.originalEvent.detail;
     //alert("SERVER: " + event.type + ":: " + JSON.stringify(detail));
 
@@ -739,11 +744,11 @@ jQuery(document).ready(function () {
 
     sw.log({
       "server event": event.type,
-      detail: detail
+      detail
     });
   });
 
-  jQuery(document).bind("swServerTimeout", function (event) {
+  jQuery(document).bind("swServerTimeout", event => {
     const detail = event.originalEvent.detail;
     //alert("SERVER: " + event.type + ":: " + JSON.stringify(detail));
 
@@ -755,25 +760,25 @@ jQuery(document).ready(function () {
 
     sw.log({
       "server event": event.type,
-      detail: detail
+      detail
     });
   });
 
-  jQuery(document).bind("swBadRequest", function (event) {
+  jQuery(document).bind("swBadRequest", event => {
     let detail = event.originalEvent.detail;
     if (!detail) {
       return;
     }
     alert("MALFORMED HTTP REQUEST: " + JSON.stringify(detail));
   });
-  jQuery(document).bind("swUnexpectedResponse", function (event) {
+  jQuery(document).bind("swUnexpectedResponse", event => {
     let detail = event.originalEvent.detail;
     if (!detail) {
       return;
     }
     alert("UNEXPECTED HTTP RESPONSE: " + JSON.stringify(detail));
   });
-  jQuery(document).bind("swServerError", function (event) {
+  jQuery(document).bind("swServerError", event => {
     let detail = event.originalEvent.detail;
     if (!detail) {
       return;
@@ -786,19 +791,19 @@ jQuery(document).ready(function () {
 
     //alert(JSON.stringify({status: detail.status}));
 
-    const msgid = function (status) {
+    const msgid = (status => {
       if (status === 404) {
         return "msg_serverNotResponding";
       }
       return "msg_serverError";
-    }(detail.status);
+    })(detail.status);
 
     const tellDetail = {
-      msgid: msgid,
+      msgid,
       serverurl: detail.url
     };
 
-    tellDetail.serverMessage = function (text) {
+    tellDetail.serverMessage = (text => {
       if (text === '') {
         return null;
       }
@@ -807,7 +812,7 @@ jQuery(document).ready(function () {
       }
 
       return text;
-    }(detail.statusText);
+    })(detail.statusText);
 
     if (tellDetail.serverMessage) {
       tellDetail.dialogType = "prompt";
@@ -820,11 +825,11 @@ jQuery(document).ready(function () {
     sw.tellUser(tellDetail);
   });
 
-  jQuery(document).bind("dblclick", function (event) {
+  jQuery(document).bind("dblclick", event => {
     //sw.tellUser({msgid: "msg_dislike", name: "billy"});
   });
 
-  jQuery(document).bind("sw_dialogs", function (event) {
+  jQuery(document).bind("sw_dialogs", event => {
     let detail = event.originalEvent.detail;
     if (!detail) {
       return;
@@ -832,7 +837,7 @@ jQuery(document).ready(function () {
 
     //alert("DIALOGS: " + JSON.stringify(detail));
 
-    jQuery(detail.dialogs).each(function (index, elt) {
+    jQuery(detail.dialogs).each((index, elt) => {
       //alert("DIALOG: " + new XMLSerializer().serializeToString(elt));
       sw.setDialog(elt.id, elt);
     });
@@ -840,15 +845,13 @@ jQuery(document).ready(function () {
     //sw.setDialog();
   });
 
-  jQuery(document).bind("swWrapperRequest", function (event) {
+  jQuery(document).bind("swWrapperRequest", event => {
     //alert(JSON.stringify({req:'wrapper'}));
     const detail = Object.create(event.originalEvent.detail);
 
     try {
       detail.subs = {};
-      detail.url = sw.rformat("{serverprepath}{serverpath}{serverquery}", detail.subs, function (key) {
-        return sw.getSetting(key);
-      });
+      detail.url = sw.rformat("{serverprepath}{serverpath}{serverquery}", detail.subs, key => sw.getSetting(key));
       detail.params = {};
       detail.params["consent"] = detail.consent;
       detail.params["examples"] = JSON.stringify(detail.examples);
@@ -862,7 +865,7 @@ jQuery(document).ready(function () {
       //alert(JSON.stringify({req:'wrapper', url: detail.url}));
 
       detail.callbacks = {};
-      detail.callbacks.success = function (data, textStatus, jqXHR) {
+      detail.callbacks.success = (data, textStatus, jqXHR) => {
         //alert(JSON.stringify({resp:'wrapper'}));
 
         const detail2 = Object.create(detail);
@@ -873,7 +876,7 @@ jQuery(document).ready(function () {
         document.dispatchEvent(evt);
 
       };
-      detail.callbacks.error = function (jqHXR, textStatus, errorThrown) {
+      detail.callbacks.error = (jqHXR, textStatus, errorThrown) => {
         //alert(JSON.stringify({error:'wrapper',stat: textStatus, thrown: errorThrown}));
 
         const detail2 = Object.create(detail);
@@ -883,19 +886,19 @@ jQuery(document).ready(function () {
         detail2.status = jqHXR.statusCode().status;
         detail2.statusText = jqHXR.statusCode().statusText;
 
-        detail2.eventName = (function (status) {
+        detail2.eventName = ((status => {
           if (status === "timeout") {
             return "swServerTimeout";
           }
           return "swServerError";
-        }(textStatus));
+        })(textStatus));
 
         const evt = document.createEvent("CustomEvent");
         evt.initCustomEvent(detail2.eventName, true, true, detail2);
         document.dispatchEvent(evt);
       };
       sw.pendingRequests[detail.url] = true;
-      detail.callbacks.complete = function () {
+      detail.callbacks.complete = () => {
         delete sw.pendingRequests[detail.url];
       };
 
@@ -910,7 +913,7 @@ jQuery(document).ready(function () {
         dataType: "json"
       });
       jQuery(document).unbind("swCancelRequest"); // unbind previous listeners, if any
-      jQuery(document).bind("swCancelRequest", function (event) {
+      jQuery(document).bind("swCancelRequest", event => {
         if (detail.jqXHR.cancelled) {
           return; // a cancelled request need not be aborted again
         }
@@ -920,9 +923,7 @@ jQuery(document).ready(function () {
       });
 
       if (!detail.params.dominfo) {
-        const metaurl = sw.rformat("{serverprepath}/smartwrap/Meta", detail.subs, function (key) {
-          return sw.getSetting(key);
-        });
+        const metaurl = sw.rformat("{serverprepath}/smartwrap/Meta", detail.subs, key => sw.getSetting(key));
         const metaload = jQuery.ajax({
           url: metaurl,
           type: 'POST',
@@ -948,29 +949,29 @@ jQuery(document).ready(function () {
 
   const pendingRequests = {};
 
-  const badRequest = function (detail) {
+  const badRequest = detail => {
     const evt = document.createEvent("CustomEvent");
     evt.initCustomEvent("swBadRequest", true, true, detail);
     document.dispatchEvent(evt);
   };
-  const badResponse = function (detail) {
+  const badResponse = detail => {
     const evt = document.createEvent("CustomEvent");
     evt.initCustomEvent("swUnexpectedResponse", true, true, detail);
     document.dispatchEvent(evt);
   };
-  jQuery(document).bind("swHttpRequest", function (event) {
+  jQuery(document).bind("swHttpRequest", event => {
     try {
       const detail = event.originalEvent && event.originalEvent.detail;
 
       sw.log({
         domain: "httpRequest",
-        detail: detail
+        detail
       });
 
       if (!detail.url) {
         return badRequest({
           msg: "missing url",
-          detail: detail
+          detail
         });
       }
       if (!detail.method) {
@@ -993,7 +994,7 @@ jQuery(document).ready(function () {
       if ((detail.method === 'POST') && (!detail.paramString)) {
         return badRequest({
           msg: "missing POST params",
-          detail: detail
+          detail
         });
       }
 
@@ -1004,7 +1005,7 @@ jQuery(document).ready(function () {
       };
       detail.output.continuation = detail.continuation;
       const http = new XMLHttpRequest();
-      http.addEventListener("error", function () {
+      http.addEventListener("error", () => {
         //alert("ERROR!");
         detail.output.readyState = http.readyState;
         detail.output.status = http.status;
@@ -1020,7 +1021,7 @@ jQuery(document).ready(function () {
       if (true) {
         http.timeout = detail.timeout;
       } else {
-        const timer = window.setTimeout(function () {
+        const timer = window.setTimeout(() => {
           alert("TIMEOUT!");
           http.abort();
           const evt = document.createEvent("CustomEvent");
@@ -1029,7 +1030,7 @@ jQuery(document).ready(function () {
         }, detail.timeout);
       }
 
-      http.addEventListener("load", function () {
+      http.addEventListener("load", () => {
 
         detail.output.readyState = http.readyState;
         detail.output.status = http.status;
@@ -1054,7 +1055,7 @@ jQuery(document).ready(function () {
         const contentType = http.getResponseHeader("Content-Type");
 
         detail.output.responseType = contentType;
-        ["Content-Disposition"].forEach(function (key) {
+        ["Content-Disposition"].forEach(key => {
           detail.output[key] = http.getResponseHeader(key);
         });
         if (http.responseType) {
@@ -1074,7 +1075,7 @@ jQuery(document).ready(function () {
           output: detail.output,
           status: detail.output.statusText,
           eventName: detail.eventName,
-          detail: detail
+          detail
         });
 
         var evt = document.createEvent("CustomEvent");
@@ -1100,7 +1101,7 @@ jQuery(document).ready(function () {
     }
 
   });
-  jQuery(document).bind("swExportRequest", function (event) {
+  jQuery(document).bind("swExportRequest", event => {
     const detail = event.originalEvent && event.originalEvent.detail;
 
     const settings = {}; // sw.settings;
@@ -1108,9 +1109,7 @@ jQuery(document).ready(function () {
     const subs = {};
     const httpDetail = {};
     httpDetail.eventName = "swExportResponse";
-    httpDetail.url = sw.rformat("{serverprepath}/Export", subs, function (key) {
-      return sw.getSetting(key);
-    });
+    httpDetail.url = sw.rformat("{serverprepath}/Export", subs, key => sw.getSetting(key));
     httpDetail.timeout = sw.getSetting("serverTimeout");
     httpDetail.params = {};
     httpDetail.params.format = detail.format;
@@ -1139,7 +1138,7 @@ jQuery(document).ready(function () {
     document.dispatchEvent(evt);
   });
 
-  jQuery(document).bind("swExportResponse", function (event) {
+  jQuery(document).bind("swExportResponse", event => {
     //alert("IMPORT: " + JSON.stringify(event.originalEvent.detail,null,2));
 
     const detail = event.originalEvent && event.originalEvent.detail;
@@ -1165,7 +1164,7 @@ jQuery(document).ready(function () {
     if (!response) {
       badResponse({
         msg: "no object in response",
-        detail: detail
+        detail
       });
     }
 
@@ -1190,7 +1189,7 @@ jQuery(document).ready(function () {
 
   });
 
-  jQuery(document).bind("swPing", function (event) {
+  jQuery(document).bind("swPing", event => {
     alert("SWECHO: " + JSON.stringify(event.originalEvent.detail));
   });
 
@@ -1205,7 +1204,7 @@ jQuery(document).ready(function () {
     }
   });
 
-  jQuery(document).bind("swRunWrapper swUndo sw_reportSlot", function (event) {
+  jQuery(document).bind("swRunWrapper swUndo sw_reportSlot", event => {
     const eventType = event.type;
     //<editor-fold desc="yxl:ifFalseCodeBlock">
     if (false) {
@@ -1214,7 +1213,7 @@ jQuery(document).ready(function () {
         keys: JSON.stringify(Object.keys(event)),
         via: event.originalEvent.detail.via
       };
-      setTimeout(function () {
+      setTimeout(() => {
         alert(JSON.stringify(obj));
       }, 800);
     }
@@ -1248,13 +1247,13 @@ jQuery(document).ready(function () {
    });
    */
 
-  jQuery(document).bind("swSaveWrapper", function (event) {
+  jQuery(document).bind("swSaveWrapper", event => {
     try {
       const detail = event.originalEvent && event.originalEvent.detail;
 
       sw.log({
         domain: "saveWrapper",
-        detail: detail,
+        detail,
         continuation: detail.continuation
       });
 
@@ -1262,15 +1261,13 @@ jQuery(document).ready(function () {
       const subs = {};
       const httpDetail = {};
       httpDetail.eventName = "swSaveResponse";
-      httpDetail.url = sw.rformat("{serverprepath}/Persist", subs, function (key) {
-        return sw.getSetting(key);
-      });
+      httpDetail.url = sw.rformat("{serverprepath}/Persist", subs, key => sw.getSetting(key));
       httpDetail.timeout = sw.getSetting("serverTimeout");
       httpDetail.params = {};
       httpDetail.params.wrapper = JSON.stringify(sw.wrapper);
-      httpDetail.continuation = detail.continuation || function () {
+      httpDetail.continuation = detail.continuation || (() => {
           alert("The wrapper was saved");
-        };
+        });
 
       sw.log({
         domain: "saveWrapper",
@@ -1309,13 +1306,13 @@ jQuery(document).ready(function () {
     }
   });
 
-  jQuery(document).bind("swSaveCloseWrapper", function (event) {
+  jQuery(document).bind("swSaveCloseWrapper", event => {
     const detail = event.originalEvent && event.originalEvent.detail;
 
     const saveDetail = {
       source: "smartwrap"
     };
-    saveDetail.continuation = function () {
+    saveDetail.continuation = () => {
       const evt = document.createEvent("CustomEvent");
       evt.initCustomEvent("swDiscardWrapper", true, true, {
         noRestart: true
@@ -1328,10 +1325,10 @@ jQuery(document).ready(function () {
     document.dispatchEvent(evt);
   });
 
-  jQuery(document).bind("swDiscardWrapper", function (event) {
+  jQuery(document).bind("swDiscardWrapper", event => {
     //alert("DISCARD: " + JSON.stringify(Object.keys(pendingRequests)));
 
-    Object.keys(pendingRequests).forEach(function (url) {
+    Object.keys(pendingRequests).forEach(url => {
       const reqObj = pendingRequests[url];
       //alert("URL: " + url);
       try {
@@ -1365,14 +1362,14 @@ jQuery(document).ready(function () {
   const exportForm = jQuery("#exportForm");
   var exportButton = jQuery("#exporter");
   const exportFormatField = exportForm.find("#format");
-  exportForm.find('[name="format"]').change(function (event) {
+  exportForm.find('[name="format"]').change(event => {
     const target = event.target;
     //alert("DELTA: " + target.value + ":: " + target.checked);
     if (target.checked) {
       exportFormatField.get(0).value = target.value;
     }
   });
-  jQuery("#exporter").click(function (event) {
+  jQuery("#exporter").click(event => {
     //alert("FORM: " + new XMLSerializer().serializeToString(exportForm.get(0)));
     const exportDetail = {};
     exportDetail.format = exportFormatField.get(0).value;
@@ -1382,7 +1379,7 @@ jQuery(document).ready(function () {
     evt.initCustomEvent("swExportRequest", true, true, exportDetail);
     exportButton.get(0).dispatchEvent(evt);
   });
-  jQuery("#exportJSON").click(function (event) {
+  jQuery("#exportJSON").click(event => {
     exportForm.find("#format_json").click();
     exportButton.click();
   });
@@ -1400,7 +1397,7 @@ jQuery(document).ready(function () {
    */
   const formatPicker = jQuery("#exportPicker");
   jQuery("#exportExecute").parent().buttonset();
-  jQuery("#exportExecute").click(function (event) {
+  jQuery("#exportExecute").click(event => {
     //alert("EXPORT: " + new XMLSerializer().serializeToString(formatPicker.get(0)));
 
     const chosenOption = formatPicker.find("option").filter(":selected");
@@ -1429,7 +1426,8 @@ jQuery(document).ready(function () {
     evt.initCustomEvent("swExportRequest", true, true, exportDetail);
     exportButton.get(0).dispatchEvent(evt);
   });
-  jQuery(document).bind("sw_datacell", function (event) {
+  jQuery(document).bind("sw_datacell", event => {
     exportButton.button("option", "disabled", false);
   });
+
 });

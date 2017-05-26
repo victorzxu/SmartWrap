@@ -3,8 +3,8 @@ import prefutil from "./prefutil";
 import {decrypt_string} from "./lib/appleman";
 
 
-jQuery(document).on('ready', function () {
-  jQuery(".decryptHere").each(function (ix, elt) {
+jQuery(document).on('ready', () => {
+  jQuery(".decryptHere").each((ix, elt) => {
     const index = jQuery(elt).attr("decryptIndex");
     const decrypted_string = decrypt_string(index, 0, 0, true);
     jQuery(elt).text(decrypted_string);
@@ -17,7 +17,7 @@ jQuery(document).on('ready', function () {
   if (spec.urlparts.length > 1) {
     spec.querystr = spec.urlparts[1];
     spec.kv = spec.querystr.split(/\&/);
-    spec.params = spec.kv.reduce(function (accum, pair) {
+    spec.params = spec.kv.reduce((accum, pair) => {
       const keyval = pair.split('=');
       const key = keyval.shift();
       const val = keyval.shift();
@@ -30,7 +30,7 @@ jQuery(document).on('ready', function () {
   spec.invalid = {};
   spec.optout = {};
   spec.widgets = {};
-  ['age', 'informed', 'willing'].forEach(function (key) {
+  ['age', 'informed', 'willing'].forEach(key => {
     if (spec.params && spec.params[key]) {
       const widgetid = ['#', key, spec.params[key]].join("");
       spec.widgets[widgetid] = [jQuery(widgetid).length];
@@ -67,9 +67,7 @@ jQuery(document).on('ready', function () {
   }
 
 
-  jQuery('#formSubmit').on('click', function (event) {
-    //prefutil.setPrefs({consent: "false"});
+  jQuery('#formSubmit').on('click', event => //prefutil.setPrefs({consent: "false"});
 
-    return true;
-  });
+  true);
 });

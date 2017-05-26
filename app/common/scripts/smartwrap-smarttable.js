@@ -2,8 +2,7 @@ import jQuery from "jquery";
 import {Smartwrap} from "./smartwrap";
 import {smartwrapNamespace} from "./smarttable-header";
 
-Smartwrap.SmartTable = (function () {
-  "use strict";
+Smartwrap.SmartTable = ((() => {
   return {
     templates: {},
     viewNames: [
@@ -12,13 +11,13 @@ Smartwrap.SmartTable = (function () {
       "maintable",
       "human_program"
     ],
-    setTemplate: function (template_id, template_elt) {
+    setTemplate(template_id, template_elt) {
       this.templates[template_id] = template_elt;
     },
-    setPalette: function (paletteName, palette) {
+    setPalette(paletteName, palette) {
       this.palettes[paletteName] = palette;
     },
-    setContainers: function (containers) {
+    setContainers(containers) {
       if (!this.containers) {
         this.containers = {};
       }
@@ -32,16 +31,16 @@ Smartwrap.SmartTable = (function () {
 
       const that = this;
       if (this.containers["debug_controls"]) {
-        jQuery(this.containers["debug_controls"]).find(".noiser").click(function (event) {
+        jQuery(this.containers["debug_controls"]).find(".noiser").click(event => {
           //alert('noise!');
           that.addNoise();
           that.updateViews();
         });
-        jQuery(this.containers["debug_controls"]).find(".shower").click(function (event) {
+        jQuery(this.containers["debug_controls"]).find(".shower").click(event => {
           //alert('noise!');
           alert("TABLE: " + new XMLSerializer().serializeToString(that.views["maintable"]));
         });
-        jQuery(this.containers["debug_controls"]).find(".toggler").click(function (event) {
+        jQuery(this.containers["debug_controls"]).find(".toggler").click(event => {
           alert('toggle!');
           jQuery(that.smartwrap.container).toggleClass("disabled");
         });
@@ -53,14 +52,14 @@ Smartwrap.SmartTable = (function () {
     },
     dragInterp: {
       keyName: "swYield",
-      init: function () {
+      init() {
         this.yieldmap = {};
       },
-      getYield: function (elt) {
+      getYield(elt) {
         this.putYield(elt);
         return elt.data(this.keyName);
       },
-      cacheYield: function (yieldstr, elt) {
+      cacheYield(yieldstr, elt) {
         let bucket = this.yieldmap[yieldstr];
         if (!bucket) {
           bucket = [];
@@ -71,7 +70,7 @@ Smartwrap.SmartTable = (function () {
         }
         //bucket.push(elt.get(0).nodeType);
       },
-      putYield: function (elt) {
+      putYield(elt) {
         //this.logger && this.logger.log({"PUTYIELD": new XMLSerializer().serializeToString(elt.get(0))});
         const cached = elt.data(this.keyName);
         if (cached) {
@@ -82,7 +81,7 @@ Smartwrap.SmartTable = (function () {
         let accum = "";
         if (elt.contents().length) {
           const that = this;
-          elt.contents().each(function (index, kid) {
+          elt.contents().each((index, kid) => {
             that.putYield(jQuery(kid));
             accum += jQuery(kid).data(that.keyName);
           });
@@ -95,7 +94,7 @@ Smartwrap.SmartTable = (function () {
 
         elt.data(this.keyName, accum);
       },
-      getLeafYield: function (elt) {
+      getLeafYield(elt) {
         if (elt.is("img")) {
           return "[[IMG]]";
         }
@@ -103,12 +102,12 @@ Smartwrap.SmartTable = (function () {
         return elt.text().trim();
       },
     },
-    newDragInterp: function () {
+    newDragInterp() {
       const dragInterp = Object.create(this.dragInterp);
       dragInterp.init();
       return dragInterp;
     },
-    interpretDrag: function (draggedElt) {
+    interpretDrag(draggedElt) {
       //alert("SHALLOWEST AROUND: " + new XMLSerializer().serializeToString(draggedElt));
       const out = {};
 
@@ -157,7 +156,7 @@ Smartwrap.SmartTable = (function () {
        */
 
       const that = this;
-      Object.keys(out).forEach(function (key) {
+      Object.keys(out).forEach(key => {
         out[key].xpath = jQuery(out[key].elt).data("xpath");
         out[key].style = jQuery(out[key].elt).data("style");
         //out[key].yieldkey = dragInterp.keyName;
@@ -170,7 +169,7 @@ Smartwrap.SmartTable = (function () {
 
       return out;
     },
-    moveCell: function (sourceCoords, targetCoords, callback) {
+    moveCell(sourceCoords, targetCoords, callback) {
       const st = this;
 
       const action = Object.create(this.smartwrap.Action);
@@ -195,7 +194,7 @@ Smartwrap.SmartTable = (function () {
           "absoluteLocationXPath"
         ];
         const that = this;
-        fields.forEach(function (fld) {
+        fields.forEach(fld => {
           st.model.setCellField(that.targetCoords.rowid,
             that.targetCoords.colid,
             fld,
@@ -218,7 +217,7 @@ Smartwrap.SmartTable = (function () {
       };
       this.smartwrap.doAction(action);
     },
-    handleDrop: function (dragDetail, dropTarget, coords, logger, callback) {
+    handleDrop(dragDetail, dropTarget, coords, logger, callback) {
       const updated = false;
 
       //alert("DROPSY: " + new XMLSerializer().serializeToString(dropTarget));
@@ -303,7 +302,7 @@ Smartwrap.SmartTable = (function () {
           return;
         }
 
-        jQuery(intendedElt).find("*").addBack().filter("img").each(function (index, elt) {
+        jQuery(intendedElt).find("*").addBack().filter("img").each((index, elt) => {
           //tuple.keys.push("imageSource");
           //tuple.values.push(elt.src);
           tuple.map.imageSource = elt.src;
@@ -317,7 +316,7 @@ Smartwrap.SmartTable = (function () {
 
           tuple.types["image"] = true;
         });
-        jQuery(intendedElt).find("*").addBack().filter("a").each(function (index, elt) {
+        jQuery(intendedElt).find("*").addBack().filter("a").each((index, elt) => {
           //tuple.keys.push("linkTarget");
           //tuple.values.push(elt.href);
           tuple.map.linkTarget = elt.href;
@@ -332,26 +331,24 @@ Smartwrap.SmartTable = (function () {
         logger && logger.log({
           STDROP: dragDetail,
           tgts: Object.keys(dragTargets),
-          xpaths: Object.keys(dragTargets).map(function (key) {
-            return dragTargets[key].xpath;
-          }),
-          xpath: xpath,
-          tuple: tuple,
-          coords: coords
+          xpaths: Object.keys(dragTargets).map(key => dragTargets[key].xpath),
+          xpath,
+          tuple,
+          coords
         });
 
         this.model.logger = logger;
 
         const that = this;
 
-        const newTableCallback = function (model) {
+        const newTableCallback = model => {
           logger.log({
             CALLBACK: "yep"
           });
 
           const tableno = that.smartwrap.uidgen();
           const tableid = jQuery.format("smarttable{tableno}", {
-            tableno: tableno
+            tableno
           });
           const table = that.smartwrap.newTable(tableid, model);
 
@@ -378,14 +375,14 @@ Smartwrap.SmartTable = (function () {
 
           that.updateViews();
         };
-        action.dodo = function () {
+        action.dodo = () => {
           if (false) {
             var updated = that.model.updateCell(coords.rowid, coords.colid, tuple, {
-              newTableCallback: newTableCallback
+              newTableCallback
             });
           } else {
             that.model = that.model.extend(coords.rowid, coords.colid, tuple, {
-              newTableCallback: newTableCallback
+              newTableCallback
             });
             var updated = true;
           }
@@ -433,10 +430,10 @@ Smartwrap.SmartTable = (function () {
 
       this.smartwrap.doAction(action);
     },
-    updateRow: function (rownum, tuple, colonnade) {
+    updateRow(rownum, tuple, colonnade) {
       //alert("UPDATE: " + JSON.stringify(tuple) + ":: " + JSON.stringify(colonnade));
       const that = this;
-      Object.keys(colonnade).forEach(function (key) {
+      Object.keys(colonnade).forEach(key => {
         let colid = colonnade[key];
         //alert("COLID: " + colid);
 
@@ -470,7 +467,7 @@ Smartwrap.SmartTable = (function () {
       });
       //alert("CELLOBJ: " + JSON.stringify(that.model.getCellObject(rownum, colonnade[colonnade.mainKey])));
     },
-    loadContents: function (tableContents) {
+    loadContents(tableContents) {
       //alert("LOADTABLE: " + JSON.stringify(tableContents,null,2));
 
       this.smartwrap.log({
@@ -485,7 +482,7 @@ Smartwrap.SmartTable = (function () {
       this.smartwrap.log({
         PRE: this.model.dump()
       });
-      this.model.getXPaths().forEach(function (xpath) {
+      this.model.getXPaths().forEach(xpath => {
         dict[xpath] = true;
       });
       this.model.clearTuples();
@@ -502,7 +499,7 @@ Smartwrap.SmartTable = (function () {
         this.smartwrap.log({
           LOADROW: rowid,
           rowno: i,
-          row: row
+          row
         });
 
         for (var j = 0; j < row.length; j++) {
@@ -523,7 +520,7 @@ Smartwrap.SmartTable = (function () {
 
           cell.types = colObj.types;
           cell.map = {};
-          ["contents", "imageSource", "imageAltText", "linkTarget"].forEach(function (key) {
+          ["contents", "imageSource", "imageAltText", "linkTarget"].forEach(key => {
             cell.map[key] = cell[key];
           });
           cell.absoluteLocationXPath = cell.absoluteLocationXPath || cell.xpath;
@@ -577,10 +574,10 @@ Smartwrap.SmartTable = (function () {
 
       this.updateViews();
       return {
-        inferredCount: inferredCount
+        inferredCount
       };
     },
-    removeCell: function (event, ui) {
+    removeCell(event, ui) {
       if (this.smartwrap) {
         this.smartwrap.log({
           REMOVECELL: ui
@@ -616,7 +613,7 @@ Smartwrap.SmartTable = (function () {
 
       this.smartwrap.doAction(action);
     },
-    addNoise: function (probs) {
+    addNoise(probs) {
       if (!probs) {
         probs = {};
       }
@@ -650,9 +647,9 @@ Smartwrap.SmartTable = (function () {
             }
             this.model.setCellField(i, colid, "contents", sentence);
             coords.push(jQuery.format("({i},{j},{colid})", {
-              i: i,
-              j: j,
-              colid: colid
+              i,
+              j,
+              colid
             }));
           }
         }
@@ -667,7 +664,7 @@ Smartwrap.SmartTable = (function () {
       }
       //</editor-fold>
     },
-    getRelation: function () {
+    getRelation() {
       const relation = {
         tuples: [],
         columns: []
@@ -700,7 +697,7 @@ Smartwrap.SmartTable = (function () {
 
       return relation;
     },
-    getProgram: function (params) {
+    getProgram(params) {
       const program = ["begin"];
 
       const nrows = this.model.nrows();
@@ -764,7 +761,7 @@ Smartwrap.SmartTable = (function () {
 
       return program;
     },
-    updateViews: function () {
+    updateViews() {
       this.updateMainTableView();
 
       this.updateHumanProgramView();
@@ -773,7 +770,7 @@ Smartwrap.SmartTable = (function () {
         this.smartwrap.updateViews();
       }
     },
-    updateHumanProgramView: function () {
+    updateHumanProgramView() {
       let container = this.containers["human_program"];
       if (!container) {
         return;
@@ -783,7 +780,7 @@ Smartwrap.SmartTable = (function () {
       jQuery(container).empty();
       container.appendChild(doc.createTextNode(JSON.stringify(this.getProgram(), null, 2)));
     },
-    updateMainTableView: function (tableData) {
+    updateMainTableView(tableData) {
       let container = this.containers["maintable"];
       if (!container) {
         return;
@@ -794,7 +791,7 @@ Smartwrap.SmartTable = (function () {
 
       if (!tableData) {
         return this.model.getDisplayView(null,
-          function (results) {
+          results => {
             self.updateMainTableView(results);
           }, {
             logger: this.smartwrap
@@ -811,7 +808,7 @@ Smartwrap.SmartTable = (function () {
       tableObj.tablename = jQuery(newTable).find(".tablename");
       tableObj.tablename.val(self.model.getTableField("label"));
       this.smartwrap.emit(tableObj.tablename, "rename_table");
-      tableObj.tablename.on("change", function (event) {
+      tableObj.tablename.on("change", event => {
         //alert("DELTA BRAVO FOXTROT");
 
         self.model.setTableField("label", tableObj.tablename.val());
@@ -851,7 +848,7 @@ Smartwrap.SmartTable = (function () {
           FOXUSCOLID: self.focuscolid
         });
       }
-      rs.colids.forEach(function (colid) {
+      rs.colids.forEach(colid => {
         const datacol = rs.columns[colid];
         if (logger) {
           logger.log({
@@ -875,7 +872,7 @@ Smartwrap.SmartTable = (function () {
 
         const newHead = jQuery(tableObj.headCell).clone();
         newHead.insertBefore(tableObj.headCell);
-        newHead.children().addBack().each(function (ix, elt) {
+        newHead.children().addBack().each((ix, elt) => {
           elt.setAttributeNS(smartwrapNamespace, "colid", colid);
         });
 
@@ -901,11 +898,11 @@ Smartwrap.SmartTable = (function () {
             logger: this.smartwrap
           };
           self.model.setColumnField(colid, "label", jQuery(event.target).val(), params);
-          setTimeout(function () {
+          setTimeout(() => {
             self.updateViews();
           }, 10);
         });
-        newHead.find("input.colhead").on("keydown", function (event) {
+        newHead.find("input.colhead").on("keydown", event => {
           const keyCode = event.keyCode || event.which;
 
           jQuery(doc).find(".sink").val(JSON.stringify({
@@ -928,7 +925,7 @@ Smartwrap.SmartTable = (function () {
 
         let rowno = 0;
 
-        rs.rowids.forEach(function (rowid) {
+        rs.rowids.forEach(rowid => {
           const datarow = rs.rows[rowid];
           if (logger) {
             logger.log({
@@ -960,11 +957,11 @@ Smartwrap.SmartTable = (function () {
 
           const overflowContainer = cell.find(".overflow");
           const previewControl = cell.find(".preview_control");
-          previewControl.click(function () {
+          previewControl.click(() => {
             overflowContainer.toggleClass("show_preview");
           });
 
-          cell.get(0).addEventListener("click", function (event) {
+          cell.get(0).addEventListener("click", event => {
             const tgt = event.target;
             const clickable = tgt.getAttributeNS(smartwrapNamespace, "clickable") || tgt.getAttribute("sw:clickable");
             if (clickable === "true") {
@@ -1032,25 +1029,25 @@ Smartwrap.SmartTable = (function () {
 
           //self.hyphenateCell(cellSpan, cellOverflow);
 
-          cell.each(function (ix, elt) {
+          cell.each((ix, elt) => {
             elt.setAttributeNS(smartwrapNamespace, "colid", colid);
           });
-          cell.each(function (ix, elt) {
+          cell.each((ix, elt) => {
             elt.setAttributeNS(smartwrapNamespace, "rowid", rowid);
           });
-          cell.each(function (ix, elt) {
+          cell.each((ix, elt) => {
             elt.setAttributeNS(smartwrapNamespace, "stableid", tableid);
           });
 
           //cell.draggable();
 
           cell.attr('draggable', 'true');
-          cell.on('dragstart', function (event) {
+          cell.on('dragstart', event => {
             logger.log('doit');
           });
 
           if (logger) {
-            cell.each(function (ix, elt) {
+            cell.each((ix, elt) => {
               logger.log({
                 CELLELT: new XMLSerializer().serializeToString(elt)
               });
@@ -1058,7 +1055,7 @@ Smartwrap.SmartTable = (function () {
           }
 
           if (datarow.foreignKey) {
-            cell.each(function (ix, elt) {
+            cell.each((ix, elt) => {
               elt.setAttributeNS(smartwrapNamespace, "foreignKey", datarow.foreignKey);
             });
           }
@@ -1093,12 +1090,12 @@ Smartwrap.SmartTable = (function () {
       if (self.focus && self.focus.origin) {
         const headhash = {};
         const heads = jQuery(newTable).find("input.colhead");
-        heads.each(function (ix, elt) {
+        heads.each((ix, elt) => {
           const id = elt.getAttributeNS(smartwrapNamespace, "colid");
           headhash[id] = ix;
         });
         const origIndex = headhash[self.focus.origin];
-        const offset = function (dir) {
+        const offset = (dir => {
           switch (dir) {
             case "forward":
               return 1;
@@ -1107,7 +1104,7 @@ Smartwrap.SmartTable = (function () {
             default:
               return 0;
           }
-        }(self.focus.dir);
+        })(self.focus.dir);
         heads.eq(origIndex + offset).select();
         self.focus = {};
       } else {
@@ -1119,7 +1116,7 @@ Smartwrap.SmartTable = (function () {
       }
       this.views["maintable"] = newTable;
     },
-    getPreview: function (fullContent, spec) {
+    getPreview(fullContent, spec) {
       const logger = spec.logger;
 
 
@@ -1159,7 +1156,7 @@ Smartwrap.SmartTable = (function () {
       }
       return null;
     },
-    hyphenateCell: function (mainContent, suppContent, spec) {
+    hyphenateCell(mainContent, suppContent, spec) {
       if (!spec) {
         spec = {};
       }
@@ -1197,4 +1194,4 @@ Smartwrap.SmartTable = (function () {
       "color",
     ],
   };
-}());
+})());

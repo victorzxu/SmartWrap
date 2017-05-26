@@ -11,19 +11,19 @@
 
 import jQuery from "jquery";
 
-(function ($) {
+(($ => {
   $.extend($.expr[':'], {
     // case insensitive version of :contains
-    icontains: function (a, i, m) {
+    icontains(a, i, m) {
       return (a.textContent || a.innerText || jQuery(a).text() || "").toLowerCase().indexOf(m[3].toLowerCase()) >= 0;
     }
   });
 
   $.iterators = {
-    getText: function () {
+    getText() {
       return $(this).text();
     },
-    parseInt: function (v) {
+    parseInt(v) {
       return parseInt(v, 10);
     }
   };
@@ -33,21 +33,23 @@ import jQuery from "jquery";
     // Returns a range object
     // Author: Matthias Miller
     // Site:   http://blog.outofhanwell.com/2006/03/29/javascript-range-function/
-    range: function () {
-      if (!arguments.length) {
+    range(...args) {
+      if (!args.length) {
         return [];
       }
-      var min, max, step;
-      if (arguments.length == 1) {
+      var min;
+      var max;
+      var step;
+      if (args.length == 1) {
         min = 0;
-        max = arguments[0] - 1;
+        max = args[0] - 1;
         step = 1;
       }
       else {
         // default step to 1 if it's zero or undefined
-        min = arguments[0];
-        max = arguments[1] - 1;
-        step = arguments[2] || 1;
+        min = args[0];
+        max = args[1] - 1;
+        step = args[2] || 1;
       }
       // convert negative steps to positive and reverse min/max
       if (step < 0 && min >= max) {
@@ -75,12 +77,12 @@ import jQuery from "jquery";
     },
 
     // Takes a keyboard event and return true if the keycode match the specified keycode
-    keyIs: function (k, e) {
+    keyIs(k, e) {
       return parseInt($.keyCode[k.toUpperCase()], 10) == parseInt((typeof(e) == 'number' ) ? e : e.keyCode, 10);
     },
 
     // Returns the key of an array
-    keys: function (arr) {
+    keys(arr) {
       var o = [];
       for (k in arr) {
         o.push(k);
@@ -89,13 +91,13 @@ import jQuery from "jquery";
     },
 
     // Redirect to a specified url
-    redirect: function (url) {
+    redirect(url) {
       window.location.href = url;
       return url;
     },
 
     // Stop event shorthand
-    stop: function (e, preventDefault, stopPropagation) {
+    stop(e, preventDefault, stopPropagation) {
       if (preventDefault) {
         e.preventDefault();
       }
@@ -106,18 +108,18 @@ import jQuery from "jquery";
     },
 
     // Returns the basename of a path
-    basename: function (path) {
+    basename(path) {
       var t = path.split('/');
       return t[t.length] === '' && s || t.slice(0, t.length).join('/');
     },
 
     // Returns the filename of a path
-    filename: function (path) {
+    filename(path) {
       return path.split('/').pop();
     },
 
     // Returns a formated file size
-    filesizeformat: function (bytes, suffixes) {
+    filesizeformat(bytes, suffixes) {
       var b = parseInt(bytes, 10);
       var s = suffixes || ['byte', 'bytes', 'KB', 'MB', 'GB'];
       if (isNaN(b) || b === 0) {
@@ -140,27 +142,27 @@ import jQuery from "jquery";
       }
     },
 
-    fileExtension: function (s) {
+    fileExtension(s) {
       var tokens = s.split('.');
       return tokens[tokens.length - 1] || false;
     },
 
     // Returns true if an object is a String
-    isString: function (o) {
+    isString(o) {
       return typeof(o) == 'string' && true || false;
     },
 
     // Returns true if an object is a RegExp
-    isRegExp: function (o) {
+    isRegExp(o) {
       return o && o.constructor.toString().indexOf('RegExp()') != -1 || false;
     },
 
-    isObject: function (o) {
+    isObject(o) {
       return (typeof(o) == 'object');
     },
 
     // Convert input to currency (two decimal fixed number)
-    toCurrency: function (i) {
+    toCurrency(i) {
       i = parseFloat(i, 10).toFixed(2);
       return (i == 'NaN') ? '0.00' : i;
     },
@@ -192,7 +194,7 @@ import jQuery from "jquery";
      *		18.12.2008 - removed native object prototyping to stay in jQuery's spirit, jsLinted (Maxime Haineault <haineault@gmail.com>)
      --------------------------------------------------------------------*/
 
-    pxToEm: function (i, settings) {
+    pxToEm(i, settings) {
       //set defaults
       settings = jQuery.extend({
         scope: 'body',
@@ -201,7 +203,7 @@ import jQuery from "jquery";
 
       var pxVal = (i === '') ? 0 : parseFloat(i);
       var scopeVal;
-      var getWindowWidth = function () {
+      var getWindowWidth = () => {
         var de = document.documentElement;
         return self.innerWidth || (de && de.clientWidth) || document.body.clientWidth;
       };
@@ -212,9 +214,7 @@ import jQuery from "jquery";
        to get an accurate em value. */
 
       if (settings.scope == 'body' && $.browser.msie && (parseFloat($('body').css('font-size')) / getWindowWidth()).toFixed(1) > 0.0) {
-        var calcFontSize = function () {
-          return (parseFloat($('body').css('font-size')) / getWindowWidth()).toFixed(3) * 16;
-        };
+        var calcFontSize = () => (parseFloat($('body').css('font-size')) / getWindowWidth()).toFixed(3) * 16;
         scopeVal = calcFontSize();
       }
       else {
@@ -227,7 +227,7 @@ import jQuery from "jquery";
   });
 
   $.extend($.fn, {
-    type: function () {
+    type() {
       try {
         return $(this).get(0).nodeName.toLowerCase();
       }
@@ -236,7 +236,7 @@ import jQuery from "jquery";
       }
     },
     // Select a text range in a textarea
-    selectRange: function (start, end) {
+    selectRange(start, end) {
       // use only the first one since only one input can be focused
       if ($(this).get(0).createTextRange) {
         var range = $(this).get(0).createTextRange();
@@ -246,7 +246,7 @@ import jQuery from "jquery";
         range.select();
       }
       else if ($(this).get(0).setSelectionRange) {
-        $(this).bind('focus', function (e) {
+        $(this).bind('focus', e => {
           e.preventDefault();
         }).get(0).setSelectionRange(start, end);
       }
@@ -272,7 +272,7 @@ import jQuery from "jquery";
      * Note: Changed pxToEm call to call $.pxToEm instead, jsLinted (Maxime Haineault <haineault@gmail.com>)
      --------------------------------------------------------------------*/
 
-    equalHeights: function (px) {
+    equalHeights(px) {
       $(this).each(function () {
         var currentTallest = 0;
         $(this).children().each(function (i) {
@@ -294,13 +294,13 @@ import jQuery from "jquery";
 
     // Copyright (c) 2009 James Padolsey
     // http://james.padolsey.com/javascript/jquery-delay-plugin/
-    delay: function (time, callback) {
-      jQuery.fx.step.delay = function () {
+    delay(time, callback) {
+      jQuery.fx.step.delay = () => {
       };
       return this.animate({delay: 1}, time, callback);
     }
   });
-})(jQuery);
+}))(jQuery);
 /*
  jQuery strings - 0.3
  http://code.google.com/p/jquery-utils/
@@ -316,11 +316,11 @@ import jQuery from "jquery";
  Documentation: http://code.google.com/p/jquery-utils/wiki/StringFormat
 
  */
-(function ($) {
+(($ => {
   var strings = {
     strConversion: {
       // tries to translate any objects type into string gracefully
-      __repr: function (i) {
+      __repr(i) {
         switch (this.__getType(i)) {
           case 'array':
           case 'date':
@@ -339,7 +339,7 @@ import jQuery from "jquery";
         }
       },
       // like typeof but less vague
-      __getType: function (i) {
+      __getType(i) {
         if (!i || !i.constructor) {
           return typeof(i);
         }
@@ -348,7 +348,7 @@ import jQuery from "jquery";
       },
       //+ Jonas Raoni Soares Silva
       //@ http://jsfromhell.com/string/pad [v1.0]
-      __pad: function (str, l, s, t) {
+      __pad(str, l, s, t) {
         var p = s || ' ';
         var o = str;
         if (l - str.length > 0) {
@@ -356,7 +356,7 @@ import jQuery from "jquery";
         }
         return o;
       },
-      __getInput: function (arg, args) {
+      __getInput(arg, args) {
         var key = arg.getKey();
         switch (this.__getType(args)) {
           case 'object': // Thanks to Jonathan Works for the patch
@@ -390,13 +390,13 @@ import jQuery from "jquery";
         }
         return '{' + key + '}';
       },
-      __formatToken: function (token, args) {
+      __formatToken(token, args) {
         var arg = new Argument(token, args);
         return strings.strConversion[arg.getFormat().slice(-1)](this.__getInput(arg, args), arg);
       },
 
       // Signed integer decimal.
-      d: function (input, arg) {
+      d(input, arg) {
         var o = parseInt(input, 10); // enforce base 10
         var p = arg.getPaddingLength();
         if (p) {
@@ -407,11 +407,11 @@ import jQuery from "jquery";
         }
       },
       // Signed integer decimal.
-      i: function (input, args) {
+      i(input, args) {
         return this.d(input, args);
       },
       // Unsigned octal
-      o: function (input, arg) {
+      o(input, arg) {
         var o = input.toString(8);
         if (arg.isAlternate()) {
           o = this.__pad(o, o.length + 1, '0', 0);
@@ -419,60 +419,60 @@ import jQuery from "jquery";
         return this.__pad(o, arg.getPaddingLength(), arg.getPaddingString(), 0);
       },
       // Unsigned decimal
-      u: function (input, args) {
+      u(input, args) {
         return Math.abs(this.d(input, args));
       },
       // Unsigned hexadecimal (lowercase)
-      x: function (input, arg) {
+      x(input, arg) {
         var o = parseInt(input, 10).toString(16);
         o = this.__pad(o, arg.getPaddingLength(), arg.getPaddingString(), 0);
         return arg.isAlternate() ? '0x' + o : o;
       },
       // Unsigned hexadecimal (uppercase)
-      X: function (input, arg) {
+      X(input, arg) {
         return this.x(input, arg).toUpperCase();
       },
       // Floating point exponential format (lowercase)
-      e: function (input, arg) {
+      e(input, arg) {
         return parseFloat(input, 10).toExponential(arg.getPrecision());
       },
       // Floating point exponential format (uppercase)
-      E: function (input, arg) {
+      E(input, arg) {
         return this.e(input, arg).toUpperCase();
       },
       // Floating point decimal format
-      f: function (input, arg) {
+      f(input, arg) {
         return this.__pad(parseFloat(input, 10).toFixed(arg.getPrecision()), arg.getPaddingLength(), arg.getPaddingString(), 0);
       },
       // Floating point decimal format (alias)
-      F: function (input, args) {
+      F(input, args) {
         return this.f(input, args);
       },
       // Floating point format. Uses exponential format if exponent is greater than -4 or less than precision, decimal format otherwise
-      g: function (input, arg) {
+      g(input, arg) {
         var o = parseFloat(input, 10);
         return (o.toString().length > 6) ? Math.round(o.toExponential(arg.getPrecision())) : o;
       },
       // Floating point format. Uses exponential format if exponent is greater than -4 or less than precision, decimal format otherwise
-      G: function (input, args) {
+      G(input, args) {
         return this.g(input, args);
       },
       // Single character (accepts integer or single character string).
-      c: function (input, args) {
+      c(input, args) {
         var match = input.match(/\w|\d/);
         return match && match[0] || '';
       },
       // String (converts any JavaScript object to anotated format)
-      r: function (input, args) {
+      r(input, args) {
         return this.__repr(input);
       },
       // String (converts any JavaScript object using object.toString())
-      s: function (input, args) {
+      s(input, args) {
         return input.toString && input.toString() || '' + input;
       }
     },
 
-    format: function (str, args) {
+    format(str, args) {
       var end = 0;
       var start = 0;
       var match = false;
@@ -567,7 +567,7 @@ import jQuery from "jquery";
     };
   };
 
-  var arguments2Array = function (args, shift) {
+  var arguments2Array = (args, shift) => {
     var o = [];
     for (l = args.length, x = (shift || 0) - 1; x < l; x++) {
       o.push(args[x]);
@@ -575,4 +575,4 @@ import jQuery from "jquery";
     return o;
   };
   $.extend(strings);
-})(jQuery);
+}))(jQuery);

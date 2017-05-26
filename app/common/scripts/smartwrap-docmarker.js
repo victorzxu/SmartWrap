@@ -1,10 +1,8 @@
 import jQuery from "jquery";
 
 //TODO: Fix logging since reference to smartwrap was taken out
-const DocumentMarker = (function () {
-  "use strict";
-
-  return function (spec) {
+const DocumentMarker = ((() => {
+  return spec => {
     let self = {};
     self.spec = spec || {};
 
@@ -43,18 +41,18 @@ const DocumentMarker = (function () {
 
       const that = this;
       //TODO: Fix these references to smartwrap and try to refer to only the settings
-      this.settings = function (params) {
+      this.settings = (params => {
         if (params.settings) {
           return params.settings;
         }
         const settings = {};
-        ["fixComments", "fixAttributes", "fixLinebreaks", "fixEltnames", "computeFeatures"].forEach(function (key) {
+        ["fixComments", "fixAttributes", "fixLinebreaks", "fixEltnames", "computeFeatures"].forEach(key => {
           //TODO: Fix these hardcoded settings
           settings[key] = true;
           //settings[key] = (that.smartwrap && that.smartwrap.getSetting(key)) || true;
         });
         return settings;
-      }(params);
+      })(params);
 
       this.fixstimuli = [];
       this.fixresponses = [];
@@ -63,13 +61,13 @@ const DocumentMarker = (function () {
         this.fixstimuli.push(function () {
           return this.nodeType === this.COMMENT_NODE;
         });
-        this.fixresponses.push(function (node) {
+        this.fixresponses.push(node => {
           node.textContent = node.textContent.replace(/\-/g, "- ");
         });
       }
 
       if (this.settings.fixAttributes) {
-        const fixAtts = function (node) {
+        const fixAtts = node => {
           const atts = node.attributes;
 
           const attnames = [];
@@ -193,7 +191,7 @@ const DocumentMarker = (function () {
         this.fixstimuli.push(function () {
           return (this.nodeType === this.ELEMENT_NODE) && (this.nodeName.match(/[^a-zA-Z0-9]/));
         });
-        this.fixresponses.push(function (node) {
+        this.fixresponses.push(node => {
           const nodeName = node.nodeName.replace(/[^a-zA-Z0-9]/g, '');
           // this.logger.log({
           //   PREFIX: node.nodeName,
@@ -311,9 +309,9 @@ const DocumentMarker = (function () {
             },
             context: "processing node",
             nodeCount: this.nodeCount,
-            i: i,
+            i,
             url: this.doc.documentURI,
-            node: node
+            node
           });
         }
 
@@ -349,7 +347,7 @@ const DocumentMarker = (function () {
         i += 1;
       }
 
-      window.setTimeout(function () {
+      window.setTimeout(() => {
         that.mark();
       }, this.params.chunkDelay);
     };
@@ -375,7 +373,7 @@ const DocumentMarker = (function () {
         const xpathParts = {
           prefix: (jQuery(node.parentNode).data("xpath") || ""),
           lname: tag,
-          ord: ord
+          ord
         };
         const xpath0 = [xpathParts.prefix, xpathParts.lname].join("/");
         this.xpath = [xpath0,
@@ -446,14 +444,14 @@ const DocumentMarker = (function () {
        }, 50);
        */
 
-      window.setTimeout(function () {
+      window.setTimeout(() => {
         jQuery(node).removeClass("marking");
       }, 1000);
       jQuery(node).data("marked", true);
 
       delete this.checklist[xpath];
     };
-    self.getLayoutPosition = function (node) {
+    self.getLayoutPosition = node => {
       const crect = node.getBoundingClientRect();
       const position = {};
 
@@ -533,7 +531,7 @@ const DocumentMarker = (function () {
         let domstr = "";
         if (this.smartwrap) {
           const stream = {
-            write: function (string, count) {
+            write(string, count) {
               domstr += string;
             }
           };
@@ -621,7 +619,6 @@ const DocumentMarker = (function () {
     console.log("INITTED marker");
     return self;
   };
-
-}());
+})());
 
 export default DocumentMarker;

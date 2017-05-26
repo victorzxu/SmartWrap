@@ -4,11 +4,11 @@ import {smartwrapNamespace} from "./smarttable-header";
 
 
 const swo = Smartwrap.overlay;
-(function () {
-  swo.doit = function () {
+((() => {
+  swo.doit = () => {
     swo.broadcaster = jQuery("#viewSidebar_smartwrap").get(0);
     swo.sidebarURL = swo.broadcaster.getAttribute("sidebarurl");
-    jQuery("observes.sidebarWatcher").bind("broadcast", function (event) {
+    jQuery("observes.sidebarWatcher").bind("broadcast", event => {
       const tgt = event.target;
       //alert('DELTA-T: ' +  new XMLSerializer().serializeToString(tgt));
       //alert('DELTA-E: ' + JSON.stringify(event));
@@ -41,15 +41,15 @@ const swo = Smartwrap.overlay;
 
     swo.swToolbar = jQuery(document).find("#smartwrapToolbar");
     swo.swToolbar.get(0).collapsed = true;
-    jQuery(document).bind("hideSidebar", function (event) {
+    jQuery(document).bind("hideSidebar", event => {
       //alert("swtool: " + new XMLSerializer().serializeToString(swToolbar.get(0)));
       swo.swToolbar.get(0).collapsed = true;
     });
-    jQuery(document).bind("showSidebar", function (event) {
+    jQuery(document).bind("showSidebar", event => {
       //alert("swtool: " + new XMLSerializer().serializeToString(swToolbar.get(0)));
       swo.swToolbar.get(0).collapsed = false;
     });
-    jQuery(document).bind("hideSidebar", function (event) {
+    jQuery(document).bind("hideSidebar", event => {
       if (swo && swo.smartwrap) {
         swo.smartwrap.clearMarking();
       }
@@ -57,12 +57,12 @@ const swo = Smartwrap.overlay;
         scrapeTarget: "NA"
       });
     });
-    jQuery(document).bind('swSidebar', function (event) {
+    jQuery(document).bind('swSidebar', event => {
       const detail = event.originalEvent && event.originalEvent.detail;
       swo.sidebarDocument = detail.sidebarDoc;
     });
     swo.permicon = jQuery(document).find("#smartwrap-toolbar-button-perm");
-    jQuery(document).bind("sw_newsmartwrap", function (event) {
+    jQuery(document).bind("sw_newsmartwrap", event => {
       const detail = event.originalEvent && event.originalEvent.detail;
       //alert('ANDONE AND: ' + detail.smartwrap.swid);
 
@@ -71,13 +71,13 @@ const swo = Smartwrap.overlay;
       }
       swo.smartwrap = detail.smartwrap;
 
-      swo.smartwrap.observeSetting("developermode", function (spec) {
+      swo.smartwrap.observeSetting("developermode", spec => {
         //dump([JSON.stringify({observed: spec}, null, 2), "\n\n"].join(""));
         //alert(JSON.stringify({gotit: swo.permicon.length}));
         swo.devMode = spec.value;
       });
 
-      swo.smartwrap.observeSetting("cssclasses", function (spec) {
+      swo.smartwrap.observeSetting("cssclasses", spec => {
         if (!spec.value) {
           return;
         }
@@ -90,7 +90,7 @@ const swo = Smartwrap.overlay;
         spec.elt = jQuery(document).find("#extraCssContainer");
         spec.elt.removeClass();
         spec.pre = spec.elt.get(0).className;
-        spec.clazzes.forEach(function (clazz) {
+        spec.clazzes.forEach(clazz => {
           spec.elt.addClass(clazz);
         });
         spec.post = spec.elt.get(0).className;
@@ -98,7 +98,7 @@ const swo = Smartwrap.overlay;
         //alert(JSON.stringify({HEY1: spec}));
       });
     });
-    prefutil.observeSetting("permicon", function (spec) {
+    prefutil.observeSetting("permicon", spec => {
       if (swo.permicon.data('forceshow')) {
         return;
       }
@@ -109,7 +109,7 @@ const swo = Smartwrap.overlay;
         swo.permicon.hide(100);
       }
     });
-    prefutil.observeSetting("cssclasses", function (spec) {
+    prefutil.observeSetting("cssclasses", spec => {
       if (!spec.value) {
         return;
       }
@@ -121,7 +121,7 @@ const swo = Smartwrap.overlay;
 
     swo.sidebar = document.getElementById("sidebar");
     swo.quitObserver = {
-      observe: function (aSubject, aTopic, aData) {
+      observe(aSubject, aTopic, aData) {
         //alert('buh-bye: ' + sidebar.contentWindow.location.href);
         //alert('burl: ' + broadcaster.getAttribute("sidebarurl"));
 
@@ -147,12 +147,12 @@ const swo = Smartwrap.overlay;
 
     swo.marksInProgress = {};
     swo.marks = {};
-    jQuery(document).bind("sw_markingstatus", function (event) {
+    jQuery(document).bind("sw_markingstatus", event => {
       const detail = event.originalEvent && event.originalEvent.detail;
       const logger = detail && detail.logger;
       detail.logger = null; // prevent circular reference error for logging
 
-      const showhide = function () {
+      const showhide = () => {
         if (Object.keys(swo.marksInProgress).length) {
           //swo.markWait.show();
           swo.markWait.css("opacity", "1.0");
@@ -189,7 +189,7 @@ const swo = Smartwrap.overlay;
           //swo.marks.push({direction:"in"});
           swo.marks.in = 1 + (swo.marks.in || 0);
         }
-        const newcount = window.setTimeout(function () {
+        const newcount = window.setTimeout(() => {
           //logger && logger.log({when:"a second later", cancel: detail.token, marks:swo.marksInProgress});
           delete swo.marksInProgress[detail.token];
           //logger && logger.log({when:"a second later", canceled: detail.token});
@@ -211,7 +211,7 @@ const swo = Smartwrap.overlay;
       //alert("MARKS: " + JSON.stringify({detail:detail,marks:swo.marksInProgress,len:Object.keys(swo.marksInProgress).length}));
     });
 
-    jQuery(document).bind("page_loading", function (event) {
+    jQuery(document).bind("page_loading", event => {
       const detail = event.originalEvent && event.originalEvent.detail;
       if (detail) {
         if (detail.done) {
@@ -224,7 +224,7 @@ const swo = Smartwrap.overlay;
       }
     });
 
-    swo.updateStatus = function (event) {
+    swo.updateStatus = event => {
       //alert("ECHO!");
       const detail = event.originalEvent && event.originalEvent.detail;
       if (detail && detail.smartwrap) {
@@ -259,7 +259,7 @@ const swo = Smartwrap.overlay;
       }
 
       stat = swo.smartwrap.getStatus("save_ready");
-      swo.saveButtons.each(function (index, elt) {
+      swo.saveButtons.each((index, elt) => {
         elt.disabled = !stat;
       });
 
@@ -305,7 +305,7 @@ const swo = Smartwrap.overlay;
 
       detail.selected = false;
       detail.prev = "";
-      swo.wrapAppl.find("menuitem").each(function (index, elt) {
+      swo.wrapAppl.find("menuitem").each((index, elt) => {
         let myurl = elt.getAttribute("myurl");
         if (!myurl) {
           return;
@@ -343,7 +343,7 @@ const swo = Smartwrap.overlay;
         pageTitle: scrapeTitle
       });
     };
-    jQuery(document).bind("sw_status", function (event) {
+    jQuery(document).bind("sw_status", event => {
       swo.updateStatus(event);
     });
 
@@ -362,7 +362,7 @@ const swo = Smartwrap.overlay;
      });
      */
 
-    jQuery(document).bind("swDiscardWrapper", function (event) {
+    jQuery(document).bind("swDiscardWrapper", event => {
       const detail = event.originalEvent && event.originalEvent.detail || {};
 
       //alert("DISCARD: " + JSON.stringify(detail));
@@ -385,7 +385,7 @@ const swo = Smartwrap.overlay;
      });
      */
 
-    swo.annButton.click(function (event) {
+    swo.annButton.click(event => {
       const detail = {};
 
       //detail.annotationLocation = annPath.get(0).value;
@@ -405,13 +405,13 @@ const swo = Smartwrap.overlay;
     swo.premarkWait = jQuery("#premarkWait");
     swo.markWait = jQuery("#markWait");
 
-    const swOrange = function (alpha1) {
+    const swOrange = alpha1 => {
       alpha1 = alpha1 || 0.0;
       return ["rgba", "(", "255", ",", "165", ",", "0", ",", 1 - alpha1, ")"].join("");
     };
 
     swo.uwaiters = jQuery(".waiter.undetermined");
-    var setprogress = function (elt, stops) {
+    var setprogress = (elt, stops) => {
       const bg = [
         "linear-gradient",
         "(",
@@ -432,7 +432,7 @@ const swo = Smartwrap.overlay;
       jQuery(elt).css('background', bg);
 
     };
-    const advance = function (ix, elt) {
+    const advance = (ix, elt) => {
       const waiter = jQuery(elt);
       const opac = waiter.css('opacity');
       if (opac < 0.5) {
@@ -452,12 +452,12 @@ const swo = Smartwrap.overlay;
 
       setprogress(waiter, [stop1, progress, stop2]);
     };
-    setInterval(function () {
+    setInterval(() => {
       swo.uwaiters.each(advance);
     }, 100);
 
     swo.analyzing = jQuery("#analyzing");
-    jQuery(document).bind("swWrapperRequest", function (event) {
+    jQuery(document).bind("swWrapperRequest", event => {
       const detail = event.originalEvent && event.originalEvent.detail;
       if (detail.logger) {
         detail.logger.log({
@@ -467,7 +467,7 @@ const swo = Smartwrap.overlay;
 
       const eventName = event.type;
       //alert("HTTP " + eventName);
-      swo.mainButtons.each(function (index, elt) {
+      swo.mainButtons.each((index, elt) => {
         elt.disabled = true;
       });
       //swo.runButton.get(0).disabled = true;
@@ -476,13 +476,13 @@ const swo = Smartwrap.overlay;
       //swo.serverWait.find("label").css("color", "red");
     });
 
-    jQuery(document).bind("sw_openurl", function (event) {
+    jQuery(document).bind("sw_openurl", event => {
       const detail = event.originalEvent && event.originalEvent.detail;
       //alert("URL: " + JSON.stringify(detail));
       swo.openurl(detail);
     });
 
-    jQuery(".sw_button").click(function (event) {
+    jQuery(".sw_button").click(event => {
       //alert('clicky1');
       const elt = event.target;
       if (elt.disabled) {
@@ -509,20 +509,20 @@ const swo = Smartwrap.overlay;
 
     swo.idcheckdue = true;
 
-    jQuery(document).bind("sw_idcheck", function (event) {
+    jQuery(document).bind("sw_idcheck", event => {
       if (!swo.idcheckdue) {
         return;
       }
 
       swo.idcheckdue = false;
-      setTimeout(function () {
+      setTimeout(() => {
         swo.idcheckdue = true;
       }, 10000);
 
       jQuery.ajax({
         url: [swo.authBase, "/whoami"].join(""),
         data: null,
-        success: function (data, status, jqXHR) {
+        success(data, status, jqXHR) {
           //alert(JSON.stringify({OUTPUT: data, KEYS: Object.keys(data)}));
 
           const evt = document.createEvent("CustomEvent");
@@ -534,27 +534,27 @@ const swo = Smartwrap.overlay;
     });
 
     //swo.open = window.open;
-    swo.open = function (url) {
+    swo.open = url => {
       if (!url.startsWith("http")) {
         url = [swo.authBase, url].join("");
       }
       gBrowser.selectedTab = gBrowser.addTab(url);
     };
 
-    jQuery(document).bind("sw_login", function (event) {
+    jQuery(document).bind("sw_login", event => {
       //alert(JSON.stringify({OPEN: swo.login}));
       swo.open(swo.login);
     });
 
-    jQuery(document).bind("sw_logout", function (event) {
+    jQuery(document).bind("sw_logout", event => {
       //alert(JSON.stringify({OPEN: swo.logout}));
       swo.open(swo.logout);
     });
-    jQuery(document).bind("sw_register", function (event) {
+    jQuery(document).bind("sw_register", event => {
       //alert(JSON.stringify({OPEN: swo.logout}));
       swo.open(["/register.jsp", swo.smartwrap.getSetting("greetquery")].join("?"));
     });
-    jQuery(document).bind("sw_login_turk", function (event) {
+    jQuery(document).bind("sw_login_turk", event => {
       //alert(JSON.stringify({OPEN: swo.logout}));
       swo.open(["/register.jsp", "via=turklogin"].join("?"));
     });
@@ -566,7 +566,7 @@ const swo = Smartwrap.overlay;
        alert(JSON.stringify({status:status,sf:sf}));
        },
        */
-      onProgressChange: function (b, wp, req, cs, ms, ct, mt) {
+      onProgressChange(b, wp, req, cs, ms, ct, mt) {
         //alert(JSON.stringify({prog:true,cs:cs,ms:ms,ct:ct,mt:mt}));
         if (ct >= mt) {
           //alert('sumpin');
@@ -583,7 +583,7 @@ const swo = Smartwrap.overlay;
        */
     });
 
-    const indicateAuth = function (spec) {
+    const indicateAuth = spec => {
       const swauth = jQuery(".swauth");
 
       swauth.removeClass("withid withassn");
@@ -605,7 +605,7 @@ const swo = Smartwrap.overlay;
       //alert(JSON.stringify({indic: spec,clazz: swauth.get(0).className}));
     };
 
-    jQuery(document).bind("sw_auth", function (event) {
+    jQuery(document).bind("sw_auth", event => {
       let detail = event.originalEvent && event.originalEvent.detail;
       detail = detail || {};
       if ((typeof detail.requestConsent) !== 'undefined') {
@@ -614,7 +614,7 @@ const swo = Smartwrap.overlay;
         });
       }
     });
-    jQuery(document).bind("sw_auth", function (event) {
+    jQuery(document).bind("sw_auth", event => {
       const eventName = event.type;
       const detail = event.originalEvent && event.originalEvent.detail;
 
@@ -647,7 +647,7 @@ const swo = Smartwrap.overlay;
 
     jQuery("#sw_idcheck").click();
 
-    jQuery(document).bind("sw_dragstart sw_removecell sw_reportSlot", function (event) {
+    jQuery(document).bind("sw_dragstart sw_removecell sw_reportSlot", event => {
 
       const eventName = event.type;
       const detail = event.originalEvent && event.originalEvent.detail;
@@ -665,7 +665,7 @@ const swo = Smartwrap.overlay;
       //alert("RELAYED: " + eventName);
     });
 
-    jQuery(document).bind("sw_configure", function (event) {
+    jQuery(document).bind("sw_configure", event => {
       const detail = event.originalEvent && event.originalEvent.detail;
       //alert("CONFIG: " + JSON.stringify(detail));
 
@@ -683,7 +683,7 @@ const swo = Smartwrap.overlay;
     });
 
     swo.contextMenuItems = jQuery("#contentAreaContextMenu .sw_menuitem");
-    swo.contextMenuItems.each(function (index, elt) {
+    swo.contextMenuItems.each((index, elt) => {
       const applySelector = elt.getAttributeNS(smartwrapNamespace, "appliesTo");
       const eventType = elt.getAttributeNS(smartwrapNamespace, "eventType");
       //alert(elt.id + " FIRES " + eventType + " ON " + applySelector);
@@ -692,7 +692,7 @@ const swo = Smartwrap.overlay;
         swo.showhide(elt, applySelector),
         false);
 
-      jQuery(elt).click(function () {
+      jQuery(elt).click(() => {
         const msgs = [];
 
         try {
@@ -725,7 +725,7 @@ const swo = Smartwrap.overlay;
       });
     });
 
-    jQuery("#auth").on('click', function () {
+    jQuery("#auth").on('click', () => {
       window.open("http://www.google.com");
     });
 
@@ -735,16 +735,16 @@ const swo = Smartwrap.overlay;
   };
 
 
-  window.addEventListener("load", function () {
+  window.addEventListener("load", () => {
     swo.doit()
   }, false);
   //jQuery(document).ready(function() { swo.doit(); });
 
   swo.window = window;
-  jQuery(document).bind("sw_log", function (event) {
+  jQuery(document).bind("sw_log", event => {
     const detail = event.originalEvent && event.originalEvent.detail;
     //alert("LOGG: " + swo.devMode);
     swo.log(detail);
   });
 
-})();
+}))();

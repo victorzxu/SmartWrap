@@ -2,21 +2,19 @@ import jQuery from "jquery";
 
 //TODO: Fix references to smartwrap and logger, try to pass as little info as possible
 
-const Interaction = (function () {
-  "use strict";
-
+const Interaction = ((() => {
   let InteractionObj = {};
-  InteractionObj.enableDragging = function (elt) {
+  InteractionObj.enableDragging = elt => {
     jQuery(elt).data("cached_draggable", elt.draggable);
     elt.draggable = true;
   };
-  InteractionObj.disableDragging = function (elt) {
+  InteractionObj.disableDragging = elt => {
     elt.draggable = jQuery(elt).data("cached_draggable");
   };
 
   InteractionObj.BoxIndicator = {
     boxTemplName: "sw_selbox",
-    init: function (params) {
+    init(params) {
       this.doc = params.doc;
 
       const rectboxes = jQuery(this.doc).find(".sw_selbox");
@@ -54,7 +52,7 @@ const Interaction = (function () {
         ibord: {},
         owhy: {}
       };
-      ["bottom", "right", "top", "left"].forEach(function (key) {
+      ["bottom", "right", "top", "left"].forEach(key => {
         if (!that.rectstyle) {
           return;
         }
@@ -76,7 +74,7 @@ const Interaction = (function () {
 
       return this;
     },
-    handleMouseover: function (event) {
+    handleMouseover(event) {
       const tgt = event.target;
 
       if (this.doc !== tgt.ownerDocument) {
@@ -151,7 +149,7 @@ const Interaction = (function () {
         duration: this.settings.animateSelector ? 150 : 0,
         queue: false,
         easing: 'swing',
-        complete: function () {
+        complete() {
           jQuery(that.rectbox).find('.sw_selinner').css({
             top: ibounds.top + "px",
             left: ibounds.left + "px",
@@ -174,7 +172,7 @@ const Interaction = (function () {
        jQuery(this.rectbox).find(".vertical").css('height', bounds.height + "px");
        */
     },
-    handleMouseout: function (event) {
+    handleMouseout(event) {
       const tgt = event.target;
 
       if (this.doc !== tgt.ownerDocument) {
@@ -189,26 +187,26 @@ const Interaction = (function () {
         jQuery(this.rectbox).hide();
       }
     },
-    registerListeners: function () {
+    registerListeners() {
       const that = this;
-      jQuery(this.doc).bind("mouseover", function (event) {
+      jQuery(this.doc).bind("mouseover", event => {
         that.handleMouseover(event);
       });
-      jQuery(this.doc).bind("mouseout", function (event) {
+      jQuery(this.doc).bind("mouseout", event => {
         that.handleMouseout(event);
       });
     }
   };
 
   InteractionObj.SelectTextSelector = {
-    init: function (params) {
+    init(params) {
       this.doc = params.doc;
       //this.logger = params.logger;
       //this.smartwrap = params.smartwrap;
 
       return this;
     },
-    handleDragend: function (event) {
+    handleDragend(event) {
       const tgt = event.target;
 
       if (this.doc !== tgt.ownerDocument) {
@@ -220,10 +218,11 @@ const Interaction = (function () {
       //  log("...DRRAG");
       //}
     },
-    handleDragstart: function (event) {
+    handleDragstart(event) {
       const tgt = event.target;
       const i = 0;
-      let df, dump;
+      let df;
+      let dump;
 
       if (this.doc !== tgt.ownerDocument) {
         // can ignore mouse/over from other documents
@@ -263,12 +262,12 @@ const Interaction = (function () {
 
       //tgt.ownerDocument.defaultView.alert("DRRAG:" + JSON.stringify(Object.keys(detail)));
     },
-    registerListeners: function () {
+    registerListeners() {
       const that = this;
-      jQuery(this.doc).bind("dragstart", function (event) {
+      jQuery(this.doc).bind("dragstart", event => {
         that.handleDragstart(event);
       });
-      jQuery(this.doc).bind("dragend", function (event) {
+      jQuery(this.doc).bind("dragend", event => {
         that.handleDragend(event);
       });
     }
@@ -337,10 +336,10 @@ const Interaction = (function () {
   InteractionObj.ClickSelector.registerListeners = function () {
     const that = this;
     InteractionObj.SelectTextSelector.registerListeners.call(this);
-    jQuery(this.doc).bind("dblclick", function (event) {
+    jQuery(this.doc).bind("dblclick", event => {
       that.handleDblclick(event);
     });
-    jQuery(this.doc).bind("click", function (event) {
+    jQuery(this.doc).bind("click", event => {
       that.handleClick(event);
     });
   };
@@ -351,26 +350,26 @@ const Interaction = (function () {
 
     return this;
   };
-  InteractionObj.HoverSelector.handleMouseover = function (event) {
+  InteractionObj.HoverSelector.handleMouseover = event => {
     //event.target.draggable = true;
     InteractionObj.enableDragging(event.target);
   };
-  InteractionObj.HoverSelector.handleMouseout = function (event) {
+  InteractionObj.HoverSelector.handleMouseout = event => {
     //event.target.draggable = false;
     InteractionObj.disableDragging(event.target);
   };
   InteractionObj.HoverSelector.registerListeners = function () {
     const that = this;
     InteractionObj.SelectTextSelector.registerListeners.call(this);
-    jQuery(this.doc).bind("mouseover", function (event) {
+    jQuery(this.doc).bind("mouseover", event => {
       that.handleMouseover(event);
     });
-    jQuery(this.doc).bind("mouseout", function (event) {
+    jQuery(this.doc).bind("mouseout", event => {
       that.handleMouseout(event);
     });
   };
 
   return InteractionObj;
-}());
+})());
 
 export default Interaction;

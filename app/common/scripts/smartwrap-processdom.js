@@ -47,7 +47,7 @@ function processDOM(sw ,doc, target) {
 
   this.docs.push(doc);
 
-  jQuery(doc).bind("mouseover", function (event) {
+  jQuery(doc).bind("mouseover", event => {
     const tgt = event.target;
 
     if (that.decommissioned) {
@@ -85,7 +85,7 @@ function processDOM(sw ,doc, target) {
     }
   });
 
-  jQuery(doc).bind("sw_dragstart", function (event) {
+  jQuery(doc).bind("sw_dragstart", event => {
     //alert("DRAGGY");
     doc.getSelection().removeAllRanges();
   });
@@ -97,46 +97,46 @@ function processDOM(sw ,doc, target) {
     }
   }
 
-  const boxer = function (dragIndicator) {
+  const boxer = (dragIndicator => {
     if (dragIndicator === "BLUEBOX") {
       return Object.create(Interaction.BoxIndicator).init({
-        doc: doc,
+        doc,
         smartwrap: that
       });
     }
 
     return null;
-  }(that.getSetting("dragIndicator"));
+  })(that.getSetting("dragIndicator"));
 
   if (boxer) {
     boxer.registerListeners();
     //that.log({boxing: doc.documentURI});
   }
 
-  const selector = function (dragSelector) {
+  const selector = (dragSelector => {
     if (dragSelector === "CLICK") {
       return Object.create(Interaction.ClickSelector).init({
-        doc: doc,
+        doc,
         smartwrap: that,
         logger: that
       });
     }
     if (dragSelector === "HOVER") {
       return Object.create(Interaction.HoverSelector).init({
-        doc: doc,
+        doc,
         smartwrap: that,
         logger: that
       });
     }
     if (dragSelector === "TEXTSELECT") {
       return Object.create(Interaction.SelectTextSelector).init({
-        doc: doc,
+        doc,
         smartwrap: that,
         logger: that
       });
     }
     return null;
-  }(that.getSetting("dragSelector"));
+  })(that.getSetting("dragSelector"));
 
   if (selector) {
     selector.registerListeners();
@@ -145,14 +145,14 @@ function processDOM(sw ,doc, target) {
 
   //that.log({SELECTOR: that.getSetting("dragSelector")});
 
-  jQuery(doc).bind("click", function (event) {
+  jQuery(doc).bind("click", event => {
     const tgt = event.target;
     if (jQuery(tgt).parents().is("a")) {
       //alert("CLICKY");
     }
   });
 
-  jQuery(doc).bind("click dragstart mousedown mouseup", function (event) {
+  jQuery(doc).bind("click dragstart mousedown mouseup", event => {
     const tgt = event.target;
     const type = event.type;
 
@@ -196,10 +196,10 @@ function processDOM(sw ,doc, target) {
   //marker.init(doc, markParams);
 
   const marker = new DocumentMarker({
-    doc: doc,
+    doc,
     params: markParams
   });
-  window.setTimeout(function () {
+  window.setTimeout(() => {
     marker.mark();
   }, 10);
   //marker.mark();
@@ -207,7 +207,7 @@ function processDOM(sw ,doc, target) {
 
   //<editor-fold desc="yxl:ifFalseCode">
   if (false) {
-    jQuery(doc).bind("dragstart", function (event) {
+    jQuery(doc).bind("dragstart", event => {
       const tgt = event.target;
 
       if (true) {
