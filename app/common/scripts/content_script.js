@@ -98,9 +98,9 @@ function onReady() {
       HASBODY: !!detail.document.body,
       HASDOC: !!detail.target.ownerDocument
     });
-    var evt = frame.createEvent("CustomEvent");
+    var evt = document.createEvent("CustomEvent");
     evt.initCustomEvent("sw_targetdocument", true, false, detail);
-    frame.dispatchEvent(evt);
+    document.dispatchEvent(evt);
     console.log("checkload ends");
 
   };
