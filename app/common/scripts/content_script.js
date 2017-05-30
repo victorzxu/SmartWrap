@@ -90,9 +90,8 @@ function onReady() {
 
     var evt = document.createEvent("CustomEvent");
     evt.initCustomEvent("sw_targetdocument", true, false, detail);
-    if (browser && browser.contentDocument) {
-      browser.contentDocument.dispatchEvent(evt);
-    }
+
+      document.dispatchEvent(evt);
   };
 
   jQuery(document).bind("DOMContentLoaded mouseover load", function (event) {
