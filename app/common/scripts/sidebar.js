@@ -11,6 +11,10 @@ let frame;
 
 class App extends React.Component {
 
+  componentDidMount() {
+    console.log('w3r43wnds');
+  }
+
   render() {
 
     const divStyle = {

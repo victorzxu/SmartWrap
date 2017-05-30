@@ -6,7 +6,7 @@ import jQuery from "jquery";
 import {Smartwrap} from './smartwrap';
 import prefutil from "./prefutil";
 import main from './sidebar';
-import swp from './smartwrap-page';
+// import swp from './smartwrap-page';
 
 
 

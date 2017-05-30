@@ -29,8 +29,8 @@ import bow from 'bows';
 
 const log = bow('page');
 
-
-$(swp);
+console.log('sdfds213');
+$(()=>{setTimeout(swp, 10000)});
 
 function swp () {
   log(document);
