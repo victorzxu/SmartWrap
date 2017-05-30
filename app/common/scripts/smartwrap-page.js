@@ -29,7 +29,11 @@ import bow from 'bows';
 
 const log = bow('page');
 
-jQuery(document).ready(function () {
+
+$(swp);
+
+function swp () {
+  log(document);
   var getFirstTime = browser.storage.local.get("isFirstTime");
   getFirstTime.then(
     item => {
@@ -1430,4 +1434,6 @@ jQuery(document).ready(function () {
     exportButton.button("option", "disabled", false);
   });
 
-});
+}
+
+export default swp;
