@@ -95,7 +95,7 @@ const prefutil = (function () {
     browser.storage.local.get(spec.key)
     return res;
   }
-  pu.initPref = function () {
+  pu.initPref = function (details) {
     console.log("initPref");
     const initOptions = {
       pref_permicon: true,
@@ -109,7 +109,6 @@ const prefutil = (function () {
       developermode: false,
       onDropManyColumns: false,
       paintCells: true,
-      algorithm:"PREFIX",
       paintRowRanges: false,
       paintRowContainers: false,
       paintTableRanges: true,
@@ -129,7 +128,7 @@ const prefutil = (function () {
       annotationTemplate: "{tempDir}{easy_url}",
       annotationDependency: "GLOBAL",
       globalDependencyPrefix: "http://www.cs.cmu.edu/~sgardine/mixer/smartwrap/",
-      showAuxiliaryTables: false,
+      showAuxiliaryTables: false,    
     }
     browser.storage.local.set(initOptions);
   }

@@ -7,12 +7,16 @@ import {Smartwrap} from './smartwrap';
 import prefutil from "./prefutil";
 const $ = jQuery;
 
+browser.runtime.onInstalled.addListener(prefutil.initPref);
 onReady();
 
 
 function onReady() {
 
   console.log('content_script!');
+
+
+
   function checkLoad(event, detail) {
     if (!detail) {
       detail = {};
