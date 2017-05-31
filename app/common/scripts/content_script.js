@@ -21,15 +21,10 @@ main(onReady);
 
 function onReady() {
   const frame = $('#yxl_sidebar');
-  console.log("frame");
-  console.log(frame);
   console.log('content_script!');
 
   frame.find('iframe').on('load',()=>{
-    console.log("in callback");
     function checkLoad(event, detail) {
-      console.log('checkLoad start');
-      console.log('reaches here');
       if (!detail) {
         detail = {};
 
@@ -106,9 +101,6 @@ function onReady() {
       var evt = document.createEvent("CustomEvent");
       evt.initCustomEvent("sw_targetdocument", true, false, detail);
       document.dispatchEvent(evt);
-      console.log("checkload ends");
-      // swp();
-
     };
 
     jQuery(frame).bind("DOMContentLoaded mouseover load", event => {

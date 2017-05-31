@@ -29,8 +29,7 @@ import bow from 'bows';
 
 const log = bow('page');
 
-console.log('sdfds213');
-$(()=>{setTimeout(swp, 10000)});
+$(()=>{setTimeout(swp, 0)});
 
 function swp () {
   log(document);
@@ -365,11 +364,15 @@ function swp () {
   });
 
   jQuery("#smarttables").on("click", ".ui-icon-close", event => {
+    console.log("close clicked");
+
     const target = event.target;
     const tab = target.parentNode;
     const href = jQuery(tab).find("a").get(0).getAttribute("refid");
     //alert("HI: " + new XMLSerializer().serializeToString(tab) + ":: " + href);
-    swTabs.tabs("remove", href);
+    console.log(tab);
+    tab.remove();
+    swTabs.tabs("refresh");
   });
   sw.init({
     "table0": st0.get(0).id

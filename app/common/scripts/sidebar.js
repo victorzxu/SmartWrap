@@ -12,7 +12,7 @@ let frame;
 class App extends React.Component {
 
   componentDidMount() {
-    console.log('w3r43wnds');
+    console.log('mounted');
   }
 
   render() {
@@ -40,7 +40,6 @@ function main(cb) {
     if (Frame.isReady()) {
       Frame.toggle();
     } else {
-      console.log('!!!!!');
       boot(cb);
     }
 
@@ -54,7 +53,6 @@ function boot(cb) {
 
   ReactDOM.render(<App />, root, ()=>{
     "use strict";
-    console.log('?????');
     cb();
   });
 }

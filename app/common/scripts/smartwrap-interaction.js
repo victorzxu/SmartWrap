@@ -75,6 +75,7 @@ const Interaction = ((() => {
       return this;
     },
     handleMouseover(event) {
+      console.log("mouseOver");
       const tgt = event.target;
 
       if (this.doc !== tgt.ownerDocument) {
@@ -173,6 +174,7 @@ const Interaction = ((() => {
        */
     },
     handleMouseout(event) {
+      console.log("mouseOut");
       const tgt = event.target;
 
       if (this.doc !== tgt.ownerDocument) {
@@ -207,6 +209,7 @@ const Interaction = ((() => {
       return this;
     },
     handleDragend(event) {
+      console.log("dragEnd");
       const tgt = event.target;
 
       if (this.doc !== tgt.ownerDocument) {
@@ -266,9 +269,11 @@ const Interaction = ((() => {
     registerListeners() {
       const that = this;
       jQuery(this.doc).bind("dragstart", event => {
+        console.log("dragstart");
         that.handleDragstart(event);
       });
       jQuery(this.doc).bind("dragend", event => {
+        console.log("dragend");
         that.handleDragend(event);
       });
     }
