@@ -370,7 +370,6 @@ function swp () {
     const tab = target.parentNode;
     const href = jQuery(tab).find("a").get(0).getAttribute("refid");
     //alert("HI: " + new XMLSerializer().serializeToString(tab) + ":: " + href);
-    console.log(tab);
     tab.remove();
     swTabs.tabs("refresh");
   });
@@ -482,7 +481,6 @@ function swp () {
 
   jQuery(document).bind("sw_targetdocument", event => {
     const detail = event.originalEvent && event.originalEvent.detail;
-
     if (detail && detail.document) {
       log('processDOM');
       processDOM(sw,detail.document, detail.target);

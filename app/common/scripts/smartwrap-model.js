@@ -682,9 +682,10 @@ Smartwrap.newTableModel = spec => {
       return out;
     },
     setCellField(rowid, colid, key, value, params) {
-      let cellObj = rows[rowid]
-        [
-        colid];
+      console.log(rows);
+      console.log(rowid);
+      console.log(colid);
+      let cellObj = rows[rowid][colid];
       if (!cellObj) {
         cellObj = {
           cellid: this.getUID("CELL", this.uidwidth)
