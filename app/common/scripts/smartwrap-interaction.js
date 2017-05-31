@@ -219,6 +219,7 @@ const Interaction = ((() => {
       //}
     },
     handleDragstart(event) {
+      console.log("dragStart");
       const tgt = event.target;
       const i = 0;
       let df;
