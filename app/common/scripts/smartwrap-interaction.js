@@ -208,14 +208,23 @@ const Interaction = ((() => {
 
       return this;
     },
+    handleDrop(event) {
+      console.log("drop");
+      event.preventDefault();
+      const data  = event.dataTransfer.getData("test/uri-list");
+      console.log(data);
+    },
     handleDragend(event) {
       console.log("dragEnd");
       const tgt = event.target;
 
-      if (this.doc !== tgt.ownerDocument) {
+      const data = dropevent.dataTransfer.getData("text/uri-list");
+      console.log(data);
+      //ZD:COMMENTED out since the document should be different NOW
+      //if (this.doc !== tgt.ownerDocument) {
         // can ignore mouse/over from other documents
-        return;
-      }
+        //return;
+      //}
 
       //if (log) {
       //  log("...DRRAG");
@@ -276,6 +285,7 @@ const Interaction = ((() => {
         console.log("dragend");
         that.handleDragend(event);
       });
+      this.doc.addEventListener("drop",this.handleDrop(event));
     }
   };
 

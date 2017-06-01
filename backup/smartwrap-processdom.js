@@ -155,10 +155,10 @@ jQuery(document).ready(function () {
     const tgt = event.target;
     const type = event.type;
 
-    if (document !== tgt.ownerDocument) {
-      //alert("SKIP!!");
-      return;
-    }
+    // if (document !== tgt.ownerDocument) {
+    //   //alert("SKIP!!");
+    //   return;
+    // }
 
     //that.log({
     //  happened: type,

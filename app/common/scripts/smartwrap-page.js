@@ -29,10 +29,10 @@ import bow from 'bows';
 
 const log = bow('page');
 
-$(()=>{setTimeout(swp, 0)});
+ $(()=>{setTimeout(swp, 0)});
+
 
 function swp () {
-  log(document);
   var getFirstTime = browser.storage.local.get("isFirstTime");
   getFirstTime.then(
     item => {
@@ -50,6 +50,7 @@ function swp () {
     }
   );
   console.log("We're in!");
+
   //window.scrollbars.visible = false;
   // added this line per
   //http://old.nabble.com/Re%3A-Disable-scrollbars-in-browser-control-within-XUL-application-p5112444.html
@@ -57,6 +58,8 @@ function swp () {
   // div
 
   //this is in the sidebar
+  console.log(document);
+
   $("#smarttables").resizable({
     animate: true,
     grid: [50, 5],
@@ -567,6 +570,7 @@ function swp () {
   jQuery(document).bind("sw_dragstart", event => {
     //sw.log("HTMLDRAGSTART!");
     const detail = event.originalEvent && event.originalEvent.detail;
+    console.log(detail);
     sw.dragDetail = detail;
   });
 

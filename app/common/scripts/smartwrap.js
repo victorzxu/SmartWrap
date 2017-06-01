@@ -525,8 +525,7 @@ let Smartwrap = ((() => {
         DRAGGEDELT: new XMLSerializer().serializeToString(draggedElt),
         DRAGGEDRANGE: draggedRange && draggedRange.toString()
       });
-
-      const dragDetail = {};
+      var dragDetail = {};
 
       if (draggedRange) {
         dragDetail.text = draggedRange.toString();
@@ -630,19 +629,23 @@ let Smartwrap = ((() => {
             listener = event => {
 
               const dropTarget = event && event.target;
-
-              const dragDetail = that.dragDetail;
+              var dragDetail = that.dragDetail;
+              if (typeof dragDetail == 'undefined') {
+                dragDetail = {
+                  'target' : event.target,
+                  'dragstartEvent' : event,
+                }
+              }
               //that.log("DROP:" + JSON.stringify(Object.keys(dragDetail)));
 
               event.preventDefault();
-
+              console.log(typeof dragDetail == 'undefined');
               that.handleDrop(dragDetail, dropTarget);
 
-              that.log("DROPPED!!");
+              console.log("DROPPED!!");
             };
             break;
           case "dragstart":
-          log('return listener');
             listener = event => {
               log('dragstart');
               //alert("ITDRAG!");
@@ -665,7 +668,14 @@ let Smartwrap = ((() => {
               const eventName = event.type;
 
 
-              const dragDetail = that.dragDetail;
+              var dragDetail = that.dragDetail;
+              if (typeof dragDetail == 'undefined') {
+                dragDetail = {
+                  'target' : event.target,
+                  'dragstartEvent' : event,
+                }
+              }
+
               //alert("DRag DETAIL: " + JSON.stringify(dragDetail));
 
               if (that.framedElt) {
@@ -1799,14 +1809,12 @@ let Smartwrap = ((() => {
       continuation.call();
     },
     setContainer(container) {
-      log('setContainer');
       const that = this;
 
       const events = ["drop", "dragenter", "dragover", "dragleave", "dragstart", "dblclick", "contextmenu", "click", "sw_autodrop"];
 
       if (container) {
         this.container = container;
-        log('p3');
         log(container);
         events.forEach(eventName => {
           that.container.addEventListener(eventName, that.getHandler(eventName), true);

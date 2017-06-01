@@ -257,6 +257,7 @@ Smartwrap.SmartTable = ((() => {
         };
 
         tuple.absoluteLocationXPath = xpath;
+        //tuple.absoluteLocationXPath = dropevent.dataTransfer.getData("text/uri-list");
         tuple.style = dragTargets["deep"].style;
         tuple.facsimile = {
           orig: jQuery(intendedElt).clone()
