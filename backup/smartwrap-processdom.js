@@ -239,6 +239,7 @@ jQuery(document).ready(function () {
         detail.metadata.absoluteLocationXPath = Smartwrap.getAbsoluteLocationXPath(event.target, false);
 
         const evt = document.createEvent("CustomEvent");
+        console.log("240");
         evt.initCustomEvent("sw_dragstart", true, true, detail);
         document.dispatchEvent(evt);
       }

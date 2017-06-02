@@ -33,6 +33,8 @@ const log = bow('page');
 
 
 function swp () {
+
+  console.log(window);
   var getFirstTime = browser.storage.local.get("isFirstTime");
   getFirstTime.then(
     item => {
@@ -50,15 +52,12 @@ function swp () {
     }
   );
   console.log("We're in!");
-
   //window.scrollbars.visible = false;
   // added this line per
   //http://old.nabble.com/Re%3A-Disable-scrollbars-in-browser-control-within-XUL-application-p5112444.html
   // since the browser now scrolls for itself in the #smarttables
   // div
 
-  //this is in the sidebar
-  console.log(document);
 
   $("#smarttables").resizable({
     animate: true,
@@ -74,6 +73,15 @@ function swp () {
   });
 
   const sw = Object.create(Smartwrap);
+  function useMessage(event) {
+    console.log("get message");
+    console.log(JSON.parse(event.data));
+    const detail = JSON.parse(event.data);
+
+    sw.dragDetail = detail;
+
+  }
+  window.addEventListener("message",useMessage,false);
 
   sw.contextmenu = jQuery("ul#smartwrap_contextmenu");
   sw.contextmenu.menu({
@@ -570,10 +578,9 @@ function swp () {
   jQuery(document).bind("sw_dragstart", event => {
     //sw.log("HTMLDRAGSTART!");
     const detail = event.originalEvent && event.originalEvent.detail;
-    console.log(detail);
+    console.log('got sw_dragstart');
     sw.dragDetail = detail;
   });
-
   let body;
   //TODO: ZD:Check Needed
   prefutil.observeSetting("buttonstyle", function(spec) {

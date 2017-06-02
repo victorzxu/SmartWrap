@@ -240,6 +240,7 @@ function processDOM(sw ,doc, target) {
         detail.metadata.absoluteLocationXPath = Smartwrap.getAbsoluteLocationXPath(event.target, false);
 
         const evt = document.createEvent("CustomEvent");
+        console.log("in processdom");
         evt.initCustomEvent("sw_dragstart", true, true, detail);
         doc.dispatchEvent(evt);
       }

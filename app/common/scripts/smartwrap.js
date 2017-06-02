@@ -634,6 +634,7 @@ let Smartwrap = ((() => {
                 dragDetail = {
                   'target' : event.target,
                   'dragstartEvent' : event,
+                  'text': 'text'
                 }
               }
               //that.log("DROP:" + JSON.stringify(Object.keys(dragDetail)));
@@ -673,6 +674,7 @@ let Smartwrap = ((() => {
                 dragDetail = {
                   'target' : event.target,
                   'dragstartEvent' : event,
+                  'text' : 'text',
                 }
               }
 

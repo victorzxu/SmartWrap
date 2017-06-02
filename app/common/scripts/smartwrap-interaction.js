@@ -270,6 +270,7 @@ const Interaction = ((() => {
       //tgt.ownerDocument.defaultView.alert("DRRAG:" + tgt.ownerDocument.defaultView.location.href);
 
       const evt = document.createEvent("CustomEvent");
+      console.log("in interaction");
       evt.initCustomEvent("sw_dragstart", true, true, detail);
       this.doc.dispatchEvent(evt);
 

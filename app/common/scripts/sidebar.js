@@ -25,8 +25,7 @@ class App extends React.Component {
     return (
       <div style={divStyle}
           id="yxl_sidebar">
-          <h1> LOADED </h1>
-        <Frame url={chrome.extension.getURL("pages/smartwrap.html")}/>
+        <Frame id = "my_iframe" url={chrome.extension.getURL("pages/smartwrap.html")}/>
       </div>
     );
   }
