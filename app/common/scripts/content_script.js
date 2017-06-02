@@ -26,16 +26,16 @@ function onReady() {
 
   const frame = $('#yxl_sidebar');
   console.log('content_script!');
-  var iframedoc = browser.extension.getURL("pages/smartwrap.html");
 
   jQuery(document).bind("dragstart", event => {
     console.log("dragStart");
-    console.log(event);
     const iframe  = $('iframe');
     const tgt = event.target;
-    var iframedoc = browser.extension.getURL("pages/smartwrap.html");
     var detail = {};
-    detail.dragstartEvent = event;
+    var dragstartEvent = {
+      'target' : tgt,
+    }
+    detail.dragstartEvent = dragstartEvent;
     detail.metadata = {}; // TODO: recreate getDragData();
     const text = 'Smartwrap.getVisibleText(tgt)';
     //event.originalEvent.dataTransfer.setData("text/plain", text);
@@ -44,10 +44,8 @@ function onReady() {
     detail.metadata.url = event.target.ownerDocument.defaultView.location.href;
     detail.metadata.title = event.target.ownerDocument.title;
     detail.target = tgt;
-    console.log("start posting");
     console.log(detail);
     $('.css-b6en4a')[0].contentWindow.postMessage(JSON.stringify(detail),'*');
-    console.log("end posting");
 
   });
   frame.find('iframe').on('load',()=>{

@@ -521,10 +521,10 @@ let Smartwrap = ((() => {
       const draggedElt = jQuery(rawdrag.dragstartEvent.target).get(0);
       const draggedRange = rawdrag.draggedRange;
 
-      this.log({
-        DRAGGEDELT: new XMLSerializer().serializeToString(draggedElt),
-        DRAGGEDRANGE: draggedRange && draggedRange.toString()
-      });
+      // this.log({
+      //   DRAGGEDELT: new XMLSerializer().serializeToString(draggedElt),
+      //   DRAGGEDRANGE: draggedRange && draggedRange.toString()
+      // });
       var dragDetail = {};
 
       if (draggedRange) {
