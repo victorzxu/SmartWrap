@@ -119,10 +119,10 @@ Smartwrap.SmartTable = ((() => {
       //dragInterp.logger = this.smartwrap;
       const draggedYield = dragInterp.getYield(jQuery(draggedElt));
 
-      this.smartwrap.log({
-        yield: draggedYield,
-        map: dragInterp.yieldmap
-      });
+      // this.smartwrap.log({
+      //   yield: draggedYield,
+      //   map: dragInterp.yieldmap
+      // });
       //alert("SHALLOWEST AROUND: " + draggedYield);
 
       out.deep = {

@@ -6,6 +6,7 @@ import jQuery from "jquery";
 import {Smartwrap} from './smartwrap';
 import prefutil from "./prefutil";
 import main from './sidebar';
+import "./smartwrap-smarttable";
 // import Interaction from './smartwrap-interaction';
 //
 // import swp from './smartwrap-page';
@@ -21,7 +22,6 @@ const log = bow('content_script');
 
 main(onReady);
 
-
 function onReady() {
 
   const frame = $('#yxl_sidebar');
@@ -31,16 +31,20 @@ function onReady() {
     console.log("dragStart");
     const iframe  = $('iframe');
     const tgt = event.target;
+    console.log(tgt);
     var detail = {
       'dragstartEvent' : {
-        
+
       },
       'metadata':{
         'text' : "testtext",
         'url' : event.target.ownerDocument.defaultView.location.href,
         'title': event.target.ownerDocument.title,
-      }
+      },
+      'intratable' : true,
+      'out' : Smartwrap.SmartTable.interpretDrag($(event.target).get(0)),
     };
+
     console.log(detail);
     $('.css-b6en4a')[0].contentWindow.postMessage(detail,'*');
 
