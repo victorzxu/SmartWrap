@@ -531,10 +531,10 @@ let Smartwrap = ((() => {
         dragDetail.text = draggedRange.toString();
       } else {
         const text = this.getVisibleText(draggedElt);
-        this.log({
-          VIZTEXT: text,
-          FULLTEXT: jQuery(draggedElt).text()
-        });
+        // this.log({
+        //   VIZTEXT: text,
+        //   FULLTEXT: jQuery(draggedElt).text()
+        // });
         if (text.match(/\S/)) {
           dragDetail.text = text;
         }
