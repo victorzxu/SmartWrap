@@ -29,12 +29,10 @@ import bow from 'bows';
 
 const log = bow('page');
 
- $(()=>{setTimeout(swp, 0)});
+
 
 
 function swp () {
-
-  console.log(window);
   var getFirstTime = browser.storage.local.get("isFirstTime");
   getFirstTime.then(
     item => {

@@ -28,7 +28,8 @@
   "default_locale":"en",
 
   "web_accessible_resources": [
-    "pages/smartwrap.html"
+    "pages/smartwrap.html",
+        "pages/smartwrap-inject.html"
   ],
 
   "options_ui": {

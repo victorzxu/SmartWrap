@@ -8,7 +8,7 @@ import prefutil from "./prefutil";
 import main from './sidebar';
 // import Interaction from './smartwrap-interaction';
 //
-// import swp from './smartwrap-page';
+import swp from './smartwrap-page';
 
 
 
@@ -23,6 +23,7 @@ main(onReady);
 
 
 function onReady() {
+   //$(()=>{setTimeout(swp, 0)});
 
   const frame = $('#yxl_sidebar');
   console.log('content_script!');
