@@ -6,6 +6,7 @@ import jQuery from "jquery";
 import {Smartwrap} from './smartwrap';
 import prefutil from "./prefutil";
 import main from './sidebar';
+import "./smartwrap-smarttable";
 // import Interaction from './smartwrap-interaction';
 //
 import swp from './smartwrap-page';
@@ -21,7 +22,6 @@ const log = bow('content_script');
 
 main(onReady);
 
-
 function onReady() {
    //$(()=>{setTimeout(swp, 0)});
 
@@ -32,21 +32,22 @@ function onReady() {
     console.log("dragStart");
     const iframe  = $('iframe');
     const tgt = event.target;
-    var detail = {};
-    var dragstartEvent = {
-      'target' : tgt,
-    }
-    detail.dragstartEvent = dragstartEvent;
-    detail.metadata = {}; // TODO: recreate getDragData();
-    const text = 'Smartwrap.getVisibleText(tgt)';
-    //event.originalEvent.dataTransfer.setData("text/plain", text);
-    detail.metadata.text = text;
-    event.originalEvent.stopPropagation();
-    detail.metadata.url = event.target.ownerDocument.defaultView.location.href;
-    detail.metadata.title = event.target.ownerDocument.title;
-    detail.target = tgt;
+    console.log(tgt);
+    var detail = {
+      'dragstartEvent' : {
+
+      },
+      'metadata':{
+        'text' : "testtext",
+        'url' : event.target.ownerDocument.defaultView.location.href,
+        'title': event.target.ownerDocument.title,
+      },
+      'intratable' : true,
+      'out' : Smartwrap.SmartTable.interpretDrag($(event.target).get(0)),
+    };
+
     console.log(detail);
-    $('.css-b6en4a')[0].contentWindow.postMessage(JSON.stringify(detail),'*');
+    $('.css-b6en4a')[0].contentWindow.postMessage(detail,'*');
 
   });
   frame.find('iframe').on('load',()=>{

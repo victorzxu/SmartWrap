@@ -518,7 +518,7 @@ let Smartwrap = ((() => {
 
       const st = this.tables[coords.tableid];
 
-      const draggedElt = jQuery(rawdrag.dragstartEvent.target).get(0);
+      // const draggedElt = jQuery(rawdrag.dragstartEvent.target).get(0);
       const draggedRange = rawdrag.draggedRange;
 
       // this.log({
@@ -531,16 +531,16 @@ let Smartwrap = ((() => {
         dragDetail.text = draggedRange.toString();
       } else {
         const text = this.getVisibleText(draggedElt);
-        this.log({
-          VIZTEXT: text,
-          FULLTEXT: jQuery(draggedElt).text()
-        });
+        // this.log({
+        //   VIZTEXT: text,
+        //   FULLTEXT: jQuery(draggedElt).text()
+        // });
         if (text.match(/\S/)) {
           dragDetail.text = text;
         }
       }
-      dragDetail.draggedElt = draggedElt;
-      dragDetail.srcurl = draggedElt.ownerDocument.defaultView.location.href;
+      //dragDetail.draggedElt = draggedElt;
+      dragDetail.srcurl = rawdrag.metadata.url;
 
       if (rawdrag.intratable) {
         this.log({
