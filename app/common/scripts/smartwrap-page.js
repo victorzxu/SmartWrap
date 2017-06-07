@@ -33,18 +33,12 @@ const log = bow('page');
 
 
 function swp () {
-
-  console.log(window);
   var getFirstTime = browser.storage.local.get("isFirstTime");
   getFirstTime.then(
     item => {
       if (Object.keys(item).length === 0) {
-        console.log("first time");
         prefutil.initPref();
         browser.storage.local.set({isFirstTime:false});
-      }
-      else {
-        console.log("not first time");
       }
     },
     error => {

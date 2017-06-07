@@ -26,10 +26,21 @@ function onReady() {
 
   const frame = $('#yxl_sidebar');
   console.log('content_script!');
-
   jQuery(document).bind("dragstart", event => {
     console.log("dragStart");
     const iframe  = $('iframe');
+    console.log(iframe[1].contentWindow);
+    const framedoc = iframe[1].contentWindow;
+    console.log(framedoc.document);
+    var doc = framedoc.document;
+    var aChild = document.createElement("div");
+    aChild.innerHTML = "<h1>TESTING</h1>";
+    aChild.setAttribute("id","achild");
+    doc.body.appendChild(aChild);
+    var st = doc.getElementById("smarttable0");
+    st.innerHTML = "<h1>changed</h1>";
+
+    framedoc.addEventListener("drop",function () {console.log("DROPDROPDROP");});
     const tgt = event.target;
     var detail = {};
     var dragstartEvent = {

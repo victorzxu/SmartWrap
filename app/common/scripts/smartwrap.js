@@ -494,7 +494,7 @@ let Smartwrap = ((() => {
 
       return coords;
     },
-    handleDrop(rawdrag, dropTarget) {
+    handleDrop(rawdrag, dropTarget) {x
 
       var that = this;
 
