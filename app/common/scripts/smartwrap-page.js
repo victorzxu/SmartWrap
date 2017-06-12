@@ -34,7 +34,6 @@ const log = bow('page');
 
 function swp () {
 
-  console.log(window);
   var getFirstTime = browser.storage.local.get("isFirstTime");
   getFirstTime.then(
     item => {
@@ -75,8 +74,8 @@ function swp () {
   const sw = Object.create(Smartwrap);
   function useMessage(event) {
     console.log("get message");
-    console.log(JSON.parse(event.data));
-    const detail = JSON.parse(event.data);
+    console.log(event);
+    const detail = event.data;
 
     sw.dragDetail = detail;
 

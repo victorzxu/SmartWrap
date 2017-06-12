@@ -1956,6 +1956,10 @@ doctrine@^2.0.0:
     esutils "^2.0.2"
     isarray "^1.0.0"
 
+dojo@^1.12.2:
+  version "1.12.2"
+  resolved "https://registry.yarnpkg.com/dojo/-/dojo-1.12.2.tgz#64a863d0c28b6318656cfd8a8fd5748b07aa4fda"
+
 domain-browser@^1.1.1:
   version "1.1.7"
   resolved "https://registry.yarnpkg.com/domain-browser/-/domain-browser-1.1.7.tgz#867aa4b093faa05f1de08c06f4d7b21fdf8698bc"
