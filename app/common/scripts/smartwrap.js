@@ -1540,25 +1540,26 @@ let Smartwrap = ((() => {
 
         interp.addEventListener("endTable", params => {
           //alert("ENDTABLE: " + tableid);
-          if (tablerange) {
-            if (interp.getSetting("paintTableContainers")) {
-              //alert("PAINTCONT");
-              const tableelt = tablerange.commonAncestorContainer;
-              jQuery(tableelt).addClass("sw_injected_table");
-
-              const eltbox = paintRowBox(tableelt.getBoundingClientRect(), {
-                templateName: "sw_tablebox",
-                className: tableid
-              });
-              //alert("PAINTELT: " + new XMLSerializer().serializeToString(eltbox));
-            }
-            if (interp.getSetting("paintTableRanges")) {
-              const rangebox = paintRowBox(tablerange.getBoundingClientRect(), {
-                templateName: "sw_tablebox",
-                className: tableid
-              });
-            }
-          }
+          //TODO: Uncomment this.
+          // if (tablerange) {
+          //   if (interp.getSetting("paintTableContainers")) {
+          //     //alert("PAINTCONT");
+          //     const tableelt = tablerange.commonAncestorContainer;
+          //     jQuery(tableelt).addClass("sw_injected_table");
+          //     console.log(tablerange);
+          //     const eltbox = paintRowBox(tableelt.getBoundingClientRect(), {
+          //       templateName: "sw_tablebox",
+          //       className: tableid
+          //     });
+          //     //alert("PAINTELT: " + new XMLSerializer().serializeToString(eltbox));
+          //   }
+          //   if (interp.getSetting("paintTableRanges")) {
+          //     const rangebox = paintRowBox(tablerange.getBoundingClientRect(), {
+          //       templateName: "sw_tablebox",
+          //       className: tableid
+          //     });
+          //   }
+          // }
           tablerange = null;
         });
 
