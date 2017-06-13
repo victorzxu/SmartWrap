@@ -7,6 +7,7 @@ import {Smartwrap} from './smartwrap';
 import prefutil from "./prefutil";
 import main from './sidebar';
 import {smartwrapNamespace} from "./smarttable-header";
+import processDOM from "./smartwrap-processdom";
 // import Interaction from './smartwrap-interaction';
 //
 // import swp from './smartwrap-page';
@@ -46,6 +47,16 @@ function handleSwInjectedCell (event) {
     dragTarget.setAttributeNS(smartwrapNamespace, "rowid", event.detail.rowid);
   }
 }
+function handleMouseout(event) {
+  event.target.removeAttribute("style","background-color: red");
+  event.target.style.outline = "none";
+}
+function blueboxMouseover (event) {
+  console.log("mouse over detected");
+  event.target.setAttribute("style","background-color: red");
+  event.target.style.outline = "thick solid #0000FF";
+  event.target.addEventListener("mouseout",handleMouseout);
+}
 
 function onReady() {
   window.addEventListener('message',onReceiveMessage,false);
@@ -75,6 +86,7 @@ function onReady() {
     $('.css-b6en4a')[0].contentWindow.postMessage(detail,'*');
 
   });
+  jQuery(document).bind("mouseover",blueboxMouseover);
   frame.find('iframe').on('load',()=>{
     function checkLoad(event, detail) {
       if (!detail) {
