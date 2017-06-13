@@ -345,6 +345,7 @@ const Interaction = ((() => {
     }
 
     this.selectedElt = tgt;
+    console.log(tgt);
     jQuery(this.selectedElt).addClass("sw_selected");
     InteractionObj.enableDragging(this.selectedElt);
     //this.selectedElt.draggable = true;

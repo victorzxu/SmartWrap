@@ -507,6 +507,9 @@ let Smartwrap = ((() => {
       const table = jQuery(dropTarget).parents(".smarttable").get(0);
 
       const coords = this.getCoords(dropTarget);
+      var attDetail = jQuery.extend(true,{},coords);
+      attDetail.eventName = "sw_injected_cell";
+      parent.postMessage(attDetail,'*');
 
       /*
        coords.tableid = (idBearer && idBearer.getAttributeNS(smartwrapNamespace, "tableid")) || table.id;

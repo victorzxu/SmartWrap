@@ -6,6 +6,7 @@ import jQuery from "jquery";
 import {Smartwrap} from './smartwrap';
 import prefutil from "./prefutil";
 import main from './sidebar';
+import {smartwrapNamespace} from "./smarttable-header";
 // import Interaction from './smartwrap-interaction';
 //
 // import swp from './smartwrap-page';
@@ -18,21 +19,46 @@ const $ = jQuery;
 localStorage.debug = true;
 import bow from 'bows';
 const log = bow('content_script');
+var dragTarget;
 
 main(onReady);
 
 
-function onReady() {
+function onReceiveMessage(event){
+  console.log("cs received message!");
+  var eEvent;
+  // console.log(event.data);
+  // console.log(dragTarget);
+  eEvent = new CustomEvent(event.data.eventName,{detail: event.data});
+  document.dispatchEvent(eEvent);
 
+
+}
+
+function handleSwInjectedCell (event) {
+  dragTarget.classList.add("sw_injected_cell");
+  console.log(event.detail);
+  dragTarget.classList.add(event.detail.colid);
+
+  if (dragTarget.setAttributeNS) {
+    dragTarget.setAttributeNS(smartwrapNamespace, "tableid", event.detail.tableid);
+    dragTarget.setAttributeNS(smartwrapNamespace, "colid", event.detail.colid);
+    dragTarget.setAttributeNS(smartwrapNamespace, "rowid", event.detail.rowid);
+  }
+}
+
+function onReady() {
+  window.addEventListener('message',onReceiveMessage,false);
   const frame = $('#yxl_sidebar');
   console.log('content_script!');
   var iframedoc = browser.extension.getURL("pages/smartwrap.html");
   var XMLS = new XMLSerializer();
-
+  jQuery (document).bind("sw_injected_cell",handleSwInjectedCell);
   jQuery(document).bind("dragstart", event => {
     console.log("dragStart");
     const iframe  = $('iframe');
     const tgt = event.target;
+    dragTarget = tgt;
     var iframedoc = browser.extension.getURL("pages/smartwrap.html");
     var detail = {};
     detail.dragstartEvent = {
@@ -46,10 +72,7 @@ function onReady() {
     detail.metadata.url = event.target.ownerDocument.defaultView.location.href;
     detail.metadata.title = event.target.ownerDocument.title;
     detail.target = XMLS.serializeToString(tgt);
-    console.log("start posting");
-    console.log(detail);
     $('.css-b6en4a')[0].contentWindow.postMessage(detail,'*');
-    console.log("end posting");
 
   });
   frame.find('iframe').on('load',()=>{
