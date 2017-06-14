@@ -69,7 +69,12 @@ function swp () {
       }, 0);
     },
   });
-
+  $("#swCloseButton").click(function () {
+    var sendDetail = {
+      'eventName': 'removeTab',
+    }
+    parent.postMessage(sendDetail,'*');
+  })
   const sw = Object.create(Smartwrap);
   function useMessage(event) {
     console.log("get message");

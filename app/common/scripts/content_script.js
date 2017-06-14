@@ -8,7 +8,7 @@ import prefutil from "./prefutil";
 import main from './sidebar';
 import {smartwrapNamespace} from "./smarttable-header";
 import processDOM from "./smartwrap-processdom";
-// import Interaction from './smartwrap-interaction';
+import Interaction from './smartwrap-interaction';
 //
 // import swp from './smartwrap-page';
 
@@ -26,10 +26,10 @@ main(onReady);
 
 
 function onReceiveMessage(event){
-  console.log("cs received message!");
   var eEvent;
   // console.log(event.data);
   // console.log(dragTarget);
+  con
   eEvent = new CustomEvent(event.data.eventName,{detail: event.data});
   document.dispatchEvent(eEvent);
 
@@ -47,16 +47,20 @@ function handleSwInjectedCell (event) {
     dragTarget.setAttributeNS(smartwrapNamespace, "rowid", event.detail.rowid);
   }
 }
-function handleMouseout(event) {
-  event.target.removeAttribute("style","background-color: red");
-  event.target.style.outline = "none";
+
+function handleRemoveTab (event) {
+  $('#yxl_sidebar').remove();
 }
-function blueboxMouseover (event) {
-  console.log("mouse over detected");
-  event.target.setAttribute("style","background-color: red");
-  event.target.style.outline = "thick solid #0000FF";
-  event.target.addEventListener("mouseout",handleMouseout);
-}
+// function handleMouseout(event) {
+//   event.target.removeAttribute("style","background-color: red");
+//   event.target.style.outline = "none";
+// }
+// function blueboxMouseover (event) {
+//   console.log("mouse over detected");
+//   event.target.setAttribute("style","background-color: red");
+//   event.target.style.outline = "thick solid #0000FF";
+//   event.target.addEventListener("mouseout",handleMouseout);
+// }
 
 function onReady() {
   window.addEventListener('message',onReceiveMessage,false);
@@ -86,7 +90,15 @@ function onReady() {
     $('.css-b6en4a')[0].contentWindow.postMessage(detail,'*');
 
   });
-  jQuery(document).bind("mouseover",blueboxMouseover);
+  console.log(prefutil.getPref('pref_dragindic'));
+  if (prefutil.getPref('pref_dragindic')=== "BLUEBOX") {
+    return Object.create(Interaction.BoxIndicator).init({
+      document,
+      smartwrap: this
+    });
+  }
+  // jQuery(document).bind("mouseover",blueboxMouseover);
+  document.addEventListener("removeTab",handleRemoveTab);
   frame.find('iframe').on('load',()=>{
     function checkLoad(event, detail) {
       if (!detail) {
