@@ -643,7 +643,6 @@ let Smartwrap = ((() => {
               //that.log("DROP:" + JSON.stringify(Object.keys(dragDetail)));
 
               event.preventDefault();
-              console.log(typeof dragDetail == 'undefined');
               that.handleDrop(dragDetail, dropTarget);
             };
             break;

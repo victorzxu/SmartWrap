@@ -558,7 +558,7 @@ const DocumentMarker = ((() => {
         //   "USEMETAKEYS": Object.keys(metadata)
         // });
         Object.keys(metadata).forEach(function(key) {
-          that.smartwrap[key] = metadata[key];
+          that.params.smartwrap[key] = metadata[key];
         });
 
         //alert("SETDOM: " + JSON.stringify({url: this.doc.defaultView.location.href, tgt: this.smartwrap.scrapeTarget}));
@@ -573,11 +573,10 @@ const DocumentMarker = ((() => {
 
         let detail = {};
 
-        //TODO: TEC - uncomment the following or fix by refactoring
-        // if (this.smartwrap) {
-        //   detail.smartwrap = this.smartwrap;
-        //   this.smartwrap.status.fresh = false;
-        // }
+        if (this.smartwrap) {
+          detail.smartwrap = this.smartwrap;
+          this.smartwrap.status.fresh = false;
+        }
 
         let evt = document.createEvent("CustomEvent");
         evt.initCustomEvent("sw_status", true, false, detail);
@@ -597,16 +596,17 @@ const DocumentMarker = ((() => {
           this.callbacks.finish.call(null, detail);
         }
       } catch (exception) {
-        this.logger.log({
-          exception: {
-            name: exception.name,
-            message: exception.message,
-            stack: exception.stack
-          },
-          context: "finish dom",
-          nodeCount: this.nodeCount,
-          url: this.doc.documentURI
-        });
+        // this.logger.log({
+        //   exception: {
+        //     name: exception.name,
+        //     message: exception.message,
+        //     stack: exception.stack
+        //   },
+        //   context: "finish dom",
+        //   nodeCount: this.nodeCount,
+        //   url: this.doc.documentURI
+        // });
+        console.log(exception);
       }
 
 // this.logger.log({

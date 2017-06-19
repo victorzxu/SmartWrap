@@ -40,7 +40,6 @@ window.setTimeout(() => {
   marker.mark();
 }, 10);
 console.log("end marking");
-console.log(dummysw);
 main(onReady);
 // processDOM(document);
 
@@ -131,22 +130,6 @@ function onReady() {
   jQuery(document).bind("mouseover",blueboxMouseover);
   document.addEventListener("removeTab",handleRemoveTab);
 
-  var dummysw = Object.create(Smartwrap);
-  const doc = document;
-  const markParams = {
-    smartwrap : dummysw,
-    chunkSize : 25,
-    chunkDelay : 20,
-  }
-  const marker = new DocumentMarker({
-    doc,
-    params: markParams
-  });
-
-  window.setTimeout(() => {
-    marker.mark();
-  }, 10);
-  console.log("end marking");
   frame.find('iframe').on('load',()=>{
     function checkLoad(event, detail) {
       if (!detail) {
