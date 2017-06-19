@@ -545,11 +545,13 @@ const DocumentMarker = ((() => {
           const ser = new XMLSerializer();
           ser.serializeToStream(doc1, stream, "UTF-8");
         }
-
+        console.log("reach domxml");
         metadata.docClone = doc1;
         metadata.domxml = domstr;
         metadata.bwdominfo = this.nodelist;
         metadata.nodemap = this.nodemap;
+        console.log(metadata.domxml);
+        console.log(metadata.bwdominfo);
 
         // that.logger.log({
         //   "METAKEYS": Object.keys(metadata)
