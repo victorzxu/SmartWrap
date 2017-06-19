@@ -30,6 +30,15 @@ import bow from 'bows';
 const log = bow('page');
 
  $(()=>{setTimeout(swp, 0)});
+ function onReceiveMessage(event){
+   var eEvent;
+   // console.log(event.data);
+   // console.log(dragTarget);
+   eEvent = new CustomEvent(event.data.eventName,{detail: event.data});
+   document.dispatchEvent(eEvent);
+ }
+
+
 
 
 function swp () {
@@ -76,13 +85,11 @@ function swp () {
     parent.postMessage(sendDetail,'*');
   })
   const sw = Object.create(Smartwrap);
-  function useMessage(event) {
-    const detail = event.data;
-
-    sw.dragDetail = detail;
-
+  function handleDragstartMsg (event) {
+    sw.dragDetail  = event.detail;
   }
-  window.addEventListener("message",useMessage,false);
+  window.addEventListener("message",onReceiveMessage,false);
+  document.addEventListener("dragstart_msg",handleDragstartMsg);
 
   sw.contextmenu = jQuery("ul#smartwrap_contextmenu");
   sw.contextmenu.menu({

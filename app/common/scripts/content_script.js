@@ -40,6 +40,7 @@ window.setTimeout(() => {
   marker.mark();
 }, 10);
 console.log("end marking");
+console.log(dummysw);
 main(onReady);
 // processDOM(document);
 

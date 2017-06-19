@@ -23,8 +23,6 @@ const DocumentMarker = ((() => {
 
       this.nodes = jQuery(doc).find("*:not(iframe)");
 
-
-      console.log(this.nodes);
       //this.nodes.addClass("marking");
       this.offset = 0;
       this.checklist = {};
@@ -233,7 +231,6 @@ const DocumentMarker = ((() => {
       }
     };
     self.mark0 = function () {
-      console.log("in mark0");
       this.chunkCount += 1;
       // this.logger.log({
       //   chunkNo: this.chunkCount,
@@ -545,13 +542,11 @@ const DocumentMarker = ((() => {
           const ser = new XMLSerializer();
           ser.serializeToStream(doc1, stream, "UTF-8");
         }
-        console.log("reach domxml");
         metadata.docClone = doc1;
         metadata.domxml = domstr;
         metadata.bwdominfo = this.nodelist;
         metadata.nodemap = this.nodemap;
-        console.log(metadata.domxml);
-        console.log(metadata.bwdominfo);
+
 
         // that.logger.log({
         //   "METAKEYS": Object.keys(metadata)
@@ -562,9 +557,9 @@ const DocumentMarker = ((() => {
         // that.logger.log({
         //   "USEMETAKEYS": Object.keys(metadata)
         // });
-        // Object.keys(metadata).forEach(function(key) {
-        //   that.smartwrap[key] = metadata[key];
-        // });
+        Object.keys(metadata).forEach(function(key) {
+          that.smartwrap[key] = metadata[key];
+        });
 
         //alert("SETDOM: " + JSON.stringify({url: this.doc.defaultView.location.href, tgt: this.smartwrap.scrapeTarget}));
         //} else {
