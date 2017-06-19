@@ -21,7 +21,10 @@ const DocumentMarker = ((() => {
       this.params.chunkSize = this.params.chunkSize || 200;
       this.params.chunkDelay = this.params.chunkDelay || 10;
 
-      this.nodes = jQuery(doc).find("*");
+      this.nodes = jQuery(doc).find("*:not(iframe)");
+
+
+      console.log(this.nodes);
       //this.nodes.addClass("marking");
       this.offset = 0;
       this.checklist = {};
@@ -216,19 +219,21 @@ const DocumentMarker = ((() => {
 
         //this.logger.log({MARKTIMES: this.marktimes});
       } catch (exception) {
-        this.logger.log({
-          exception: {
-            name: exception.name,
-            message: exception.message,
-            stack: exception.stack
-          },
-          context: "marking doc",
-          nodeCount: this.nodeCount,
-          url: this.doc.documentURI
-        });
+        // this.logger.log({
+        //   exception: {
+        //     name: exception.name,
+        //     message: exception.message,
+        //     stack: exception.stack
+        //   },
+        //   context: "marking doc",
+        //   nodeCount: this.nodeCount,
+        //   url: this.doc.documentURI
+        // });
+        console.log(exception);
       }
     };
     self.mark0 = function () {
+      console.log("in mark0");
       this.chunkCount += 1;
       // this.logger.log({
       //   chunkNo: this.chunkCount,
@@ -301,18 +306,20 @@ const DocumentMarker = ((() => {
            this.wrapKeyedValues(node);
            */
         } catch (exception) {
-          this.logger.log({
-            exception: {
-              name: exception.name,
-              message: exception.message,
-              stack: exception.stack
-            },
-            context: "processing node",
-            nodeCount: this.nodeCount,
-            i,
-            url: this.doc.documentURI,
-            node
-          });
+          // this.logger.log({
+          //   exception: {
+          //     name: exception.name,
+          //     message: exception.message,
+          //     stack: exception.stack
+          //   },
+          //   context: "processing node",
+          //   nodeCount: this.nodeCount,
+          //   i,
+          //   url: this.doc.documentURI,
+          //   node
+          // });
+          console.log(exception);
+          //continue;
         }
 
 //this.logger.log({markedxpath: xpath, nodeCount: this.nodeCount, i: i, url: this.doc.documentURI});
@@ -568,7 +575,7 @@ const DocumentMarker = ((() => {
         jQuery(this.doc).data("metadata", metadata);
 
         let detail = {};
-        
+
         //TODO: TEC - uncomment the following or fix by refactoring
         // if (this.smartwrap) {
         //   detail.smartwrap = this.smartwrap;
@@ -612,7 +619,6 @@ const DocumentMarker = ((() => {
 // });
 //alert("DIDDONE: " + JSON.stringify(this.nodelist));
     };
-
 
     self.init(self.spec.doc, self.spec.params);
 //console.log(self);

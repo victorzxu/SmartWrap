@@ -1,15 +1,16 @@
 /**
  * Created by Xiao Liang Yu <me@hiubright.com> Code name: yxl
  */
-
+import browser from "webextension-polyfill";
 import jQuery from "jquery";
 import {Smartwrap} from './smartwrap';
 import prefutil from "./prefutil";
 import main from './sidebar';
 import {smartwrapNamespace} from "./smarttable-header";
-import processDOM from "./smartwrap-processdom";
-import Interaction from './smartwrap-interaction';
+// import processDOM from "./smartwrap-processdom";
+// import Interaction from './smartwrap-interaction';
 import $ from 'jquery';
+import DocumentMarker from './smartwrap-docmarker';
 //
 // import swp from './smartwrap-page';
 
@@ -22,7 +23,23 @@ localStorage.debug = true;
 import bow from 'bows';
 const log = bow('content_script');
 var dragTarget;
+var prevTarget;
+var dummysw = Object.create(Smartwrap);
+const doc = document;
+const markParams = {
+  smartwrap : dummysw,
+  chunkSize : 25,
+  chunkDelay : 20,
+}
+const marker = new DocumentMarker({
+  doc,
+  params: markParams
+});
 
+window.setTimeout(() => {
+  marker.mark();
+}, 10);
+console.log("end marking");
 main(onReady);
 // processDOM(document);
 
@@ -52,27 +69,29 @@ function handleRemoveTab (event) {
   console.log("in removeTab");
   $('#yxl_sidebar').remove();
 }
+
+function handleClick(event) {
+  if (prevTarget) {
+    prevTarget.removeAttribute("style","background-color : rgba(200,0,0,0.5)");
+  }
+  prevTarget = event.target;
+  event.target.setAttribute("style","background-color : rgba(200,0,0,0.5)");
+  event.target.draggable = true;
+}
 function handleMouseout(event) {
   event.target.removeAttribute("style","background-color: rgba(0,0,200,0.5)");
   event.target.style.outline = "none";
 }
 function blueboxMouseover (event) {
-  console.log('mouseover');
-  event.stopPropagation();
   event.target.setAttribute("style","background-color: rgba(0,0,200,0.5)");
   event.target.style.outline = "thick solid #0000FF";
   event.target.addEventListener("mouseout",handleMouseout);
-  event.target.addEventListener("dragstart",function(event){console.log("dragstart activated");});
-  event.target.draggable = true;
+  //event.target.setAttribute("draggable",true);
   dragTarget = event.target;
 }
 
 function onReady() {
   window.addEventListener('message',onReceiveMessage,false);
-  $('a').on('dragstart','div',function(e){
-    console.log("clicked");
-    e.stopPropagation();
-  });
   const frame = $('#yxl_sidebar');
   console.log('content_script!');
   var iframedoc = browser.extension.getURL("pages/smartwrap.html");
@@ -81,6 +100,7 @@ function onReady() {
   jQuery(document).bind("sw_inbounds", event => {
     jQuery("#smartwrap").removeClass("disabled");
   });
+  jQuery(document).bind("click",handleClick);
   jQuery(document).bind("dragstart", event => {
     event.stopPropagation();
     console.log("dragStart");
@@ -109,6 +129,23 @@ function onReady() {
 
   jQuery(document).bind("mouseover",blueboxMouseover);
   document.addEventListener("removeTab",handleRemoveTab);
+
+  var dummysw = Object.create(Smartwrap);
+  const doc = document;
+  const markParams = {
+    smartwrap : dummysw,
+    chunkSize : 25,
+    chunkDelay : 20,
+  }
+  const marker = new DocumentMarker({
+    doc,
+    params: markParams
+  });
+
+  window.setTimeout(() => {
+    marker.mark();
+  }, 10);
+  console.log("end marking");
   frame.find('iframe').on('load',()=>{
     function checkLoad(event, detail) {
       if (!detail) {

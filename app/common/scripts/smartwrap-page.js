@@ -77,7 +77,6 @@ function swp () {
   })
   const sw = Object.create(Smartwrap);
   function useMessage(event) {
-    console.log("get message");
     const detail = event.data;
 
     sw.dragDetail = detail;

@@ -1936,7 +1936,8 @@ let Smartwrap = ((() => {
       });
 
       if (!this.status.fresh) {
-
+        console.log("reach getStat");
+        console.log(this);
         this.status.preview_ready = true;
         this.status.preview_ready = this.status.preview_ready && (!!this.bwdominfo);
         this.status.preview_ready = this.status.preview_ready && (!!this.domxml);
