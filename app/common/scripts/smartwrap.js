@@ -285,12 +285,15 @@ let Smartwrap = ((() => {
       this.docs = [];
     },
     rformat(templ, subs, lookup) {
+      console.log(templ);
       const self = this;
+
       const parts = templ.split(/({[^{}]+})/);
       const p2 = parts.map(part => {
         if (part.match(/^{.+}$/)) {
           const key = part.slice(1, -1);
-          subs[key] = subs[key] || self.rformat(lookup(key), subs, lookup);
+          const lookupKey = lookup(key);
+          subs[key] = subs[key] || self.rformat(lookupKey, subs, lookup);
           return subs[key];
         }
 
@@ -301,12 +304,9 @@ let Smartwrap = ((() => {
       return jQuery.format(templ, subs);
     },
     getSetting(key) {
+      console.log(key);
       const out = prefutil.getPref({
-        key
-      });
-      this.log({
-        getsetting: key,
-        value: out
+        'key' : key,
       });
       return out;
     },
@@ -1936,7 +1936,6 @@ let Smartwrap = ((() => {
         this.status.preview_ready = true;
         this.status.preview_ready = this.status.preview_ready && (!!this.bwdominfo);
         this.status.preview_ready = this.status.preview_ready && (!!this.domxml);
-        console.log(this.status.preview_ready);
         this.status.bwdominfo = !!this.bwdominfo;
         this.status.domxml = !!this.domxml;
 

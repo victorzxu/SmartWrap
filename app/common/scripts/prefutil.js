@@ -91,7 +91,13 @@ const prefutil = ((() => {
   */
   pu.getPref = spec => {
     const res = browser.storage.local.get(spec.key);
-    return res;
+    res.then(function (value) {
+      console.log(spec.key);
+      console.log(value[spec.key]);
+      return value[spec.key];
+    },function(){
+      console.log("error");
+    })
   }
   pu.initPref = () => {
     const initOptions = {

@@ -594,7 +594,6 @@ const DocumentMarker = ((() => {
         let evt = document.createEvent("CustomEvent");
         evt.initCustomEvent("sw_status", true, false, detail);
         document.dispatchEvent(evt);
-        console.log("init sw_status");
         detail = {};
         detail.inprogress = false;
         detail.finished = true;
