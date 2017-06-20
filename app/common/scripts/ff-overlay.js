@@ -242,7 +242,7 @@ const swo = Smartwrap.overlay;
 
       var stat = swo.smartwrap.getStatus("preview_ready");
       //alert("STAT: " + stat);
-
+      console.log(stat);
       swo.runButton.get(0).disabled = !stat;
 
       var stat = swo.smartwrap.getStatus("pending");

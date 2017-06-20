@@ -39,8 +39,6 @@ const log = bow('page');
  }
 
 
-
-
 function swp () {
   var getFirstTime = browser.storage.local.get("isFirstTime");
   getFirstTime.then(
@@ -88,9 +86,17 @@ function swp () {
   function handleDragstartMsg (event) {
     sw.dragDetail  = event.detail;
   }
+  function handleDocMsg(event) {
+    console.log("in handleDocMsg");
+    console.log(event);
+    sw.docClone = event.detail.docClone;
+    sw.domxml = event.detail.domxml;
+    sw.bwdominfo = event.detail.bwdominfo;
+    sw.nodemap = event.detail.nodemap;
+  }
   window.addEventListener("message",onReceiveMessage,false);
   document.addEventListener("dragstart_msg",handleDragstartMsg);
-
+  document.addEventListener("docMsg",handleDocMsg);
   sw.contextmenu = jQuery("ul#smartwrap_contextmenu");
   sw.contextmenu.menu({
     select(event, ui) {
@@ -710,11 +716,11 @@ function swp () {
 
   });
   jQuery(document).bind("sw_status", event => {
+    console.log("in sw_status");
     jQuery(".swUndo").attr('disabled', !sw.getStatus("undo_ready"));
     jQuery("#smarttables").toggleClass("undo_ready", !!sw.getStatus("undo_ready"));
 
     jQuery(".swRedo").attr('disabled', !sw.getStatus("redo_ready"));
-
     jQuery(".swRunWrapper").attr('disabled', !sw.getStatus("preview_ready"));
     jQuery(".swSaveWrapper").attr('disabled', !sw.getStatus("save_ready"));
     jQuery(".swSaveCloseWrapper").attr('disabled', !sw.getStatus("save_ready"));
@@ -879,9 +885,9 @@ function swp () {
       detail.params = {};
       detail.params["consent"] = detail.consent;
       detail.params["examples"] = JSON.stringify(detail.examples);
-      detail.params["domxml"] = encodeURIComponent(detail.domxml);
+      detail.params["domxml"] = detail.domxml;
       if (sw.getSetting("algorithm") === "LIBSVM") {
-        detail.params["dominfo"] = encodeURIComponent(JSON.stringify(detail.bwdominfo));
+        detail.params["dominfo"] = detail.bwdominfo;
       }
       detail.params["config"] = JSON.stringify({
         url: detail.url

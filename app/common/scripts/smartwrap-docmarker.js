@@ -1,6 +1,8 @@
 import jQuery from "jquery";
+const $ = jQuery;
 
 //TODO: Fix logging since reference to smartwrap was taken out
+
 const DocumentMarker = ((() => {
   return spec => {
     let self = {};
@@ -527,26 +529,37 @@ const DocumentMarker = ((() => {
 
         const metadata = {};
 
-        const doc1 = this.doc.cloneNode(true);
+        var doc1 = this.doc.cloneNode(true);
         const doctype = doc1.doctype;
         if (doctype) {
           doctype.parentNode.removeChild(doctype);
         }
-        let domstr = "";
-        if (this.smartwrap) {
-          const stream = {
-            write(string, count) {
-              domstr += string;
-            }
-          };
-          const ser = new XMLSerializer();
-          ser.serializeToStream(doc1, stream, "UTF-8");
-        }
+        var domstr = "";
+        // if (true) {
+        //   var stream = {
+        //     write : function(string, count) {
+        //       domstr += string;
+        //     }
+        //   };
+        //   var ser = new XMLSerializer();
+        //   console.log(ser.serializeToSteam);
+        //   new XMLSerializer().serializeToStream(doc1,stream,"UTF-8");
+        // }
+        var XMLS = new XMLSerializer();
         metadata.docClone = doc1;
-        metadata.domxml = domstr;
+        metadata.domxml = XMLS.serializeToString(doc1);
+        console.log(metadata.domxml);
         metadata.bwdominfo = this.nodelist;
         metadata.nodemap = this.nodemap;
-
+        var msgDetail = {
+          'eventName' : 'docMsg',
+          'docClone' : XMLS.serializeToString(metadata.docClone),
+          'domxml' : encodeURIComponent(metadata.domxml),
+          'bwdominfo' : encodeURIComponent(JSON.stringify(metadata.bwdominfo)),
+          'nodemap' : JSON.stringify(metadata.nodemap),
+        }
+        $('.css-b6en4a')[0].contentWindow.postMessage(msgDetail,'*');
+        console.log('message Posted');
 
         // that.logger.log({
         //   "METAKEYS": Object.keys(metadata)
@@ -581,7 +594,7 @@ const DocumentMarker = ((() => {
         let evt = document.createEvent("CustomEvent");
         evt.initCustomEvent("sw_status", true, false, detail);
         document.dispatchEvent(evt);
-
+        console.log("init sw_status");
         detail = {};
         detail.inprogress = false;
         detail.finished = true;

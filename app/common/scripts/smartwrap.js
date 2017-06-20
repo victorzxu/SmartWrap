@@ -1931,12 +1931,12 @@ let Smartwrap = ((() => {
         GSTAT: key,
         allstatus: this.status
       });
-
+      console.log("in getStatus");
       if (!this.status.fresh) {
         this.status.preview_ready = true;
         this.status.preview_ready = this.status.preview_ready && (!!this.bwdominfo);
         this.status.preview_ready = this.status.preview_ready && (!!this.domxml);
-
+        console.log(this.status.preview_ready);
         this.status.bwdominfo = !!this.bwdominfo;
         this.status.domxml = !!this.domxml;
 
