@@ -90,10 +90,8 @@ const prefutil = ((() => {
     take in the keys
   */
   pu.getPref = spec => {
-    const res = browser.storage.local.get(spec.key);
+    var res = browser.storage.local.get(spec.key);
     res.then(function (value) {
-      console.log(spec.key);
-      console.log(value[spec.key]);
       return value[spec.key];
     },function(){
       console.log("error");

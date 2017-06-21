@@ -548,8 +548,11 @@ const DocumentMarker = ((() => {
         var XMLS = new XMLSerializer();
         metadata.docClone = doc1;
         metadata.domxml = XMLS.serializeToString(doc1);
+        console.log("domxml: ");
         console.log(metadata.domxml);
+        console.log("bwdominfo: ");
         metadata.bwdominfo = this.nodelist;
+        console.log(encodeURIComponent(JSON.stringify(metadata.bwdominfo)));
         metadata.nodemap = this.nodemap;
         var msgDetail = {
           'eventName' : 'docMsg',

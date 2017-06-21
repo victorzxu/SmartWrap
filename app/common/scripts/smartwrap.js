@@ -285,23 +285,45 @@ let Smartwrap = ((() => {
       this.docs = [];
     },
     rformat(templ, subs, lookup) {
-      console.log(templ);
       const self = this;
 
-      const parts = templ.split(/({[^{}]+})/);
-      const p2 = parts.map(part => {
+      var parts = templ.split(/({[^{}]+})/);
+      console.log(parts);
+      var p2 = parts.map(part => {
         if (part.match(/^{.+}$/)) {
-          const key = part.slice(1, -1);
-          const lookupKey = lookup(key);
+          var key = part.slice(1, -1);
+          var lookupKey = "";
+          switch (key) {
+            case 'serverprepath':
+              lookupKey = "http://sw-auth.appspot.com";
+              break;
+            case 'serverpath':
+              lookupKey = '/Wrap';
+              break;
+            case 'serverquery':
+              lookupKey = '?algorithm={algorithm}';
+              break;
+            case 'algorithm':
+              lookupKey = 'PREFIX';
+              break;
+          }
           subs[key] = subs[key] || self.rformat(lookupKey, subs, lookup);
-          return subs[key];
+          //TODO: fix the getPref problem.
+          // var res = browser.storage.local.get(key);
+          // res.then (function (value) {
+          //   console.log(value);
+          //   lookupKey = value[key];
+          //   subs[key] = subs[key] || self.rformat(lookupKey, subs, lookup);
+          //   return subs[key];
+          // });
         }
 
         return part;
       });
       //alert(JSON.stringify({templ:templ,parts:parts,p2:p2,subs:subs}));
-
-      return jQuery.format(templ, subs);
+      var ret = jQuery.format(templ,subs);
+      console.log(ret);
+      return ret;
     },
     getSetting(key) {
       console.log(key);
@@ -1349,7 +1371,7 @@ let Smartwrap = ((() => {
               detail["bwdominfo"] = that.bwdominfo;
               detail["domxml"] = that.domxml;
               //alert("RUN: " + JSON.stringify(Object.keys(detail)));
-              detail.consent = that.getSetting("consent");
+              detail.consent = true;
 
               detail.logger = that;
 
@@ -1765,7 +1787,8 @@ let Smartwrap = ((() => {
     },
     tellUser(spec) {
       const msgid = spec.msgid;
-
+      console.log(this.dialogs);
+      console.log(msgid);
       const dialogElt = this.dialogs[msgid];
       const eltCopy = jQuery(dialogElt).clone();
 

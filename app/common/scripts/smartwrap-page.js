@@ -24,6 +24,7 @@ import {smartwrapNamespace} from "./smarttable-header";
 import processDOM from './smartwrap-processdom';
 
 localStorage.debug = true;
+jQuery.ajax.cors = true;
 
 import bow from 'bows';
 
@@ -749,7 +750,7 @@ function swp () {
   jQuery("document").bind("swServerReady swServerError swBadResponse", event => {
     const detail = event.originalEvent.detail;
     //alert("SERVER: " + event.type + ":: " + JSON.stringify(detail));
-
+    console.log("detail status" + detail.status)
     if ((detail.status >= 400) && (detail.status < 600)) {
       sw.tellUser({
         msgid: "msg_serverError"
@@ -765,7 +766,7 @@ function swp () {
   jQuery(document).bind("swBadResponse", event => {
     const detail = event.originalEvent.detail;
     //alert("SERVER: " + event.type + ":: " + JSON.stringify(detail));
-
+    console.log("swBadResponse");
     if (true) {
       sw.tellUser({
         msgid: "msg_serverError"
@@ -822,6 +823,7 @@ function swp () {
     //alert(JSON.stringify({status: detail.status}));
 
     const msgid = (status => {
+      console.log("swServerError");
       if (status === 404) {
         return "msg_serverNotResponding";
       }
@@ -878,10 +880,12 @@ function swp () {
   jQuery(document).bind("swWrapperRequest", event => {
     //alert(JSON.stringify({req:'wrapper'}));
     const detail = Object.create(event.originalEvent.detail);
-
+    console.log("examples");
+    console.log(detail.examples);
     try {
       detail.subs = {};
       detail.url = sw.rformat("{serverprepath}{serverpath}{serverquery}", detail.subs, key => sw.getSetting(key));
+      console.log("detail.url: " + detail.url);
       detail.params = {};
       detail.params["consent"] = detail.consent;
       detail.params["examples"] = JSON.stringify(detail.examples);
@@ -931,7 +935,7 @@ function swp () {
       detail.callbacks.complete = () => {
         delete sw.pendingRequests[detail.url];
       };
-
+      console.log(detail.params);
       detail.jqXHR = jQuery.ajax({
         url: detail.url,
         type: 'POST',
@@ -939,7 +943,7 @@ function swp () {
         complete: detail.callbacks.complete,
         success: detail.callbacks.success,
         error: detail.callbacks.error,
-        timeout: sw.getSetting("servertimeout"),
+        timeout: 20000,
         dataType: "json"
       });
       jQuery(document).unbind("swCancelRequest"); // unbind previous listeners, if any
@@ -954,12 +958,13 @@ function swp () {
 
       if (!detail.params.dominfo) {
         const metaurl = sw.rformat("{serverprepath}/smartwrap/Meta", detail.subs, key => sw.getSetting(key));
+        console.log("metaurl: "+metaurl);
         const metaload = jQuery.ajax({
           url: metaurl,
           type: 'POST',
           data: {
             domxml: detail.params.domxml,
-            dominfo: encodeURIComponent(JSON.stringify(detail.bwdominfo))
+            dominfo: detail.bwdominfo,
           },
           dataType: "json"
         });

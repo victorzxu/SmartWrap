@@ -65,8 +65,6 @@ function handleSwInjectedCell (event) {
 }
 
 function handleRemoveTab (event) {
-
-  console.log("in removeTab");
   $('#yxl_sidebar').remove();
 }
 
@@ -90,6 +88,7 @@ function blueboxMouseover (event) {
   dragTarget = event.target;
 }
 
+
 function onReady() {
   window.addEventListener('message',onReceiveMessage,false);
   const frame = $('#yxl_sidebar');
@@ -100,20 +99,25 @@ function onReady() {
   jQuery(document).bind("sw_inbounds", event => {
     jQuery("#smartwrap").removeClass("disabled");
   });
+  var diadetail = {
+    'dialogs': jQuery("#dialog_templates .dialog_template"),
+  }
+
+
   jQuery(document).bind("click",handleClick);
   jQuery(document).bind("dragstart", event => {
     event.stopPropagation();
     console.log("dragStart");
-    console.log(event.target);
-    console.log(dragTarget);
+    // console.log(event.target);
+    // console.log(dragTarget);
     const iframe  = $('iframe');
-    // const tgt = event.target;
-    // dragTarget = tgt;
+    const tgt = event.target;
+    dragTarget = tgt;
     var iframedoc = browser.extension.getURL("pages/smartwrap.html");
     var detail = {};
     detail.eventName = "dragstart_msg";
     detail.dragstartEvent = {
-      'target': XMLS.serializeToString(dragTarget),
+      'target': XMLS.serializeToString(tgt),
     };
     detail.metadata = {}; // TODO: recreate getDragData();
     const text = 'Smartwrap.getVisibleText(tgt)';
@@ -122,7 +126,7 @@ function onReady() {
     event.originalEvent.stopPropagation();
     detail.metadata.url = event.target.ownerDocument.defaultView.location.href;
     detail.metadata.title = event.target.ownerDocument.title;
-    detail.target = XMLS.serializeToString(dragTarget);
+    detail.target = XMLS.serializeToString(tgt);
     $('.css-b6en4a')[0].contentWindow.postMessage(detail,'*');
 
   });
