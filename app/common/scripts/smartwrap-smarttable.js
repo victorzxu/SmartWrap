@@ -227,7 +227,6 @@ Smartwrap.SmartTable = ((() => {
          this.model.metadata.scrapedURL = dragDetail.srcurl;
          this.model.metadata.nonempty = true;
          */
-
         this.model.setTableField("scrapedURL", dragDetail.srcurl);
         this.model.setTableField("nonempty", true);
 
@@ -237,7 +236,8 @@ Smartwrap.SmartTable = ((() => {
 
         const draggedElt = dragDetail.draggedElt;
         const dragTargets = this.interpretDrag(draggedElt);
-
+        console.log("dragTargets");
+        console.log(dragTargets);
         let dragKey = "dragged";
         if (this.smartwrap.getSetting("dragInterpretation") === "SHALLOWEST") {
           dragKey = "shallow";
@@ -247,8 +247,11 @@ Smartwrap.SmartTable = ((() => {
         }
 
         const intendedElt = dragTargets[dragKey].elt;
-        const xpath = dragTargets[dragKey].xpath || Smartwrap.getAbsoluteLocationXPath(intendedElt, dragDetail.isHTML);
-
+        console.log("xpath");
+        console.log(dragDetail);
+        const xpath = dragDetail.xpath;
+        console.log('xpath');
+        console.log(xpath);
         const tuple = {
           keys: [],
           map: {},
@@ -735,6 +738,7 @@ Smartwrap.SmartTable = ((() => {
         for (var j = 0; j < ncols; j++) {
           var colid = this.model.getColumnId(j);
           const cellObj = this.model.getCellFields(rowid, colid, ["absoluteLocationXPath"]);
+
           var colObj = this.model.getColumnFields(colid, ["colid"]);
           //program.push([i,j,cellObj]);
           const step = ["makeCell"];

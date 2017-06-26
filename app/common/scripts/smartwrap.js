@@ -304,7 +304,7 @@ let Smartwrap = ((() => {
               lookupKey = '?algorithm={algorithm}';
               break;
             case 'algorithm':
-              lookupKey = 'PREFIX';
+              lookupKey = 'AUTO';
               break;
           }
           subs[key] = subs[key] || self.rformat(lookupKey, subs, lookup);
@@ -565,7 +565,8 @@ let Smartwrap = ((() => {
         }
       }
       dragDetail.draggedElt = draggedElt;
-      dragDetail.srcurl = draggedElt.ownerDocument.defaultView.location.href;
+      dragDetail.srcurl = rawdrag.metadata.url;
+      dragDetail.xpath = rawdrag.metadata.absoluteLocationXPath;
 
       if (rawdrag.intratable) {
         this.log({

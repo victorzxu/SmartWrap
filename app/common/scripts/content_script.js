@@ -108,6 +108,7 @@ function onReady() {
   jQuery(document).bind("dragstart", event => {
     event.stopPropagation();
     console.log("dragStart");
+    console.log(event);
     // console.log(event.target);
     // console.log(dragTarget);
     const iframe  = $('iframe');
@@ -126,6 +127,7 @@ function onReady() {
     event.originalEvent.stopPropagation();
     detail.metadata.url = event.target.ownerDocument.defaultView.location.href;
     detail.metadata.title = event.target.ownerDocument.title;
+    detail.metadata.absoluteLocationXPath = Smartwrap.getAbsoluteLocationXPath(event.target, false);
     detail.target = XMLS.serializeToString(tgt);
     $('.css-b6en4a')[0].contentWindow.postMessage(detail,'*');
 

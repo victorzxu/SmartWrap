@@ -1094,7 +1094,8 @@ Smartwrap.newTableModel = spec => {
          return true;
          */
       }
-
+      console.log("tuple");
+      console.log(tuple);
       this.setCellField(rowid, colid, "facsimile", tuple.facsimile);
       this.setCellField(rowid, colid, "absoluteLocationXPath", tuple.absoluteLocationXPath);
       this.setCellField(rowid, colid, "style", tuple.style);
