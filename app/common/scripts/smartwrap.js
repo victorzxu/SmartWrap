@@ -295,7 +295,7 @@ let Smartwrap = ((() => {
           var lookupKey = "";
           switch (key) {
             case 'serverprepath':
-              lookupKey = "http://sw-auth.appspot.com";
+              lookupKey = "https://sw-auth.appspot.com";
               break;
             case 'serverpath':
               lookupKey = '/Wrap';
