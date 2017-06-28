@@ -298,7 +298,7 @@ let Smartwrap = ((() => {
               lookupKey = "https://sw-auth.appspot.com";
               break;
             case 'serverpath':
-              lookupKey = '/Wrap';
+              lookupKey = '/smartwrap/Wrap';
               break;
             case 'serverquery':
               lookupKey = '?algorithm={algorithm}';
