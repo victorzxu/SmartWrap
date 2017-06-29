@@ -665,51 +665,52 @@ function swp () {
     sw.download_urls = detail.response.download_urls;
     sw.response = detail.response;
 
-    if (sw.getSetting("reportMode") === "MERGE") {
-      var wrapper = detail.response.wrapper;
-      const callback = msg => {
-        switch (msg) {
-          case "success":
-            sw.wrapper = wrapper;
+    // if (sw.getSetting("reportMode") === "MERGE") {
+      // var wrapper = detail.response.wrapper;
+      // const callback = msg => {
+      //   switch (msg) {
+      //     case "success":
+      //       sw.wrapper = wrapper;
+      //
+      //       const evt = document.createEvent("CustomEvent");
+      //       evt.initCustomEvent("swWrapperReady", true, true, {
+      //         wrapper
+      //       });
+      //       document.dispatchEvent(evt);
+      //       break;
+      //     case "nohelp":
+      //       sw.tellUser({
+      //         msgid: "msg_serverNoHelp"
+      //       });
+      //       break;
+      //   }
+      // };
+      //
+      // sw.setProgram(program, {
+      //   callback
+      // });
 
-            const evt = document.createEvent("CustomEvent");
-            evt.initCustomEvent("swWrapperReady", true, true, {
-              wrapper
-            });
-            document.dispatchEvent(evt);
-            break;
-          case "nohelp":
-            sw.tellUser({
-              msgid: "msg_serverNoHelp"
-            });
-            break;
-        }
-      };
+    // }
+    // if (sw.getSetting("reportMode") === "REPORT") {
 
-      sw.setProgram(program, {
-        callback
-      });
-
-    }
-    if (sw.getSetting("reportMode") === "REPORT") {
       var wrapper = detail.response.wrapper;
       sw.wrapper = wrapper;
       sw.explicitProgram = program;
 
       const tabs = browser.tabs;
       sw.wrapDoc = ((() => {
-        for (let tabno = 0; tabno < tabs.length; tabno++) {
-          const browser = tabs[tabno].linkedBrowser;
-          const taburl = browser.contentDocument.defaultView.location.href;
-          if (taburl === detail.response.scrapedURL) {
-            return browser.contentDocument;
-          }
-        }
-        return sw.currentWindow.getBrowser().contentDocument;
+        // for (let tabno = 0; tabno < tabs.length; tabno++) {
+        //   const browser = tabs[tabno].linkedBrowser;
+        //   const taburl = browser.contentDocument.defaultView.location.href;
+        //   if (taburl === detail.response.scrapedURL) {
+        //     return browser.contentDocument;
+        //   }
+        // }
+        return sw.docClone;
       }))();
-
-      window.open('chrome://smartwrap/content/smartwrapReport.html');
-    }
+      var url =  browser.extension.getURL("/pages/smartwrapReport.html");
+      window.open(url);
+    // }
 
     /*
      sw.status.fresh = false;
