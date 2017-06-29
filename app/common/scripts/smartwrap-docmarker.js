@@ -561,7 +561,7 @@ const DocumentMarker = ((() => {
           'bwdominfo' : encodeURIComponent(JSON.stringify(metadata.bwdominfo)),
           'nodemap' : JSON.stringify(metadata.nodemap),
         }
-        $('.css-b6en4a')[0].contentWindow.postMessage(msgDetail,'*');
+        window.postMessage(msgDetail,'*');
         console.log('message Posted');
 
         // that.logger.log({

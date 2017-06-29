@@ -98,6 +98,9 @@ function swp () {
   window.addEventListener("message",onReceiveMessage,false);
   document.addEventListener("dragstart_msg",handleDragstartMsg);
   document.addEventListener("docMsg",handleDocMsg);
+  parent.postMessage({
+    'eventName' : 'pageReady'
+  },'*');
   sw.contextmenu = jQuery("ul#smartwrap_contextmenu");
   sw.contextmenu.menu({
     select(event, ui) {
@@ -546,6 +549,7 @@ function swp () {
   });
 
   jQuery(document).bind("sw_dom", event => {
+    console.log("sw_dom detected");
     const detail = event.originalEvent && event.originalEvent.detail;
     //sw.log({"SWDOM": Object.keys(detail)});
     if (detail.bwdominfo) {

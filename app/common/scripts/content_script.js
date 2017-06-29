@@ -24,7 +24,29 @@ import bow from 'bows';
 const log = bow('content_script');
 var dragTarget;
 var prevTarget;
+var docDetail;
+var docReady = false;
 var dummysw = Object.create(Smartwrap);
+function onReceiveMessage(event){
+  var eEvent;
+  // console.log(event.data);
+  // console.log(dragTarget);
+  eEvent = new CustomEvent(event.data.eventName,{detail: event.data});
+  document.dispatchEvent(eEvent);
+}
+function handleDocMsg(event) {
+  console.log("handleDocMsg event");
+  console.log(event);
+  docReady = true;
+  docDetail = event.detail;
+  console.log("docDetail in handleDocMsg");
+  console.log(docDetail);
+  var docEvent = new CustomEvent("docReady",{detail: docDetail});
+  document.dispatchEvent(docEvent);
+
+}
+document.addEventListener('docMsg',handleDocMsg);
+window.addEventListener('message',onReceiveMessage,false);
 const doc = document;
 const markParams = {
   smartwrap : dummysw,
@@ -39,19 +61,13 @@ const marker = new DocumentMarker({
 window.setTimeout(() => {
   marker.mark();
 }, 10);
-console.log("end marking");
-main(onReady);
+function handleDocReady(event) {
+  main(onReady);
+}
+document.addEventListener('docReady',handleDocReady);
+
 // processDOM(document);
 
-function onReceiveMessage(event){
-  var eEvent;
-  // console.log(event.data);
-  // console.log(dragTarget);
-  eEvent = new CustomEvent(event.data.eventName,{detail: event.data});
-  document.dispatchEvent(eEvent);
-
-
-}
 
 function handleSwInjectedCell (event) {
   dragTarget.classList.add("sw_injected_cell");
@@ -88,22 +104,23 @@ function blueboxMouseover (event) {
   dragTarget = event.target;
 }
 
+function handlePageReady (event) {
+  console.log("docDetail in pageReady");
+  console.log(docDetail);
+  $('.css-b6en4a')[0].contentWindow.postMessage(docDetail,'*');
+  console.log("end Marking");
+}
 
 function onReady() {
-  window.addEventListener('message',onReceiveMessage,false);
   const frame = $('#yxl_sidebar');
   console.log('content_script!');
+  document.addEventListener("pageReady",handlePageReady);
   var iframedoc = browser.extension.getURL("pages/smartwrap.html");
   var XMLS = new XMLSerializer();
   jQuery (document).bind("sw_injected_cell",handleSwInjectedCell);
   jQuery(document).bind("sw_inbounds", event => {
     jQuery("#smartwrap").removeClass("disabled");
   });
-  var diadetail = {
-    'dialogs': jQuery("#dialog_templates .dialog_template"),
-  }
-
-
   jQuery(document).bind("click",handleClick);
   jQuery(document).bind("dragstart", event => {
     event.stopPropagation();
