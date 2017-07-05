@@ -38,8 +38,21 @@ const log = bow('page');
    eEvent = new CustomEvent(event.data.eventName,{detail: event.data});
    document.dispatchEvent(eEvent);
  }
+ function handleStorage (event) {
+   console.log("in Storage");
+   var reportDetail = JSON.parse(localStorage.getItem("sw_reportSlot"));
+   console.log("reportDetail");
+   console.log(reportDetail);
+   if (reportDetail) {
+     reportDetail.target = jQuery.parseXML(reportDetail.target);
+     console.log(reportDetail.target);
+     var reportEvent = new CustomEvent("sw_reportSlot",{detail: reportDetail});
+     localStorage.removeItem("sw_reportSlot");
+     document.dispatchEvent(reportEvent);
 
-
+   }
+ }
+ window.addEventListener("storage",handleStorage);
 function swp () {
   var getFirstTime = browser.storage.local.get("isFirstTime");
   getFirstTime.then(
@@ -706,10 +719,10 @@ function swp () {
         //     return browser.contentDocument;
         //   }
         // }
-        return sw.docClone;
+        return jQuery.parseXML(sw.docClone);
       }))();
       var url =  browser.extension.getURL("/pages/smartwrapReport.html");
-      window.open(url);
+      var win = window.open(url, '_blank');
     // }
 
     /*

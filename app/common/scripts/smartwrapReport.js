@@ -3,14 +3,24 @@ import prefutil from "./prefutil";
 
 
 jQuery(document).ready(() => {
+  console.log("in smartwrapReport");
+  localStorage.removeItem("sw_reportSlot");
+  var elemDiv = document.createElement('div');
+  elemDiv.innerHTML = "test";
+  document.body.appendChild(elemDiv);
   const detail = {
     source: "report"
   };
-  detail.target = jQuery("#report").get(0);
+    console.log("detail.target");
+  var XML = new XMLSerializer();
+  detail.target = XML.serializeToString(jQuery("#report").get(0));
 
-  const evt = document.createEvent("CustomEvent");
-  evt.initCustomEvent("sw_reportSlot", true, false, detail);
-  detail.target.dispatchEvent(evt);
+  console.log(detail.target);
+  localStorage.setItem("sw_reportSlot",JSON.stringify(detail));
+  console.log(localStorage.getItem("sw_reportSlot"));
+  // const evt = document.createEvent("CustomEvent");
+  // evt.initCustomEvent("sw_reportSlot", true, false, detail);
+  // detail.target.dispatchEvent(evt);
 
   jQuery(".dismissal").on("click", () => {
     jQuery('#export').toggleClass("dismissed");

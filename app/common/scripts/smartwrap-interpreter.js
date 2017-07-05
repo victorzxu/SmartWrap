@@ -308,6 +308,8 @@ Smartwrap.ReportInterpreter = ((() => {
 
   interp.setTarget = function (target) {
     this.target = target;
+    console.log("target");
+    console.log(target);
     this.targetDoc = target.ownerDocument;
 
     //this.tableStack.unshift(target);

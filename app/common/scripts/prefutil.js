@@ -131,8 +131,10 @@ const prefutil = ((() => {
       annotationDependency: "GLOBAL",
       globalDependencyPrefix: "http://www.cs.cmu.edu/~sgardine/mixer/smartwrap/",
       showAuxiliaryTables: false,
+      reportMode: "REPORT",
     }
     browser.storage.local.set(initOptions);
+    console.log("initPref completed");
   }
   pu.observeSetting = function (key, callback, prefix) {
     const value = this.getPref(key);

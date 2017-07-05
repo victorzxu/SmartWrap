@@ -1528,7 +1528,8 @@ let Smartwrap = ((() => {
           ["sw_removecell"].forEach(eventType => {
             jQuery(doc).bind(eventType, that.getHandler(eventType));
           });
-
+          console.log("doc");
+          console.log(doc);
           const meta = doc.createElement("meta");
           meta.id = "sw_instrumented";
           meta.content = "";
