@@ -308,7 +308,89 @@
                         </a></li>
 		</ul>
 	</div>
-
+	<div id="smarttables" class="swReport">
+		<div>test</div>
+	    <div id="sample" style="display: none">
+	        <table class="swTable">
+	            <caption>Lots of Numbers</caption>
+	            <tr class="swHeaderRow">
+	                <th class="swHeaderCell">
+	                    Name
+	                </th>
+	                <th class="swHeaderCell">
+	                    Number
+	                </th>
+	            </tr>
+	            <tbody>
+	                <tr class="swRow">
+	                    <td class="swCell swUserAction">
+	                        Euclid
+	                    </td>
+	                    <td class="swCell swUserAction">
+	                        Pi
+	                    </td>
+	                </tr>
+	                <tr class="swRow">
+	                    <td class="swCell swUserAction">
+	                        Euler
+	                    </td>
+	                    <td class="swCell swUserAction">
+	                        e
+	                    </td>
+	                </tr>
+	                <tr class="swRow">
+	                    <td class="swCell swInferred">
+	                        Avogadro
+	                    </td>
+	                    <td class="swCell swInferred">
+	                        L
+	                    </td>
+	                </tr>
+	            </tbody>
+	        </table>
+	    </div>
+	    <div id="extraCssContainer">
+	        <div id="report">
+	            <div id="export" style="display: none" class="_dismissed">
+	                <center>
+	                    <table>
+	                        <tr>
+	                            <td class="dismissal undismiss">
+	                                <div>&#8666;</div>
+	                            </td>
+	                            <td class="dismissal dismiss">
+	                                <div>&#8667;</div>
+	                            </td>
+	                            <td style="text-align: center">
+	                                <!--
+	                      <form class="exportButton" action="http://localhost:8080/csv/tab.csv">
+	                  -->
+	                                <form class="exportForm" method="post" _action="http://localhost:8080/Export">
+	                                    <input type="hidden" class="json" name="json" value="" />
+	                                    <input type="hidden" class="responseid" name="responseid" id="responseid" value="NOTSET" />
+	                                    <input type="hidden" name="prepath" id="prepath" value="http://localhost:8080" />
+	                                    <input class="exportButton" type="submit" name="csv" value="Download as CSV" _formaction="http://localhost:8080/csv/tab.csv"></input>
+	                                    <input class="exportButton" type="submit" name="xls" value="Download as Excel File" _formaction="http://localhost:8080/xls/tab.xls"></input>
+	                                    <input id="confirmCode" class="exportButton" type="button" value="Copy confirmation code"></input>
+	                                </form>
+	                            </td>
+	                            <td class="dismissal dismiss">
+	                                <div>&#8667;</div>
+	                            </td>
+	                            <td class="dismissal undismiss">
+	                                <div>&#8666;</div>
+	                            </td>
+	                        </tr>
+	                    </table>
+	                </center>
+	            </div>
+	        </div>
+	    </div>
+	    <div style="opacity: 0.4; display: none">
+	        <iframe src="" name="ersatzClipboard" id="ersatzClipboard"></iframe>
+	    </div>
+	    <script src="../scripts/smartwrapReport.js"></script>
+	</div>
 </body>
 
 </html>

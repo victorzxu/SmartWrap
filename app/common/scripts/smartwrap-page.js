@@ -43,8 +43,10 @@ const log = bow('page');
    var reportDetail = JSON.parse(localStorage.getItem("sw_reportSlot"));
    console.log("reportDetail");
    console.log(reportDetail);
+   var parser = new DOMParser();
    if (reportDetail) {
-     reportDetail.target = jQuery.parseXML(reportDetail.target);
+     reportDetail.target = parser.parseFromString(reportDetail.target,"text/html");
+     reportDetail.target.ownerdocument = parser.parseFromString(reportDetail.ownerDocument,"text/html");
      console.log(reportDetail.target);
      var reportEvent = new CustomEvent("sw_reportSlot",{detail: reportDetail});
      localStorage.removeItem("sw_reportSlot");
@@ -54,6 +56,7 @@ const log = bow('page');
  }
  window.addEventListener("storage",handleStorage);
 function swp () {
+
   var getFirstTime = browser.storage.local.get("isFirstTime");
   getFirstTime.then(
     item => {
@@ -668,7 +671,6 @@ function swp () {
       throw "MISSING ACTIONABLE CONTENTS IN WRAPPER RESPONSE";
     }
 
-    const contents = detail.response.contents;
 
     //alert("CONTENTS: " + JSON.stringify(contents));
 
@@ -721,8 +723,10 @@ function swp () {
         // }
         return jQuery.parseXML(sw.docClone);
       }))();
-      var url =  browser.extension.getURL("/pages/smartwrapReport.html");
-      var win = window.open(url, '_blank');
+      var dummyDetail = {};
+      var reportEvent = new CustomEvent("startReport",dummyDetail);
+      document.dispatchEvent(reportEvent);
+
     // }
 
     /*

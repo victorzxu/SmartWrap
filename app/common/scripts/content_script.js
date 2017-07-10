@@ -86,20 +86,20 @@ function handleRemoveTab (event) {
 
 function handleClick(event) {
   if (prevTarget) {
-    prevTarget.removeAttribute("style","background-color : rgba(200,0,0,0.5)");
+    // prevTarget.removeAttribute("style","background-color : rgba(200,0,0,0.5)");
   }
   prevTarget = event.target;
-  event.target.setAttribute("style","background-color : rgba(200,0,0,0.5)");
+  // event.target.setAttribute("style","background-color : rgba(200,0,0,0.5)");
   event.target.draggable = true;
 }
-function handleMouseout(event) {
-  event.target.removeAttribute("style","background-color: rgba(0,0,200,0.5)");
-  event.target.style.outline = "none";
-}
+// function handleMouseout(event) {
+//   // event.target.removeAttribute("style","background-color: rgba(0,0,200,0.5)");
+//   // event.target.style.outline = "none";
+// }
 function blueboxMouseover (event) {
-  event.target.setAttribute("style","background-color: rgba(0,0,200,0.5)");
-  event.target.style.outline = "thick solid #0000FF";
-  event.target.addEventListener("mouseout",handleMouseout);
+  // event.target.setAttribute("style","background-color: rgba(0,0,200,0.5)");
+  // event.target.style.outline = "thick solid #0000FF";
+  // event.target.addEventListener("mouseout",handleMouseout);
   //event.target.setAttribute("draggable",true);
   dragTarget = event.target;
 }

@@ -308,9 +308,8 @@ Smartwrap.ReportInterpreter = ((() => {
 
   interp.setTarget = function (target) {
     this.target = target;
-    console.log("target");
     console.log(target);
-    this.targetDoc = target.ownerDocument;
+    this.targetDoc = document;
 
     //this.tableStack.unshift(target);
 
@@ -355,7 +354,8 @@ Smartwrap.ReportInterpreter = ((() => {
         INSERTAT: jQuery(insertPoint).is("tr")
       });
     }
-
+    console.log("insertPoint");
+    console.log(insertPoint.activeElement);
     insertPoint.appendChild(tableElt);
     if (jQuery(insertPoint).is("tr")) {
       jQuery(tableElt).wrap("<td/>");
@@ -477,8 +477,10 @@ Smartwrap.ReportInterpreter = ((() => {
     const tableElt = this.tableStack[0];
     const rowWidget = jQuery(tableElt).find("tr").last();
     const prevRow = jQuery(tableElt).find("tr").eq(-2);
-
-    if (prevRow.size()) {
+    console.log("tableElt");
+    console.log(tableElt);
+    console.log(prevRow);
+    if (prevRow.length) {
       const that = this;
       rowWidget.find(".swCell.leer").each((ix, elt) => {
         const elt1 = jQuery(elt);
