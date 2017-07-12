@@ -90,7 +90,7 @@ function handleClick(event) {
   }
   prevTarget = event.target;
   // event.target.setAttribute("style","background-color : rgba(200,0,0,0.5)");
-  event.target.draggable = true;
+  //event.target.draggable = true;
 }
 // function handleMouseout(event) {
 //   // event.target.removeAttribute("style","background-color: rgba(0,0,200,0.5)");

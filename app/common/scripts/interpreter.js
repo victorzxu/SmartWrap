@@ -134,6 +134,8 @@ SmartwrapInterpreter0 = {
       }
     },
     "selectNodeContents": function (args) {
+      console.log("args for sNC");
+      console.log(args);
       const range = this.interpret(args[0]);
       const node1 = this.interpret(args[1]);
 

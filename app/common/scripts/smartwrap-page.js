@@ -721,7 +721,9 @@ function swp () {
         //     return browser.contentDocument;
         //   }
         // }
-        return jQuery.parseXML(sw.docClone);
+        var parser = new DOMParser();
+
+        return parser.parseFromString(sw.docClone,"text/html");
       }))();
       var dummyDetail = {};
       var reportEvent = new CustomEvent("startReport",dummyDetail);

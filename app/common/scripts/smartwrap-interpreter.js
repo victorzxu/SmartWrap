@@ -59,7 +59,6 @@ Smartwrap.Interpreter = ((() => {
       "selectNodeContents": function (args) {
         const range = this.interpret(args[0]);
         const node1 = this.interpret(args[1]);
-
         if (node1) {
           range.selectNodeContents(node1);
           this.fireEvent("select", {
@@ -84,7 +83,8 @@ Smartwrap.Interpreter = ((() => {
         const params = {
           xpath: selector
         };
-
+        console.log("in query");
+        console.log(this.doc);
         if (this.doc) {
           const resolver = this.doc.createNSResolver(this.doc);
           const result = this.doc.evaluate(selector, this.doc, resolver, XPathResult.ANY_UNORDERED_NODE_TYPE, null).singleNodeValue;
@@ -154,6 +154,7 @@ Smartwrap.Interpreter = ((() => {
       }
     },
     setContext(doc) {
+      console.log("in setContext");
       this.doc = doc;
     },
     interpret(program) {
@@ -179,7 +180,6 @@ Smartwrap.Interpreter = ((() => {
           }
           return;
         }
-
         return fun.call(that, args);
       }
       return program;
@@ -231,7 +231,6 @@ Smartwrap.LoadInterpreter = ((() => {
     contents.push(this.smartwrap.getVisibleText(kid));
     images = images.add(jQuery(kid).find("img"));
     links = links.add(jQuery(kid).find("a"));
-
     if (this.logger) {
       this.logger.log({
         "CELLCONT": contents,
@@ -308,10 +307,11 @@ Smartwrap.ReportInterpreter = ((() => {
 
   interp.setTarget = function (target) {
     this.target = target;
+    console.log("target");
     console.log(target);
     this.targetDoc = document;
 
-    //this.tableStack.unshift(target);
+    //this.tableStack.unshift(target`);`
 
     this.insertStack.unshift(target);
   };
@@ -355,7 +355,7 @@ Smartwrap.ReportInterpreter = ((() => {
       });
     }
     console.log("insertPoint");
-    console.log(insertPoint.activeElement);
+    console.log(tableElt);
     insertPoint.appendChild(tableElt);
     if (jQuery(insertPoint).is("tr")) {
       jQuery(tableElt).wrap("<td/>");
@@ -435,7 +435,7 @@ Smartwrap.ReportInterpreter = ((() => {
         "BEGROW!!": ""
       });
     }
-
+    console.log("startRow");
     const tableElt = this.tableStack[0];
     const tabWidget = jQuery(tableElt).find("tbody");
 
@@ -451,13 +451,14 @@ Smartwrap.ReportInterpreter = ((() => {
 
     const that = this;
     this.colids.forEach(colid => {
-      const cellWidget = that.targetDoc.createElement("td");
+      var cellWidget = that.targetDoc.createElement("td");
       jQuery(cellWidget).addClass("swCell");
       jQuery(cellWidget).addClass(colid);
       jQuery(cellWidget).addClass("leer");
       jQuery(cellWidget).data("colid", colid);
       rowWidget.appendChild(cellWidget);
       jQuery(rowWidget).data('cells')[colid] = cellWidget;
+
     });
     //<editor-fold desc="yxl:ifFalseCodeBlock">
     if (false) {
@@ -477,9 +478,6 @@ Smartwrap.ReportInterpreter = ((() => {
     const tableElt = this.tableStack[0];
     const rowWidget = jQuery(tableElt).find("tr").last();
     const prevRow = jQuery(tableElt).find("tr").eq(-2);
-    console.log("tableElt");
-    console.log(tableElt);
-    console.log(prevRow);
     if (prevRow.length) {
       const that = this;
       rowWidget.find(".swCell.leer").each((ix, elt) => {
@@ -519,6 +517,7 @@ Smartwrap.ReportInterpreter = ((() => {
     } else {
       this.cellWidget = this.targetDoc.createElement("td");
       jQuery(this.cellWidget).addClass("swCell");
+
       rowWidget.get(0).appendChild(this.cellWidget);
     }
 
@@ -554,6 +553,8 @@ Smartwrap.ReportInterpreter = ((() => {
     const linkContents = [];
 
     const range = params.range;
+    console.log("params");
+    console.log(range);
     let kid = range.startContainer;
 
     while (kid !== range.endContainer) {
@@ -618,7 +619,8 @@ Smartwrap.ReportInterpreter = ((() => {
         const cellImage = that.targetDoc.createElement("img");
         cellImage.src = img.src;
         cellImage.alt = img.alt;
-
+        console.log("cell Image");
+        console.log(cellImage);
         that.cellWidget.appendChild(cellImage);
         jQuery(that.cellWidget).data("json", {
           img: {

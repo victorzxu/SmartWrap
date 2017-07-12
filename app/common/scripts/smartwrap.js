@@ -1401,6 +1401,8 @@ let Smartwrap = ((() => {
 
               interp.smartwrap = that;
               interp.logger = that;
+              console.log("1404");
+              console.log(doc);
               interp.setContext(doc);
               interp.setTarget(tgt);
 
@@ -1537,6 +1539,8 @@ let Smartwrap = ((() => {
         }
 
         const interp = Object.create(Smartwrap.Interpreter);
+        console.log("1542");
+        console.log(doc);
         interp.setContext(doc);
 
         const settings = {};
@@ -1898,7 +1902,8 @@ let Smartwrap = ((() => {
       alert("SETPROG!!");
       const interp = Object.create(Smartwrap.LoadInterpreter);
       const doc = this.currentWindow.getBrowser().contentDocument;
-
+      console.log("1905");
+      console.log(doc);
       interp.setContext(doc);
       interp.inferredCount = 0;
       interp.smartwrap = this;
