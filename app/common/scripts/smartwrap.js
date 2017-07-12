@@ -2087,7 +2087,7 @@ let Smartwrap = ((() => {
     framedElt: null,
     getVisibleText(elt) {
       const jq = jQuery(elt);
-      const viz = jq.filter(":visible");
+      const viz = jq;
 
       if (viz.length === 0) {
         return "";
