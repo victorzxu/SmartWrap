@@ -18,8 +18,7 @@ class App extends React.Component {
   render() {
 
     const divStyle = {
-      resize: 'horizontal',
-      overflow: 'auto',
+      width : "50%",
     };
 
     return (

@@ -114,6 +114,10 @@ function handlePageReady (event) {
 function onReady() {
   const frame = $('#yxl_sidebar');
   console.log('content_script!');
+  document.body.style.width = "200%";
+  document.body.align = "left";
+  // console.log(document.getElementsByClassName('css-81m66u')[0]);
+  // var frameWin = document.getElementsByClassName('css-81m66u')[0];
   document.addEventListener("pageReady",handlePageReady);
   var iframedoc = browser.extension.getURL("pages/smartwrap.html");
   var XMLS = new XMLSerializer();

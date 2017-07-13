@@ -56,6 +56,8 @@ const log = bow('page');
  }
  window.addEventListener("storage",handleStorage);
 function swp () {
+  console.log("page window");
+  console.log(window);
 
   var getFirstTime = browser.storage.local.get("isFirstTime");
   getFirstTime.then(
@@ -83,12 +85,12 @@ function swp () {
 
   $("#smarttables").resizable({
     animate: true,
-    grid: [50, 5],
+    grid: [30, 5],
     handles: "s",
     stop() {
       setTimeout(() => {
         jQuery("#smarttables").animate({
-          width: "100%"
+          width: "50%"
         });
       }, 0);
     },
@@ -911,7 +913,7 @@ function swp () {
       detail.url = sw.rformat("{serverprepath}{serverpath}{serverquery}", detail.subs, key => sw.getSetting(key));
       console.log("detail.url: " + detail.url);
       detail.params = {};
-      detail.params["consent"] = detail.consent;
+      //detail.params["consent"] = detail.consent;
       detail.params["examples"] = JSON.stringify(detail.examples);
       detail.params["domxml"] = detail.domxml;
       if (sw.getSetting("algorithm") === "LIBSVM") {

@@ -563,8 +563,6 @@ Smartwrap.ReportInterpreter = ((() => {
       images = images.add(jQuery(kid).find("img"));
       var klinks = jQuery(kid).find("a");
       if (klinks.length) {
-        console.log("klinks");
-        console.log(klinks);
         linkContents.push(this.smartwrap.getVisibleText(klinks.get(0)));
       }
       links = links.add(jQuery(kid).find("a"));
