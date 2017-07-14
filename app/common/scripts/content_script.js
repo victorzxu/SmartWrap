@@ -43,7 +43,20 @@ function handleDocMsg(event) {
   console.log(docDetail);
   var docEvent = new CustomEvent("docReady",{detail: docDetail});
   document.dispatchEvent(docEvent);
+  browser.runtime.sendMessage(docDetail);
 
+}
+
+function handleBGMsg (message) {
+  console.log("receive msg from bg");
+  console.log(message);
+  if (message.eventName) {
+    var eEvent;
+    // console.log(event.data);
+    // console.log(dragTarget);
+    eEvent = new CustomEvent(message.eventName,{detail: message});
+    document.dispatchEvent(eEvent);
+  }
 }
 document.addEventListener('docMsg',handleDocMsg);
 window.addEventListener('message',onReceiveMessage,false);
@@ -114,6 +127,7 @@ function handlePageReady (event) {
 function onReady() {
   const frame = $('#yxl_sidebar');
   console.log('content_script!');
+  browser.runtime.sendMessage({eventName : "contentTab"});
   // console.log(document.getElementsByClassName('css-81m66u')[0]);
   // var frameWin = document.getElementsByClassName('css-81m66u')[0];
   document.addEventListener("pageReady",handlePageReady);
@@ -123,6 +137,7 @@ function onReady() {
   jQuery(document).bind("sw_inbounds", event => {
     jQuery("#smartwrap").removeClass("disabled");
   });
+  browser.runtime.onMessage.addListener(handleBGMsg);
   jQuery(document).bind("click",handleClick);
   jQuery(document).bind("dragstart", event => {
     event.stopPropagation();
