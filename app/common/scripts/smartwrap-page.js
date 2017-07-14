@@ -55,10 +55,21 @@ const log = bow('page');
    }
  }
  window.addEventListener("storage",handleStorage);
+ function handleBGMsg (message) {
+   console.log("receive msg from bg");
+   console.log(message);
+   if (message.eventName) {
+     var eEvent;
+     // console.log(event.data);
+     // console.log(dragTarget);
+     eEvent = new CustomEvent(message.eventName,{detail: message});
+     document.dispatchEvent(eEvent);
+   }
+ }
 function swp () {
   console.log("page window");
   console.log(window);
-
+  browser.runtime.onMessage.addListener(handleBGMsg);
   var getFirstTime = browser.storage.local.get("isFirstTime");
   getFirstTime.then(
     item => {

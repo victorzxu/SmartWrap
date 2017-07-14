@@ -62,7 +62,7 @@ window.setTimeout(() => {
   marker.mark();
 }, 10);
 function handleDocReady(event) {
-  main(onReady);
+  onReady();
 }
 document.addEventListener('docReady',handleDocReady);
 
@@ -107,15 +107,13 @@ function blueboxMouseover (event) {
 function handlePageReady (event) {
   console.log("docDetail in pageReady");
   console.log(docDetail);
-  $('.css-b6en4a')[0].contentWindow.postMessage(docDetail,'*');
+  browser.runtime.sendMessage(docDetail);
   console.log("end Marking");
 }
 
 function onReady() {
   const frame = $('#yxl_sidebar');
   console.log('content_script!');
-  document.body.style.width = "200%";
-  document.body.align = "left";
   // console.log(document.getElementsByClassName('css-81m66u')[0]);
   // var frameWin = document.getElementsByClassName('css-81m66u')[0];
   document.addEventListener("pageReady",handlePageReady);
@@ -150,7 +148,7 @@ function onReady() {
     detail.metadata.title = event.target.ownerDocument.title;
     detail.metadata.absoluteLocationXPath = Smartwrap.getAbsoluteLocationXPath(event.target, false);
     detail.target = XMLS.serializeToString(tgt);
-    $('.css-b6en4a')[0].contentWindow.postMessage(detail,'*');
+    browser.runtime.sendMessage(detail);
 
   });
 
