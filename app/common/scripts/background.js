@@ -7,6 +7,7 @@ var swTab;
 var csTab;
 var DocMessage;
 function onCreated(windowInfo) {
+  console.log("in here");
   swTab = windowInfo;
   browser.tabs.sendMessage(swTab.id,DocMessage);
 }
