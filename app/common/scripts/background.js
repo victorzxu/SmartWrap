@@ -1,7 +1,7 @@
 /**
  * Created by Xiao Liang Yu <me@hiubright.com>
  */
-
+import browser from "webextension-polyfill";
 const context = typeof browser === 'undefined' ? chrome : browser;
 var swTab;
 var csTab;
@@ -39,13 +39,13 @@ function handleMessage(message,sender,sendResponse) {
 
 
 }
-context.browserAction.onClicked.addListener(()=>{
-  context.tabs.executeScript({
+browser.browserAction.onClicked.addListener(()=>{
+  browser.tabs.executeScript({
     file:'scripts/browser_action.js',
     runAt:'document_idle'
   });
   var creating = browser.tabs.create({
-    url: browser.extension.getURL("pages/smartwrap.html")
+    url: browser.runtime.getURL("pages/smartwrap.html")
   })
   creating.then(onCreated,onError);
 
