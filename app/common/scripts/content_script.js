@@ -30,7 +30,8 @@ var docReady = false;
 var dummysw = Object.create(Smartwrap);
 function onReceiveMessage(event){
   var eEvent;
-  // console.log(event.data);
+  console.log("receive message");
+   console.log(event);
   // console.log(dragTarget);
   eEvent = new CustomEvent(event.data.eventName,{detail: event.data});
   document.dispatchEvent(eEvent);
