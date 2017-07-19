@@ -326,7 +326,6 @@ let Smartwrap = ((() => {
       return ret;
     },
     getSetting(key) {
-      console.log(key);
       const out = prefutil.getPref({
         'key' : key,
       });
@@ -1362,6 +1361,7 @@ let Smartwrap = ((() => {
 
           case "swRunWrapper":
             listener = event => {
+              console.log("in swRunWrapper");
               const detail = event.originalEvent && event.originalEvent.detail || {};
 
               that.log({
@@ -1961,7 +1961,6 @@ let Smartwrap = ((() => {
         GSTAT: key,
         allstatus: this.status
       });
-      console.log("in getStatus");
       if (!this.status.fresh) {
         this.status.preview_ready = true;
         this.status.preview_ready = this.status.preview_ready && (!!this.bwdominfo);

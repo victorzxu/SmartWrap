@@ -909,6 +909,7 @@ function swp () {
   });
 
   jQuery(document).bind("swWrapperRequest", event => {
+    console.log("got wrapper Request");
     //alert(JSON.stringify({req:'wrapper'}));
     const detail = Object.create(event.originalEvent.detail);
     console.log("examples");

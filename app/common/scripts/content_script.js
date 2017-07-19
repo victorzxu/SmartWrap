@@ -22,6 +22,7 @@ import DocumentMarker from './smartwrap-docmarker';
 localStorage.debug = true;
 import bow from 'bows';
 const log = bow('content_script');
+browser.runtime.sendMessage({eventName : "contentTab"});
 var dragTarget;
 var prevTarget;
 var docDetail;
@@ -127,7 +128,6 @@ function handlePageReady (event) {
 function onReady() {
   const frame = $('#yxl_sidebar');
   console.log('content_script!');
-  browser.runtime.sendMessage({eventName : "contentTab"});
   // console.log(document.getElementsByClassName('css-81m66u')[0]);
   // var frameWin = document.getElementsByClassName('css-81m66u')[0];
   document.addEventListener("pageReady",handlePageReady);

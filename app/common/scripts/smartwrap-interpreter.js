@@ -83,8 +83,6 @@ Smartwrap.Interpreter = ((() => {
         const params = {
           xpath: selector
         };
-        console.log("in query");
-        console.log(this.doc);
         if (this.doc) {
           const resolver = this.doc.createNSResolver(this.doc);
           const result = this.doc.evaluate(selector, this.doc, resolver, XPathResult.ANY_UNORDERED_NODE_TYPE, null).singleNodeValue;
@@ -154,7 +152,6 @@ Smartwrap.Interpreter = ((() => {
       }
     },
     setContext(doc) {
-      console.log("in setContext");
       this.doc = doc;
     },
     interpret(program) {
@@ -307,8 +304,8 @@ Smartwrap.ReportInterpreter = ((() => {
 
   interp.setTarget = function (target) {
     this.target = target;
-    console.log("target");
-    console.log(target);
+    // console.log("target");
+    // console.log(target);
     this.targetDoc = document;
 
     //this.tableStack.unshift(target`);`
@@ -354,13 +351,12 @@ Smartwrap.ReportInterpreter = ((() => {
         INSERTAT: jQuery(insertPoint).is("tr")
       });
     }
-    console.log("insertPoint");
-    console.log(tableElt);
+    // console.log("insertPoint");
+    // console.log(tableElt);
     insertPoint.appendChild(tableElt);
     if (jQuery(insertPoint).is("tr")) {
       jQuery(tableElt).wrap("<td/>");
     }
-
     if (params.label) {
       const caption = this.targetDoc.createElement("caption");
       caption.appendChild(this.targetDoc.createTextNode(params.label));
@@ -553,8 +549,8 @@ Smartwrap.ReportInterpreter = ((() => {
     const linkContents = [];
 
     const range = params.range;
-    console.log("params");
-    console.log(range);
+    // console.log("params");
+    // console.log(range);
     let kid = range.startContainer;
 
     while (kid !== range.endContainer) {
@@ -588,8 +584,8 @@ Smartwrap.ReportInterpreter = ((() => {
 
 
     const cellText = contents.join("");
-    console.log("cellText");
-    console.log(cellText);
+    // console.log("cellText");
+    // console.log(cellText);
     /*
      images.first().each(function (index, img) {
      cell.imageSource = img.src;
