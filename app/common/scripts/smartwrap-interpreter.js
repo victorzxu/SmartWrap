@@ -613,6 +613,7 @@ Smartwrap.ReportInterpreter = ((() => {
     const that = this;
 
     if (images.length > 0) {
+      console.log("got Image");
       images.first().each((index, img) => {
         const cellImage = that.targetDoc.createElement("img");
         cellImage.src = img.src;

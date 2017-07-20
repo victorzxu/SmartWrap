@@ -117,6 +117,7 @@ function swp () {
     sw.domxml = event.detail.domxml;
     sw.bwdominfo = event.detail.bwdominfo;
     sw.nodemap = event.detail.nodemap;
+    $("#loading_wrap").remove();
   }
   window.addEventListener("message",onReceiveMessage,false);
   document.addEventListener("dragstart_msg",handleDragstartMsg);
