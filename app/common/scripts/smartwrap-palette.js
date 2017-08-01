@@ -13,7 +13,7 @@ Smartwrap.Palette = ((() => {
       }
 
       const that = this;
-
+      console.log('in here');
       this.colors = [];
       this.baseColors = [];
       this.settings = {
@@ -92,6 +92,7 @@ Smartwrap.Palette = ((() => {
       }
       //alert(jQuery.format("{alias} -> {color}", {alias:alias, color:this.colorMap[alias]}));
       return this.colorMap[alias];
+      console.log("enter ColorMap");
     },
     getCSS() {
       //alert("COLORS: " + JSON.stringify(this.colors));

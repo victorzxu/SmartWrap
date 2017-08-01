@@ -115,7 +115,7 @@ function blueboxMouseover (event) {
   // event.target.setAttribute("style","background-color: rgba(0,0,200,0.5)");
   // event.target.style.outline = "thick solid #0000FF";
   // event.target.addEventListener("mouseout",handleMouseout);
-  //event.target.setAttribute("draggable",true);
+  // event.target.setAttribute("draggable",true);
   dragTarget = event.target;
 }
 

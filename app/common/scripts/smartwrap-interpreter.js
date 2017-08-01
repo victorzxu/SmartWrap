@@ -254,7 +254,7 @@ Smartwrap.LoadInterpreter = ((() => {
     cell.xpath = range.selector;
 
     this.currentRow.push(cell);
-
+ m
     if (this.logger) {
       this.logger.log({
         "CELL": cell
@@ -553,7 +553,9 @@ Smartwrap.ReportInterpreter = ((() => {
     // console.log(range);
     let kid = range.startContainer;
 
+
     while (kid !== range.endContainer) {
+
       contents.push(this.smartwrap.getVisibleText(kid));
       kid = kid.nextSibling;
       images = images.add(jQuery(kid).find("img"));
@@ -565,8 +567,22 @@ Smartwrap.ReportInterpreter = ((() => {
     }
 
     contents.push(this.smartwrap.getVisibleText(kid));
-    images = images.add(jQuery(kid).find("img"));
+    console.log("check kids");
+    console.log(kid);
+    console.log(kid.nodeName);
+    if (typeof InstallTrigger !== 'undefined') {
+      images = images.add(jQuery(kid).find("img"));
+    }
+    else {
+      if (kid.nodeName.toLowerCase() === 'img') {
+        images = images.add(jQuery(kid));
+      }
+    }
+    console.log("after find");
+    console.log(images);
     links = links.add(jQuery(kid).find("a"));
+    console.log("links");
+    console.log(links);
     var klinks = jQuery(kid).find("a");
     if (klinks.length) {
       linkContents.push(this.smartwrap.getVisibleText(klinks.get(0)));

@@ -878,6 +878,7 @@ function swp () {
       return text;
     })(detail.statusText);
 
+
     if (tellDetail.serverMessage) {
       tellDetail.dialogType = "prompt";
       tellDetail.promptValue = tellDetail.serverMessage;
