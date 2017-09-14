@@ -1970,7 +1970,8 @@ let Smartwrap = ((() => {
 
         this.status.discard_ready = false;
 
-        this.status.save_ready = !!this.wrapper;
+        //this.status.save_ready = !!this.wrapper;
+        this.status.save_ready = true;
 
         //alert("ORE: " + JSON.stringify(this.status));
         this.log({

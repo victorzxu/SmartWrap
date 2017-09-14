@@ -969,7 +969,9 @@ function swp () {
       detail.callbacks.complete = () => {
         delete sw.pendingRequests[detail.url];
       };
+      console.log("detail.params");
       console.log(detail.params);
+      sw.examples = detail.params.examples;
       detail.jqXHR = jQuery.ajax({
         url: detail.url,
         type: 'POST',
@@ -1335,7 +1337,9 @@ function swp () {
       httpDetail.url = sw.rformat("{serverprepath}/Persist", subs, key => sw.getSetting(key));
       httpDetail.timeout = sw.getSetting("serverTimeout");
       httpDetail.params = {};
-      httpDetail.params.wrapper = JSON.stringify(sw.wrapper);
+      console.log("inSave");
+      console.log(JSON.stringify(sw.getProgram()));
+      httpDetail.params.wrapper = JSON.stringify(sw.getProgram());
       httpDetail.continuation = detail.continuation || (() => {
           alert("The wrapper was saved");
         });
