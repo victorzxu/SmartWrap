@@ -100,6 +100,7 @@ function handleRemoveTab (event) {
 }
 
 function handleClick(event) {
+  event.preventDefault();
   if (prevTarget) {
     // prevTarget.removeAttribute("style","background-color : rgba(200,0,0,0.5)");
   }
