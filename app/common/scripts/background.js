@@ -7,7 +7,7 @@ var swTab;
 var csTab;
 var DocMessage;
 function onCreated(windowInfo) {
-  console.log("in here");
+  // console.log("in here");
   swTab = windowInfo;
   // console.log(DocMessage);
   // browser.tabs.sendMessage(swTab.id,DocMessage);
@@ -16,30 +16,30 @@ function onError(error) {
   console.log(error);
 }
 function handleMessage(message,sender,sendResponse) {
-  console.log(message);
+  // console.log(message);
   if (message.eventName) {
-    console.log(message.eventName);
-    console.log(swTab);
-    console.log(csTab);
+    // console.log(message.eventName);
+    // console.log(swTab);
+    // console.log(csTab);
     if (message.eventName == "dragstart_msg") {
-      console.log(swTab.id);
+      // console.log(swTab.id);
       browser.tabs.sendMessage(swTab.id,message);
     }
     if (message.eventName == "docMsg") {
-      console.log("in docMsg");
-      console.log(swTab.id);
+      // console.log("in docMsg");
+      // console.log(swTab.id);
       DocMessage = message;
       browser.tabs.sendMessage(swTab.id,message);
 
     }
 
     if (message.eventName == "contentTab") {
-      console.log("sender");
-      console.log(sender);
+      // console.log("sender");
+      // console.log(sender);
       csTab = sender.tab;
     }
     if (message.eventName == "pageReady") {
-      console.log(csTab.id);
+      // console.log(csTab.id);
       browser.tabs.sendMessage(csTab.id,message);
     }
   }

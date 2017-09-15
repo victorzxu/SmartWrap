@@ -38,16 +38,17 @@ const log = bow('page');
    eEvent = new CustomEvent(event.data.eventName,{detail: event.data});
    document.dispatchEvent(eEvent);
  }
+
  function handleStorage (event) {
-   console.log("in Storage");
+   //console.log("in Storage");
    var reportDetail = JSON.parse(localStorage.getItem("sw_reportSlot"));
-   console.log("reportDetail");
-   console.log(reportDetail);
+  //  console.log("reportDetail");
+  //  console.log(reportDetail);
    var parser = new DOMParser();
    if (reportDetail) {
      reportDetail.target = parser.parseFromString(reportDetail.target,"text/html");
      reportDetail.target.ownerdocument = parser.parseFromString(reportDetail.ownerDocument,"text/html");
-     console.log(reportDetail.target);
+    //  console.log(reportDetail.target);
      var reportEvent = new CustomEvent("sw_reportSlot",{detail: reportDetail});
      localStorage.removeItem("sw_reportSlot");
      document.dispatchEvent(reportEvent);
@@ -57,7 +58,7 @@ const log = bow('page');
  window.addEventListener("storage",handleStorage);
  function handleBGMsg (message) {
    console.log("receive msg from bg");
-   console.log(message);
+  //  console.log(message);
    if (message.eventName) {
      var eEvent;
      // console.log(event.data);
@@ -67,19 +68,19 @@ const log = bow('page');
    }
  }
 function swp () {
-  console.log("page window");
-  console.log(window);
+  // console.log("page window");
+  // console.log(window);
   browser.runtime.onMessage.addListener(handleBGMsg);
   var getFirstTime = browser.storage.local.get("isFirstTime");
   getFirstTime.then(
     item => {
       if (Object.keys(item).length === 0) {
-        console.log("first time");
+        //console.log("first time");
         prefutil.initPref();
         browser.storage.local.set({isFirstTime:false});
       }
       else {
-        console.log("not first time");
+        //console.log("not first time");
       }
     },
     error => {
@@ -111,8 +112,8 @@ function swp () {
     sw.dragDetail  = event.detail;
   }
   function handleDocMsg(event) {
-    console.log("in handleDocMsg");
-    console.log(event);
+    // console.log("in handleDocMsg");
+    // console.log(event);
     sw.docClone = event.detail.docClone;
     sw.domxml = event.detail.domxml;
     sw.bwdominfo = event.detail.bwdominfo;
@@ -573,7 +574,7 @@ function swp () {
   });
 
   jQuery(document).bind("sw_dom", event => {
-    console.log("sw_dom detected");
+    // console.log("sw_dom detected");
     const detail = event.originalEvent && event.originalEvent.detail;
     //sw.log({"SWDOM": Object.keys(detail)});
     if (detail.bwdominfo) {
@@ -621,7 +622,7 @@ function swp () {
   jQuery(document).bind("sw_dragstart", event => {
     //sw.log("HTMLDRAGSTART!");
     const detail = event.originalEvent && event.originalEvent.detail;
-    console.log('got sw_dragstart');
+    //console.log('got sw_dragstart');
     sw.dragDetail = detail;
   });
   let body;
@@ -749,7 +750,7 @@ function swp () {
 
   });
   jQuery(document).bind("sw_status", event => {
-    console.log("in sw_status");
+    // console.log("in sw_status");
     jQuery(".swUndo").attr('disabled', !sw.getStatus("undo_ready"));
     jQuery("#smarttables").toggleClass("undo_ready", !!sw.getStatus("undo_ready"));
 
@@ -782,7 +783,7 @@ function swp () {
   jQuery("document").bind("swServerReady swServerError swBadResponse", event => {
     const detail = event.originalEvent.detail;
     //alert("SERVER: " + event.type + ":: " + JSON.stringify(detail));
-    console.log("detail status" + detail.status)
+    // console.log("detail status" + detail.status)
     if ((detail.status >= 400) && (detail.status < 600)) {
       sw.tellUser({
         msgid: "msg_serverError"
@@ -798,7 +799,7 @@ function swp () {
   jQuery(document).bind("swBadResponse", event => {
     const detail = event.originalEvent.detail;
     //alert("SERVER: " + event.type + ":: " + JSON.stringify(detail));
-    console.log("swBadResponse");
+    //console.log("swBadResponse");
     if (true) {
       sw.tellUser({
         msgid: "msg_serverError"
@@ -911,15 +912,15 @@ function swp () {
   });
 
   jQuery(document).bind("swWrapperRequest", event => {
-    console.log("got wrapper Request");
+    // console.log("got wrapper Request");
     //alert(JSON.stringify({req:'wrapper'}));
     const detail = Object.create(event.originalEvent.detail);
-    console.log("examples");
-    console.log(detail.examples);
+    // console.log("examples");
+    // console.log(detail.examples);
     try {
       detail.subs = {};
       detail.url = sw.rformat("{serverprepath}{serverpath}{serverquery}", detail.subs, key => sw.getSetting(key));
-      console.log("detail.url: " + detail.url);
+      // console.log("detail.url: " + detail.url);
       detail.params = {};
       //detail.params["consent"] = detail.consent;
       detail.params["examples"] = JSON.stringify(detail.examples);
@@ -969,8 +970,8 @@ function swp () {
       detail.callbacks.complete = () => {
         delete sw.pendingRequests[detail.url];
       };
-      console.log("detail.params");
-      console.log(detail.params);
+      // console.log("detail.params");
+      // console.log(detail.params);
       sw.examples = detail.params.examples;
       detail.jqXHR = jQuery.ajax({
         url: detail.url,
@@ -994,9 +995,9 @@ function swp () {
 
       if (!detail.params.dominfo) {
         const metaurl = sw.rformat("{serverprepath}/smartwrap/Meta", detail.subs, key => sw.getSetting(key));
-        console.log("metaurl: "+metaurl);
-        console.log("swdominfo");
-        console.log(sw);
+        // console.log("metaurl: "+metaurl);
+        // console.log("swdominfo");
+        // console.log(sw);
         const metaload = jQuery.ajax({
           url: metaurl,
           type: 'POST',
@@ -1337,8 +1338,8 @@ function swp () {
       httpDetail.url = sw.rformat("{serverprepath}/Persist", subs, key => sw.getSetting(key));
       httpDetail.timeout = sw.getSetting("serverTimeout");
       httpDetail.params = {};
-      console.log("inSave");
-      console.log(JSON.stringify(sw.getProgram()));
+      // console.log("inSave");
+      // console.log(JSON.stringify(sw.getProgram()));
       httpDetail.params.wrapper = JSON.stringify(sw.getProgram());
       httpDetail.continuation = detail.continuation || (() => {
           alert("The wrapper was saved");

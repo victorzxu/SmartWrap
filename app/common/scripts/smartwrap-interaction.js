@@ -75,7 +75,7 @@ const Interaction = ((() => {
       return this;
     },
     handleMouseover(event) {
-      console.log("mouseOver");
+      // //console.log("mouseOver");
       const tgt = event.target;
 
       if (this.doc !== tgt.ownerDocument) {
@@ -174,7 +174,7 @@ const Interaction = ((() => {
        */
     },
     handleMouseout(event) {
-      console.log("mouseOut");
+      ////console.log("mouseOut");
       const tgt = event.target;
 
       if (this.doc !== tgt.ownerDocument) {
@@ -209,17 +209,17 @@ const Interaction = ((() => {
       return this;
     },
     handleDrop(event) {
-      console.log("drop");
+      //console.log("drop");
       event.preventDefault();
       const data  = event.dataTransfer.getData("test/uri-list");
-      console.log(data);
+      //console.log(data);
     },
     handleDragend(event) {
-      console.log("dragEnd");
+      //console.log("dragEnd");
       const tgt = event.target;
 
       const data = dropevent.dataTransfer.getData("text/uri-list");
-      console.log(data);
+      //console.log(data);
       //ZD:COMMENTED out since the document should be different NOW
       //if (this.doc !== tgt.ownerDocument) {
         // can ignore mouse/over from other documents
@@ -231,7 +231,7 @@ const Interaction = ((() => {
       //}
     },
     handleDragstart(event) {
-      console.log("dragStart");
+      //console.log("dragStart");
       const tgt = event.target;
       const i = 0;
       let df;
@@ -270,7 +270,7 @@ const Interaction = ((() => {
       //tgt.ownerDocument.defaultView.alert("DRRAG:" + tgt.ownerDocument.defaultView.location.href);
 
       const evt = document.createEvent("CustomEvent");
-      console.log("in interaction");
+      //console.log("in interaction");
       evt.initCustomEvent("sw_dragstart", true, true, detail);
       this.doc.dispatchEvent(evt);
 
@@ -279,11 +279,11 @@ const Interaction = ((() => {
     registerListeners() {
       const that = this;
       jQuery(this.doc).bind("dragstart", event => {
-        console.log("dragstart");
+        //console.log("dragstart");
         that.handleDragstart(event);
       });
       jQuery(this.doc).bind("dragend", event => {
-        console.log("dragend");
+        //console.log("dragend");
         that.handleDragend(event);
       });
       this.doc.addEventListener("drop",this.handleDrop(event));
@@ -345,7 +345,7 @@ const Interaction = ((() => {
     }
 
     this.selectedElt = tgt;
-    console.log(tgt);
+    //console.log(tgt);
     jQuery(this.selectedElt).addClass("sw_selected");
     InteractionObj.enableDragging(this.selectedElt);
     //this.selectedElt.draggable = true;

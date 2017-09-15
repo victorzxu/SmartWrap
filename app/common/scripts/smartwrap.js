@@ -288,7 +288,7 @@ let Smartwrap = ((() => {
       const self = this;
 
       var parts = templ.split(/({[^{}]+})/);
-      console.log(parts);
+      //console.log(parts);
       var p2 = parts.map(part => {
         if (part.match(/^{.+}$/)) {
           var key = part.slice(1, -1);
@@ -311,7 +311,7 @@ let Smartwrap = ((() => {
           //TODO: fix the getPref problem.
           // var res = browser.storage.local.get(key);
           // res.then (function (value) {
-          //   console.log(value);
+          //   //console.log(value);
           //   lookupKey = value[key];
           //   subs[key] = subs[key] || self.rformat(lookupKey, subs, lookup);
           //   return subs[key];
@@ -322,7 +322,7 @@ let Smartwrap = ((() => {
       });
       //alert(JSON.stringify({templ:templ,parts:parts,p2:p2,subs:subs}));
       var ret = jQuery.format(templ,subs);
-      console.log(ret);
+      //console.log(ret);
       return ret;
     },
     getSetting(key) {
@@ -1361,7 +1361,7 @@ let Smartwrap = ((() => {
 
           case "swRunWrapper":
             listener = event => {
-              console.log("in swRunWrapper");
+              //console.log("in swRunWrapper");
               const detail = event.originalEvent && event.originalEvent.detail || {};
 
               that.log({
@@ -1401,8 +1401,8 @@ let Smartwrap = ((() => {
 
               interp.smartwrap = that;
               interp.logger = that;
-              console.log("1404");
-              console.log(doc);
+              //console.log("1404");
+              //console.log(doc);
               interp.setContext(doc);
               interp.setTarget(tgt);
 
@@ -1530,8 +1530,8 @@ let Smartwrap = ((() => {
           ["sw_removecell"].forEach(eventType => {
             jQuery(doc).bind(eventType, that.getHandler(eventType));
           });
-          console.log("doc");
-          console.log(doc);
+          //console.log("doc");
+          //console.log(doc);
           const meta = doc.createElement("meta");
           meta.id = "sw_instrumented";
           meta.content = "";
@@ -1539,8 +1539,8 @@ let Smartwrap = ((() => {
         }
 
         const interp = Object.create(Smartwrap.Interpreter);
-        console.log("1542");
-        console.log(doc);
+        //console.log("1542");
+        //console.log(doc);
         interp.setContext(doc);
 
         const settings = {};
@@ -1574,7 +1574,7 @@ let Smartwrap = ((() => {
           //     //alert("PAINTCONT");
           //     const tableelt = tablerange.commonAncestorContainer;
           //     jQuery(tableelt).addClass("sw_injected_table");
-          //     console.log(tablerange);
+          //     //console.log(tablerange);
           //     const eltbox = paintRowBox(tableelt.getBoundingClientRect(), {
           //       templateName: "sw_tablebox",
           //       className: tableid
@@ -1793,8 +1793,8 @@ let Smartwrap = ((() => {
     },
     tellUser(spec) {
       const msgid = spec.msgid;
-      console.log(this.dialogs);
-      console.log(msgid);
+      //console.log(this.dialogs);
+      //console.log(msgid);
       const dialogElt = this.dialogs[msgid];
       const eltCopy = jQuery(dialogElt).clone();
 
@@ -1902,8 +1902,8 @@ let Smartwrap = ((() => {
       alert("SETPROG!!");
       const interp = Object.create(Smartwrap.LoadInterpreter);
       const doc = this.currentWindow.getBrowser().contentDocument;
-      console.log("1905");
-      console.log(doc);
+      //console.log("1905");
+      //console.log(doc);
       interp.setContext(doc);
       interp.inferredCount = 0;
       interp.smartwrap = this;
@@ -2061,7 +2061,7 @@ let Smartwrap = ((() => {
     log(msg) {
       //<editor-fold desc="yxl:ifFalseCodeBlock">
       if (false) {
-        console.log(JSON.stringify(msg));
+        //console.log(JSON.stringify(msg));
         return;
       }
       //</editor-fold>

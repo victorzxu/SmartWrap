@@ -7,7 +7,7 @@ const program = JSON.parse(jQuery("meta#sw_program").get(0).content);
 
 const interp = Object.create(Smartwrap.Interpreter);
 console.log("in annotation");
-console.log(document);
+// console.log(document);
 interp.setContext(document);
 
 const palette = Palette.mainPalette;

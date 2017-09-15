@@ -548,8 +548,8 @@ const DocumentMarker = ((() => {
         var XMLS = new XMLSerializer();
         metadata.docClone = doc1;
         metadata.domxml = XMLS.serializeToString(doc1);
-        console.log("nodelist");
-        console.log(this.nodelist);
+        // console.log("nodelist");
+        // console.log(this.nodelist);
         metadata.bwdominfo = this.nodelist;
         metadata.nodemap = this.nodemap;
         var msgDetail = {

@@ -431,7 +431,7 @@ Smartwrap.ReportInterpreter = ((() => {
         "BEGROW!!": ""
       });
     }
-    console.log("startRow");
+    // console.log("startRow");
     const tableElt = this.tableStack[0];
     const tabWidget = jQuery(tableElt).find("tbody");
 
@@ -567,9 +567,9 @@ Smartwrap.ReportInterpreter = ((() => {
     }
 
     contents.push(this.smartwrap.getVisibleText(kid));
-    console.log("check kids");
-    console.log(kid);
-    console.log(kid.nodeName);
+    // console.log("check kids");
+    // console.log(kid);
+    // console.log(kid.nodeName);
     if (typeof InstallTrigger !== 'undefined') {
       images = images.add(jQuery(kid).find("img"));
     }
@@ -578,11 +578,11 @@ Smartwrap.ReportInterpreter = ((() => {
         images = images.add(jQuery(kid));
       }
     }
-    console.log("after find");
-    console.log(images);
+    // console.log("after find");
+    // console.log(images);
     links = links.add(jQuery(kid).find("a"));
-    console.log("links");
-    console.log(links);
+    // console.log("links");
+    // console.log(links);
     var klinks = jQuery(kid).find("a");
     if (klinks.length) {
       linkContents.push(this.smartwrap.getVisibleText(klinks.get(0)));
@@ -629,13 +629,13 @@ Smartwrap.ReportInterpreter = ((() => {
     const that = this;
 
     if (images.length > 0) {
-      console.log("got Image");
+      // console.log("got Image");
       images.first().each((index, img) => {
         const cellImage = that.targetDoc.createElement("img");
         cellImage.src = img.src;
         cellImage.alt = img.alt;
-        console.log("cell Image");
-        console.log(cellImage);
+        // console.log("cell Image");
+        // console.log(cellImage);
         that.cellWidget.appendChild(cellImage);
         jQuery(that.cellWidget).data("json", {
           img: {

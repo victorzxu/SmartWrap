@@ -12,7 +12,7 @@ let frame;
 class App extends React.Component {
 
   componentDidMount() {
-    console.log('mounted');
+    // console.log('mounted');
   }
 
   render() {

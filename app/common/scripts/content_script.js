@@ -31,18 +31,18 @@ var dummysw = Object.create(Smartwrap);
 function onReceiveMessage(event){
   var eEvent;
   console.log("receive message");
-   console.log(event);
+  //  console.log(event);
   // console.log(dragTarget);
   eEvent = new CustomEvent(event.data.eventName,{detail: event.data});
   document.dispatchEvent(eEvent);
 }
 function handleDocMsg(event) {
-  console.log("handleDocMsg event");
-  console.log(event);
+  // console.log("handleDocMsg event");
+  // console.log(event);
   docReady = true;
   docDetail = event.detail;
-  console.log("docDetail in handleDocMsg");
-  console.log(docDetail);
+  // console.log("docDetail in handleDocMsg");
+  // console.log(docDetail);
   var docEvent = new CustomEvent("docReady",{detail: docDetail});
   document.dispatchEvent(docEvent);
   browser.runtime.sendMessage(docDetail);
@@ -51,7 +51,7 @@ function handleDocMsg(event) {
 
 function handleBGMsg (message) {
   console.log("receive msg from bg");
-  console.log(message);
+  // console.log(message);
   if (message.eventName) {
     var eEvent;
     // console.log(event.data);
@@ -123,8 +123,8 @@ function blueboxMouseover (event) {
 }
 
 function handlePageReady (event) {
-  console.log("docDetail in pageReady");
-  console.log(docDetail);
+  // console.log("docDetail in pageReady");
+  // console.log(docDetail);
   browser.runtime.sendMessage(docDetail);
   console.log("end Marking");
 }
@@ -145,8 +145,8 @@ function onReady() {
   jQuery(document).bind("click",handleClick);
   jQuery(document).bind("dragstart", event => {
     event.stopPropagation();
-    console.log("dragStart");
-    console.log(event);
+    // console.log("dragStart");
+    // console.log(event);
     // console.log(event.target);
     // console.log(dragTarget);
     const iframe  = $('iframe');

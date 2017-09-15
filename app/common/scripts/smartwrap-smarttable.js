@@ -236,8 +236,8 @@ Smartwrap.SmartTable = ((() => {
 
         const draggedElt = dragDetail.draggedElt;
         const dragTargets = this.interpretDrag(draggedElt);
-        console.log("dragTargets");
-        console.log(dragTargets);
+        //console.log("dragTargets");
+        //console.log(dragTargets);
         let dragKey = "dragged";
         if (this.smartwrap.getSetting("dragInterpretation") === "SHALLOWEST") {
           dragKey = "shallow";
@@ -247,11 +247,11 @@ Smartwrap.SmartTable = ((() => {
         }
 
         const intendedElt = dragTargets[dragKey].elt;
-        console.log("xpath");
-        console.log(dragDetail);
+        //console.log("xpath");
+        //console.log(dragDetail);
         const xpath = dragDetail.xpath;
-        console.log('xpath');
-        console.log(xpath);
+        //console.log('xpath');
+        //console.log(xpath);
         const tuple = {
           keys: [],
           map: {},
