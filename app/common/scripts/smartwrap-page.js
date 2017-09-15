@@ -57,7 +57,7 @@ const log = bow('page');
  }
  window.addEventListener("storage",handleStorage);
  function handleBGMsg (message) {
-   console.log("receive msg from bg");
+  //  console.log("receive msg from bg");
   //  console.log(message);
    if (message.eventName) {
      var eEvent;

@@ -50,7 +50,7 @@ function handleDocMsg(event) {
 }
 
 function handleBGMsg (message) {
-  console.log("receive msg from bg");
+  // console.log("receive msg from bg");
   // console.log(message);
   if (message.eventName) {
     var eEvent;
@@ -126,7 +126,7 @@ function handlePageReady (event) {
   // console.log("docDetail in pageReady");
   // console.log(docDetail);
   browser.runtime.sendMessage(docDetail);
-  console.log("end Marking");
+  // console.log("end Marking");
 }
 
 function onReady() {
