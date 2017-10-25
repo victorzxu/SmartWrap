@@ -1370,6 +1370,8 @@ let Smartwrap = ((() => {
 
               detail["examples"] = that.getProgram();
               detail["bwdominfo"] = that.bwdominfo;
+              console.log("swdomxml");
+              console.log(that.domxml);
               detail["domxml"] = that.domxml;
               //alert("RUN: " + JSON.stringify(Object.keys(detail)));
               detail.consent = true;

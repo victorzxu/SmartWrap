@@ -550,13 +550,19 @@ const DocumentMarker = ((() => {
         metadata.domxml = XMLS.serializeToString(doc1);
         // console.log("nodelist");
         // console.log(this.nodelist);
+        //console.log("domxml");
+        //console.log(metadata.domxml);
+
+
         metadata.bwdominfo = this.nodelist;
+        console.log("bwdominfo");
+        console.log(JSON.stringify(metadata.bwdominfo));
         metadata.nodemap = this.nodemap;
         var msgDetail = {
           'eventName' : 'docMsg',
           'docClone' : XMLS.serializeToString(metadata.docClone),
-          'domxml' : encodeURIComponent(metadata.domxml),
-          'bwdominfo' : encodeURIComponent(JSON.stringify(metadata.bwdominfo)),
+          'domxml' : metadata.domxml,
+          'bwdominfo' : JSON.stringify(metadata.bwdominfo),
           'nodemap' : JSON.stringify(metadata.nodemap),
         }
         window.postMessage(msgDetail,'*');
