@@ -1,4 +1,5 @@
 import jQuery from "jquery";
+import { saveAs } from "./lib/FileSaver.js";
 const $ = jQuery;
 
 //TODO: Fix logging since reference to smartwrap was taken out
@@ -548,18 +549,47 @@ const DocumentMarker = ((() => {
         var XMLS = new XMLSerializer();
         metadata.docClone = doc1;
         metadata.domxml = XMLS.serializeToString(doc1);
+        // console.log(metadata.domxml);
         // console.log("nodelist");
         // console.log(this.nodelist);
         metadata.bwdominfo = this.nodelist;
         metadata.nodemap = this.nodemap;
+        var docString = "";
+        metadata.bwdominfo.forEach(function(element){
+          var JsonOuterHTML = "";
+          JsonOuterHTML = JsonOuterHTML.concat(JSON.stringify(element.node.outerHTML));
+          if (JsonOuterHTML.length > 100) JsonOuterHTML = "\"outerHTML too long\"";
+          docString = docString.concat("{",
+                                       JSON.stringify(element.position),",",
+                                       JSON.stringify(element.xpath),",",
+                                       JSON.stringify(element.style),",",
+                                       JsonOuterHTML,"},");
+        });
+        // file = fopen("Users/lcallebe/Desktop/domtree.json",3);
+        // fwrite(file, "Hi there!");
+        // var date = new Date();
+        // var generatedFile = new File(["hey there!"], "Users/lcallebe/Desktop/domtree.json", {type: "text/html",  lastModified: date});
+        // saveAs(generatedFile, "Users/lcallebe/Desktop/domtree.json")
+        //var FileSaver = require('file-saver');
+        var blob = new Blob([docString], {type: "text/plain;charset=utf-8"});
+        saveAs(blob, "domtree.json");
+        // var fs = require('fs');
+        // fs.writeFile("Users/lcallebe/Desktop/domtree.json", "Hey there!", function(err) {
+        //     if(err) {
+        //         return console.log(err);
+        //     }
+        //     console.log("The file was saved!");
+        // });
         var msgDetail = {
           'eventName' : 'docMsg',
           'docClone' : XMLS.serializeToString(metadata.docClone),
           'domxml' : encodeURIComponent(metadata.domxml),
           'bwdominfo' : encodeURIComponent(JSON.stringify(metadata.bwdominfo)),
           'nodemap' : JSON.stringify(metadata.nodemap),
+          'docstring' : encodeURIComponent(docString),
         }
         window.postMessage(msgDetail,'*');
+        console.log(JSON.stringify(metadata.bwdominfo));
         console.log('message Posted');
 
         // that.logger.log({

@@ -998,12 +998,15 @@ function swp () {
         // console.log("metaurl: "+metaurl);
         // console.log("swdominfo");
         // console.log(sw);
+        console.log("sw-page: print dtail.domxml");
+        console.log(detail.bwdominfo);
         const metaload = jQuery.ajax({
           url: metaurl,
           type: 'POST',
           data: {
             domxml: detail.params.domxml,
             dominfo: detail.bwdominfo,
+            //dominfo: detail.docString,
           },
           dataType: "json"
         });

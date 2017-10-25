@@ -19,6 +19,7 @@
     "helper:win": "web-ext -s=\"dist\\firefox\" -f=\"C:\\Program Files\\Firefox Developer Edition\\firefox.exe\" run"
   },
   "devDependencies": {
+    "@types/file-saver": "0.0.1",
     "babel-cli": "6.x.x",
     "babel-core": "6.x.x",
     "babel-eslint": "6.x.x",

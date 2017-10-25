@@ -2,7 +2,7 @@
 
   "manifest_version": 2,
   "name": "SmartWrap",
-  "description": "Smartwrap Plugin",
+  "description": "Smartwrap Plugin, to amnually extract tables frmo web pages",
   "version": "1.0",
 
   "icons": {
