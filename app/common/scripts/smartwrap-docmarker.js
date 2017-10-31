@@ -570,9 +570,9 @@ const DocumentMarker = ((() => {
                                        //JsonOuterHTML,
                                        "},");
         });
-        // docString = docString.concat("]");
-        // var blob = new Blob([docString], {type: "text/plain;charset=utf-8"});
-        // saveAs(blob, "domtree.json");
+        docString = docString.concat("]");
+        var blob = new Blob([docString], {type: "text/plain;charset=utf-8"});
+        saveAs(blob, "domtree.json");
 
         //var html = "";
         var html = metadata.bwdominfo[0].node.outerHTML;
@@ -583,13 +583,13 @@ const DocumentMarker = ((() => {
           'eventName' : 'docMsg',
           'docClone' : XMLS.serializeToString(metadata.docClone),
           'domxml' : encodeURIComponent(metadata.domxml),
-          'bwdominfo' : encodeURIComponent(docString),//encodeURIComponent(JSON.stringify(metadata.bwdominfo)),
+          'bwdominfo' : docString,//encodeURIComponent(JSON.stringify(metadata.bwdominfo)),
           'nodemap' : JSON.stringify(metadata.nodemap),
-          //'docstring' : docString,
+          'docstring' : encodeURIComponent(docString),
         }
-        metadata.docstring = docString;
         window.postMessage(msgDetail,'*');
         console.log('message Posted');
+        console.log(docString);
         //console.log(encodeURIComponent(JSON.stringify(metadata.bwdominfo)));
 
         // that.logger.log({

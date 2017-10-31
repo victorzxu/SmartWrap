@@ -928,7 +928,6 @@ function swp () {
       if (sw.getSetting("algorithm") === "LIBSVM") {
         detail.params["dominfo"] = detail.bwdominfo;
       }
-      detail.params["doctring"] = detail.docstring;
       detail.params["config"] = JSON.stringify({
         url: detail.url
       });
@@ -999,15 +998,15 @@ function swp () {
         // console.log("metaurl: "+metaurl);
         // console.log("swdominfo");
         // console.log(sw);
-        console.log("sw-page: print detail.docstring");
-        // console.log(detail.docstring);
+        console.log("sw-page: print dtail.domxml");
+        console.log(detail.bwdominfo);
         const metaload = jQuery.ajax({
           url: metaurl,
           type: 'POST',
           data: {
             domxml: detail.params.domxml,
             dominfo: detail.bwdominfo,
-            //dominfo: detail.docstring,
+            //dominfo: detail.docString,
           },
           dataType: "json"
         });
