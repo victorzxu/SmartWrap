@@ -9,6 +9,10 @@
     normalize-path "^2.0.1"
     through2 "^2.0.3"
 
+"@types/file-saver@0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@types/file-saver/-/file-saver-0.0.1.tgz#3a3a37884b840e2c4c55770c9fa75a3e11784ef8"
+
 abbrev@1:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.0.tgz#d0554c2256636e2f56e7c2e5ad183f859428d81f"
@@ -1976,6 +1980,10 @@ dom-serialize@^2.2.1:
 domain-browser@^1.1.1:
   version "1.1.7"
   resolved "https://registry.yarnpkg.com/domain-browser/-/domain-browser-1.1.7.tgz#867aa4b093faa05f1de08c06f4d7b21fdf8698bc"
+
+domjson@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/domjson/-/domjson-0.1.2.tgz#4df40ed40448e57a3dbfc4d262c660e194b744d8"
 
 download@^4.0.0, download@^4.1.2:
   version "4.4.3"

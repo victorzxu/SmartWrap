@@ -77,6 +77,7 @@
     "chrome-sidebar": "^0.1.2",
     "dojo": "^1.12.2",
     "dom-serialize": "^2.2.1",
+    "domjson": "^0.1.2",
     "jquery": "^3.2.1",
     "jquery-ui": "^1.12.1",
     "react": "^15.5.4",
