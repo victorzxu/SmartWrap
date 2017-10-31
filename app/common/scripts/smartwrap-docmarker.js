@@ -589,8 +589,6 @@ const DocumentMarker = ((() => {
         }
         window.postMessage(msgDetail,'*');
         console.log('message Posted');
-        console.log(docString);
-        //console.log(encodeURIComponent(JSON.stringify(metadata.bwdominfo)));
 
         // that.logger.log({
         //   "METAKEYS": Object.keys(metadata)

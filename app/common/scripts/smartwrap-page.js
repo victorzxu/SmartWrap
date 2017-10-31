@@ -996,10 +996,8 @@ function swp () {
       if (!detail.params.dominfo) {
         const metaurl = sw.rformat("{serverprepath}/smartwrap/Meta", detail.subs, key => sw.getSetting(key));
         // console.log("metaurl: "+metaurl);
-        // console.log("swdominfo");
-        // console.log(sw);
-        console.log("sw-page: print dtail.domxml");
-        console.log(detail.bwdominfo);
+        //console.log("sw-page: print dtail.domxml");
+        //console.log(detail.bwdominfo);
         const metaload = jQuery.ajax({
           url: metaurl,
           type: 'POST',
