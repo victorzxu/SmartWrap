@@ -550,34 +550,25 @@ const DocumentMarker = ((() => {
         var XMLS = new XMLSerializer();
         metadata.docClone = doc1;
         metadata.domxml = XMLS.serializeToString(doc1);
-        // console.log(metadata.domxml);
-        // console.log("nodelist");
-        // console.log(this.nodelist);
         metadata.bwdominfo = this.nodelist;
         metadata.nodemap = this.nodemap;
         console.log(metadata.bwdominfo);
 
         //Simple function for selecting just what we need and writing it to a file
         var docString = "[";
+        var html = JSON.stringify(metadata.bwdominfo[0].node.outerHTML);
+        html = html.replace(/%/g,'percent');
+        docString = docString.concat("{\"html\":",html,"},")
         metadata.bwdominfo.forEach(function(element){
-          var JsonOuterHTML = "";
-          JsonOuterHTML = JsonOuterHTML.concat(JSON.stringify(element.node.outerHTML));
-          // console.log(element.node.nodeName);
-          if (JsonOuterHTML.length > 200 && element.node.nodeName != ("IMG" || "A")) JsonOuterHTML = "\"outerHTML too long\"";
           docString = docString.concat("{\"position\":",JSON.stringify(element.position),",",
                                        "\"xpath\":",JSON.stringify(element.xpath),",",
-                                       "\"style\":",JSON.stringify(element.style),//",",
-                                       //JsonOuterHTML,
+                                       "\"style\":",JSON.stringify(element.style),
                                        "},");
         });
         docString = docString.concat("]");
-        var blob = new Blob([docString], {type: "text/plain;charset=utf-8"});
-        saveAs(blob, "domtree.json");
-
-        //var html = "";
-        var html = metadata.bwdominfo[0].node.outerHTML;
-        var blob2 = new Blob([html], {type: "text/plain;charset=utf-8"});
-        saveAs(blob2, "html.html");
+        // var blob = new Blob([docString], {type: "text/plain;charset=utf-8"});
+        // saveAs(blob, "domtree.json");
+        docString = encodeURIComponent(docString);
 
         var msgDetail = {
           'eventName' : 'docMsg',
@@ -585,10 +576,12 @@ const DocumentMarker = ((() => {
           'domxml' : encodeURIComponent(metadata.domxml),
           'bwdominfo' : docString,//encodeURIComponent(JSON.stringify(metadata.bwdominfo)),
           'nodemap' : JSON.stringify(metadata.nodemap),
-          'docstring' : encodeURIComponent(docString),
+          'docstring' : docString,
         }
         window.postMessage(msgDetail,'*');
         console.log('message Posted');
+        //console.log(docString);
+        //console.log(encodeURIComponent(JSON.stringify(metadata.bwdominfo)));
 
         // that.logger.log({
         //   "METAKEYS": Object.keys(metadata)
