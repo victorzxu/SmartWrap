@@ -735,8 +735,8 @@ function swp () {
         return parser.parseFromString(sw.docClone,"text/html");
       }))();
       var dummyDetail = {};
-      var reportEvent = new CustomEvent("startReport",dummyDetail);
-      document.dispatchEvent(reportEvent);
+      // var reportEvent = new CustomEvent("startReport",dummyDetail);
+      // document.dispatchEvent(reportEvent);
 
     // }
 
@@ -1163,10 +1163,10 @@ function swp () {
         http.responseType = detail.responseType;
       }
       //Send the proper header information along with the request
-      http.setRequestHeader("Connection", "close");
+      // http.setRequestHeader("Connection", "close");
       if (detail.method === "POST") {
         http.setRequestHeader("Content-type", "application/x-www-form-urlencoded;charset=UTF-8");
-        http.setRequestHeader("Content-length", detail.paramString.length);
+        // http.setRequestHeader("Content-length", detail.paramString.length);
         http.send(detail.paramString);
       } else {
         http.send(null);
@@ -1279,7 +1279,7 @@ function swp () {
     }
   });
 
-  jQuery(document).bind("swRunWrapper swUndo sw_reportSlot", event => {
+  jQuery(document).bind("swSaveWrapper swUndo sw_reportSlot", event => {
     const eventType = event.type;
     //<editor-fold desc="yxl:ifFalseCodeBlock">
     if (false) {

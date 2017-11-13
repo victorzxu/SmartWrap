@@ -1359,7 +1359,7 @@ let Smartwrap = ((() => {
 
             break;
 
-          case "swRunWrapper":
+          case "swSaveWrapper":
             listener = event => {
               //console.log("in swRunWrapper");
               const detail = event.originalEvent && event.originalEvent.detail || {};
